@@ -1,6 +1,6 @@
 import Config
 
-#### General configuration useful for tests, everything else should be in `bonfire_extension_template.exs` or `Bonfire.ExtensionTemplate.RuntimeConfig`
+#### General configuration useful for tests, everything else should be in `ember.exs` or `Ember.RuntimeConfig`
 
 # You probably won't want to touch these. You might override some in
 # other config files.
@@ -17,13 +17,13 @@ config :mime, :types, %{
   "application/activity+json" => ["activity+json"]
 }
 
-config :bonfire_extension_template, :otp_app, :bonfire_extension_template
-config :bonfire_common, :otp_app, :bonfire_extension_template
-config :bonfire_extension_template, :repo_module, Bonfire.Common.Repo
-config :bonfire_extension_template, ecto_repos: [Bonfire.Common.Repo]
+config :ember, :otp_app, :ember
+config :bonfire_common, :otp_app, :ember
+config :ember, :repo_module, Bonfire.Common.Repo
+config :ember, ecto_repos: [Bonfire.Common.Repo]
 config :bonfire_common, :localisation_path, "priv/localisation"
 
 config :bonfire_data_identity, Bonfire.Data.Identity.Credential, hasher_module: Argon2
 
-import_config "bonfire_extension_template.exs"
+import_config "ember.exs"
 # import_config "#{Mix.env()}.exs"

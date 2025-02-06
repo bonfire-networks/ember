@@ -1,4 +1,4 @@
-defmodule Bonfire.ExtensionTemplate do
+defmodule Ember do
   @moduledoc "./README.md" |> File.stream!() |> Enum.drop(1) |> Enum.join()
 
   alias Bonfire.Common.Config
@@ -11,7 +11,7 @@ defmodule Bonfire.ExtensionTemplate do
     icon: "bi:app",
     description: l("An awesome extension")
     # default_nav: [
-    #   Bonfire.ExtensionTemplate.Web.HomeLive
+    #   Ember.Web.HomeLive
     # ]
   )
 

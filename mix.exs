@@ -1,6 +1,6 @@
 Code.eval_file("mess.exs", (if File.exists?("../../lib/mix/mess.exs"), do: "../../lib/mix/"))
 
-defmodule Bonfire.ExtensionTemplate.MixProject do
+defmodule Ember.MixProject do
   use Mix.Project
 
   def project do
@@ -16,7 +16,7 @@ defmodule Bonfire.ExtensionTemplate.MixProject do
     end
     ++
     [
-      app: :bonfire_extension_template,
+      app: :ember,
       version: "0.0.1",
       elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
