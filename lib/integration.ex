@@ -3,17 +3,17 @@ defmodule Ember do
 
   alias Bonfire.Common.Config
   alias Bonfire.Common.Utils
-  import Untangle
-  import Bonfire.Common.Modularity.DeclareHelpers
+  # import Untangle
+  # import Bonfire.Common.Modularity.DeclareHelpers
 
-  declare_extension(
-    "ExtensionTemplate",
-    icon: "bi:app",
-    description: l("An awesome extension")
-    # default_nav: [
-    #   Ember.Web.HomeLive
-    # ]
-  )
+  # declare_extension(
+  #   "ExtensionTemplate",
+  #   icon: "bi:app",
+  #   description: l("An awesome extension")
+  #   # default_nav: [
+  #   #   Ember.Web.HomeLive
+  #   # ]
+  # )
 
-  def repo, do: Config.repo()
+  # def repo, do: Config.repo()
 end

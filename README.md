@@ -1,9 +1,17 @@
 # Ember
 
-A new bonfire extension created using [the generator](https://docs.bonfirenetworks.org/create-a-new-extension.html) 
+A flavour of [Bonfire](https://bonfirenetworks.org/) that includes essential functionality by bundling the following extensions:
 
-NOTE: update this readme when you create a new extension.
-
+- [Bonfire.Common](https://github.com/bonfire-networks/bonfire_common) and [Bonfire.UI.Common](https://github.com/bonfire-networks/bonfire_ui_common) - common utils and components
+- [Bonfire.Me](https://github.com/bonfire-networks/bonfire_me) and [Bonfire.UI.Me](https://github.com/bonfire-networks/bonfire_ui_me) - accounts, user profiles...
+- [Bonfire.Social](https://github.com/bonfire-networks/bonfire_social) and [Bonfire.UI.Social](https://github.com/bonfire-ecosystem/bonfire_ui_social) - provides feeds, activities, etc...
+- [Bonfire.Posts](https://github.com/bonfire-networks/bonfire_social) and [Bonfire.UI.Posts](https://github.com/bonfire-ecosystem/bonfire_ui_social) - for making posts and comments
+- [Bonfire.Social.Graph](https://github.com/bonfire-networks/bonfire_social_graph) - for following...
+- [Bonfire.Boundaries](https://github.com/bonfire-networks/bonfire_boundaries) and [Bonfire.UI.Boundaries](https://github.com/bonfire-networks/bonfire_ui_boundaries) - define circles and associated privacy or permissions
+- [Bonfire.UI.Moderation](https://github.com/bonfire-networks/bonfire_ui_moderation) - for flagging and managing content
+- [Bonfire.Federate.ActivityPub](https://github.com/bonfire-networks/bonfire_federate_activitypub) - federates activities with ActivityPub to participate in the fediverse
+- [Bonfire.Tag](https://github.com/bonfire-ecosystem/bonfire_tag) - for @ mentions and hashtags
+- [Bonfire.Files](https://github.com/bonfire-ecosystem/bonfire_files) - for handling images and uploads
 
 ## Copyright and License
 

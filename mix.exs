@@ -20,14 +20,32 @@ defmodule Ember.MixProject do
       version: "0.0.1",
       elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
-      compilers: Mix.compilers() ++ [:surface],
+      compilers: Mix.compilers(),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
+      description: "A flavour of Bonfire",
+        homepage_url: "https://bonfirenetworks.org/",
+        source_url: "https://github.com/bonfire-networks/ember",
+        package: [
+          licenses: ["AGPL-3.0"],
+          links: %{
+            "Repository" => "https://github.com/bonfire-networks/ember",
+            "Hexdocs" => "https://hexdocs.pm/ember"
+          }
+        ],
+        docs: [
+          # The first page to display from the docs
+          main: "readme",
+          # extra pages to include
+          extras: ["README.md"]
+        ],
       deps:
         Mess.deps([
           {:phoenix_live_reload, "~> 1.2", only: :dev},
 
-          {:floki, ">= 0.0.0", only: [:dev, :test]}
+          {:floki, ">= 0.0.0", only: [:dev, :test]},
+
+          {:ex_doc, ">= 0.0.0", only: :dev, runtime: false}
         ])
     ]
   end

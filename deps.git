@@ -1,2 +1,39 @@
-bonfire_common = "https://github.com/bonfire-networks/bonfire_common"
-bonfire_ui_common = "https://github.com/bonfire-networks/bonfire_ui_common"
+## GENERAL
+bonfire = "https://github.com/bonfire-networks/bonfire"
+# bonfire_ui_common = "https://github.com/bonfire-networks/bonfire_ui_common"
+
+bonfire_files = "https://github.com/bonfire-networks/bonfire_files"
+bonfire_tag = "https://github.com/bonfire-networks/bonfire_tag"
+# bonfire_quantify = "https://github.com/bonfire-networks/bonfire_quantify"
+# bonfire_geolocate = "https://github.com/bonfire-networks/bonfire_geolocate"
+
+# TEMP
+activity_pub = "https://github.com/bonfire-networks/activity_pub#main"
+
+needle = "https://github.com/bonfire-networks/needle"
+needle_uid = "https://github.com/bonfire-networks/needle_uid"
+needle_ulid = "https://github.com/bonfire-networks/needle_ulid"
+ex_ulid = "https://github.com/bonfire-networks/ex_ulid"
+# exto = "https://github.com/bonfire-networks/exto"
+
+# untangle = "https://github.com/bonfire-networks/untangle"
+# arrows = "https://github.com/bonfire-networks/arrows"
+
+# ex_cldr_territories = "https://github.com/elixir-cldr/cldr_territories" 
+ecto_sparkles = "https://github.com/bonfire-networks/ecto_sparkles"
+
+# iconify_ex = "https://github.com/bonfire-networks/iconify_ex"
+
+entrepot = "https://github.com/bonfire-networks/entrepot"
+entrepot_ecto = "https://github.com/bonfire-networks/entrepot_ecto"
+
+mfm_parser = "https://akkoma.dev/AkkomaGang/mfm-parser.git"
+nodeinfo = "https://github.com/bonfire-networks/nodeinfo"
+
+# emote = "https://github.com/bonfire-networks/emote"
+
+paginator = "https://github.com/bonfire-networks/paginator"
+
+
+forecastr = "https://github.com/bonfire-networks/forecastr"
+
