@@ -1,0 +1,3 @@
+<%= @page_title %>
+
+<%= Bonfire.Web.AboutLive.about_live_text(assigns) %>
