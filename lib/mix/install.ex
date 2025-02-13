@@ -13,13 +13,15 @@ defmodule Mix.Tasks.Ember.Install do
   def igniter(igniter, args) do
     # IO.inspect(args, label: "Args")
 
+    app_dir = Application.app_dir(@app)
+
     igniter
     # then we run custom tasks for this flavour
-    |> Helpers.igniter_copy(Path.join(Application.app_dir(@app), "priv/templates/"), "lib/")
-    |> Helpers.igniter_copy(Path.join(Application.app_dir(@app), "config/"), "config/")
-    |> Helpers.igniter_copy(Path.wildcard(Application.app_dir(@app), "deps.*"), "config/")
+    |> Helpers.igniter_copy(Path.join(app_dir, "priv/templates/lib/"), "lib/")
+    |> Helpers.igniter_copy(Path.join(app_dir, "config/"), "config/")
+    |> Helpers.igniter_copy(Path.join(app_dir, "priv/extras/"), "priv/extras/")
+    |> Helpers.igniter_copy(Path.wildcard(Path.join(app_dir, "deps.*")), "config/")
     # finally we run the standard installer for this flavour (which includes copying `config/ember.exs` and migrations)
-    |> Igniter.compose_task(Mix.Tasks.Bonfire.Extension.Installer, [@app]) 
-  end 
-
+    |> Igniter.compose_task(Mix.Tasks.Bonfire.Extension.Installer, [@app])
+  end
 end

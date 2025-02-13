@@ -1,4 +1,4 @@
-defmodule Bonfire.Web.ChangelogLive do
+defmodule Bonfire.Web.Views.ChangelogLive do
   @moduledoc """
   The main instance home page, mainly for guests visiting the instance
   """

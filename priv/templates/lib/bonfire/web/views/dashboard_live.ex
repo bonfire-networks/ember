@@ -1,4 +1,4 @@
-defmodule Bonfire.Web.DashboardLive do
+defmodule Bonfire.Web.Views.DashboardLive do
   @moduledoc """
   The main instance home page, mainly for guests visiting the instance
   """
@@ -21,16 +21,16 @@ defmodule Bonfire.Web.DashboardLive do
           Enum.filter(
             [
               Settings.get(
-                [Bonfire.Web.DashboardLive, :include, :popular_topics],
+                [Bonfire.Web.Views.DashboardLive, :include, :popular_topics],
                 true,
                 current_user: current_user
               ) && {Bonfire.Tag.Web.WidgetTagsLive, []},
-              Settings.get([Bonfire.Web.DashboardLive, :include, :admins], true,
+              Settings.get([Bonfire.Web.Views.DashboardLive, :include, :admins], true,
                 current_user: current_user
               ) &&
                 {Bonfire.UI.Me.WidgetAdminsLive, []},
               Settings.get(
-                [Bonfire.Web.DashboardLive, :include, :recent_users],
+                [Bonfire.Web.Views.DashboardLive, :include, :recent_users],
                 true,
                 current_user: current_user
               ) && {Bonfire.UI.Me.WidgetHighlightUsersLive, []}
@@ -41,7 +41,7 @@ defmodule Bonfire.Web.DashboardLive do
     ]
 
     default_feed =
-      Settings.get([Bonfire.Web.DashboardLive, :default_feed], :popular,
+      Settings.get([Bonfire.Web.Views.DashboardLive, :default_feed], :popular,
         current_user: current_user
       )
 

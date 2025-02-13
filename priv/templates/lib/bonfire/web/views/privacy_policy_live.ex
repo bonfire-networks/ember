@@ -1,4 +1,4 @@
-defmodule Bonfire.Web.PrivacyPolicyLive do
+defmodule Bonfire.Web.Views.PrivacyPolicyLive do
   @moduledoc """
   The main instance home page, mainly for guests visiting the instance
   """

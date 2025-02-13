@@ -1,4 +1,4 @@
-defmodule Bonfire.Web.AboutLive do
+defmodule Bonfire.Web.Views.AboutLive do
   @moduledoc """
   The main instance home page, mainly for guests visiting the instance
   """
@@ -12,7 +12,7 @@ defmodule Bonfire.Web.AboutLive do
 
     show_users =
       Bonfire.Common.Settings.get(
-        [Bonfire.Web.AboutLive, :include, :users],
+        [Bonfire.Web.Views.AboutLive, :include, :users],
         false
       )
 

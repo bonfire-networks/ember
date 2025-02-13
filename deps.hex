@@ -120,3 +120,27 @@ cachex = "~> 4.0.2"
 # bonfire_data_identity = "~> 0.1"
 # bonfire_data_social = "~> 0.1"
 
+
+# admin tools
+phoenix_live_dashboard = "~> 0.8.0"
+# live_admin = "~> 0.12.0"
+# wobserver_ng = "~> 1.14"
+oban_web = "~> 2.11"
+
+
+# telemetry
+telemetry = ">= 1.1.0"
+telemetry_metrics = "~> 1.0"
+telemetry_poller = "~> 1.1"
+opentelemetry_exporter = "~> 1.0"
+opentelemetry = "~> 1.0"
+opentelemetry_api = "~> 1.0"
+opentelemetry_ecto = "~> 1.0"
+opentelemetry_liveview = "~> 1.0.0-rc.4"
+opentelemetry_phoenix = "~> 1.0"
+opentelemetry_cowboy = "~> 0.2"
+opentelemetry_oban = "~> 1.1"
+opentelemetry_telemetry = "~> 1.1"
+oban_live_dashboard = "~> 0.1.1"
+opentelemetry_process_propagator = "~> 0.2"
+

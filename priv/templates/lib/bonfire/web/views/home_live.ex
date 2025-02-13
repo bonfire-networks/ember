@@ -1,4 +1,4 @@
-defmodule Bonfire.Web.HomeLive do
+defmodule Bonfire.Web.Views.HomeLive do
   @moduledoc """
   The main instance home page, mainly for guests visiting the instance
   """
