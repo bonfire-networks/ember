@@ -21,7 +21,7 @@ config :activity_pub, sign_object_fetches: federate?
 
 # config :pseudo_gettext, :locale, "en-pseudo_text" # uncomment to use https://en.wikipedia.org/wiki/Pseudolocalization and check that the app is properly localisable
 
-config :bonfire, Bonfire.Common.Repo,
+config :bonfire_umbrella, Bonfire.Common.Repo,
   database: System.get_env("POSTGRES_DB", "bonfire_dev"),
   # show_sensitive_data_on_connection_error: true,
   # EctoSparkles does the logging instead
@@ -110,8 +110,8 @@ if System.get_env("HOT_CODE_RELOAD") != "-1" do
   config :bonfire, Bonfire.Web.Endpoint,
     code_reloader: enable_reloader?,
     # TEMP until this is available https://github.com/surface-ui/surface/pull/755
-    # reloadable_compilers: [:leex, :elixir],
-    reloadable_compilers: [:leex, :elixir, :surface],
+    reloadable_compilers: [:leex, :elixir],
+    # reloadable_compilers: [:leex, :elixir, :surface],
     reloadable_apps: [:bonfire] ++ local_dep_names,
     live_reload: [
       patterns: patterns ++ hot_patterns,

@@ -3,8 +3,9 @@ import Config
 yes? = ~w(true yes 1)
 no? = ~w(false no 0)
 
-default_flavour = "ember"
+default_flavour = "classic"
 flavour = System.get_env("FLAVOUR", default_flavour)
+flavour_path = System.get_env("FLAVOUR_PATH", "flavours/" <> flavour)
 project_root = File.cwd!()
 as_desktop_app? = System.get_env("AS_DESKTOP_APP") in yes?
 env = config_env()
@@ -29,15 +30,15 @@ import_config "config_basics_extra.exs"
 
 config :bonfire,
   otp_app: :bonfire,
-  umbrella_otp_app: :bonfire,
+  umbrella_otp_app: :bonfire_umbrella,
   env: env,
   project_path: project_root,
   flavour: flavour,
+  flavour_path: flavour_path,
   app_name: System.get_env("APP_NAME", "Bonfire"),
   repo_module: repo,
   use_pathex: System.get_env("WITH_PATHEX") not in no?,
   web_module: Bonfire.UI.Common.Web,
-  router_module: Bonfire.Web.Router,
   endpoint_module: if(as_desktop_app?, do: Bonfire.Desktop.Endpoint, else: Bonfire.Web.Endpoint),
   mailer_module: Bonfire.Mailer,
   default_web_namespace: Bonfire.UI.Common,
@@ -122,7 +123,7 @@ config :phoenix_gon, :json_library, Jason
 
 repos = [repo]
 config :bonfire, ecto_repos: repos
-config :bonfire, ecto_repos: repos
+config :bonfire_umbrella, ecto_repos: repos
 config :paginator, ecto_repos: repos
 config :activity_pub, ecto_repos: repos
 config :rauversion_extension, :repo_module, repo
@@ -136,11 +137,13 @@ config :rauversion_extension, :default_layout_module, Bonfire.UI.Common.LayoutVi
 config :rauversion_extension, :user_table, "pointers_pointer"
 config :rauversion_extension, :user_key_type, :uuid
 
-config :bonfire, Bonfire.Common.Repo, types: Bonfire.Geolocate.PostgresTypes
+config :bonfire_umbrella, Bonfire.Common.Repo, types: Bonfire.Geolocate.PostgresTypes
 
-config :bonfire, Bonfire.Common.TestInstanceRepo,
+config :bonfire_umbrella, Bonfire.Common.TestInstanceRepo,
   types: Bonfire.Geolocate.PostgresTypes,
   database: "bonfire_test_dance_instance_#{System.get_env("MIX_TEST_PARTITION") || 0}"
+
+# priv: flavour_path <> "/repo"
 
 # ecto query filtering
 # config :query_elf, :id_types, [:id, :binary_id, Needle.ULID]
@@ -262,7 +265,7 @@ config :sentry,
   enable_source_code_context: false,
   root_source_code_paths: [project_root] ++ dep_paths,
   source_code_exclude_patterns: [
-    # ~r/\/flavours\//,
+    ~r/\/flavours\//,
     ~r/\/extensions\//,
     ~r/\/deps\//,
     ~r/\/_build\//,
@@ -295,17 +298,16 @@ config :live_view_native_stylesheet,
     |> Bonfire.Mixer.log("SwiftUI stylesheet paths"),
   output: "assets/static/assets"
 
-# TODO? refactor the ability to include other flavours but with extensions disabled by default
-# if Code.ensure_loaded?(Bonfire.Mixer) and Bonfire.Mixer.compile_disabled?() do
-#   for dep <-
-#         Bonfire.Mixer.mess_other_flavour_dep_names(flavour)
-#         |> Bonfire.Mixer.log(
-#           "NOTE: these extensions are not part of the #{flavour} flavour and will be available but disabled by default"
-#         ) do
-#     config dep,
-#       modularity: :disabled
-#   end
-# end
+if Code.ensure_loaded?(Bonfire.Mixer) and Bonfire.Mixer.compile_disabled?() do
+  for dep <-
+        Bonfire.Mixer.mess_other_flavour_dep_names(flavour)
+        |> Bonfire.Mixer.log(
+          "NOTE: these extensions are not part of the #{flavour} flavour and will be available but disabled by default"
+        ) do
+    config dep,
+      modularity: :disabled
+  end
+end
 
 if System.get_env("WITH_API_GRAPHQL") not in yes? do
   config :bonfire_api_graphql,
@@ -322,13 +324,13 @@ for config <- "bonfire_*.exs" |> Path.expand(__DIR__) |> Path.wildcard() do
 end
 
 # include configs for the current flavour (augmenting or overriding the previous ones)
-flavour_config = "#{flavour}.exs" |> Path.expand(__DIR__)
+flavour_config = "flavour_#{flavour}.exs" |> Path.expand(__DIR__)
 
 if File.exists?(flavour_config) do
   System.get_env("MIX_QUIET") ||
     IO.puts("Include flavour-specific config from `#{flavour_config}`")
 
-  import_config("#{flavour}.exs")
+  import_config("flavour_#{flavour}.exs")
 else
   System.get_env("MIX_QUIET") ||
     IO.puts("You could put any flavour-specific config at `#{flavour_config}`")
