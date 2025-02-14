@@ -7,7 +7,7 @@ no? = ~w(false no 0)
 
 default_flavour = "classic"
 flavour = System.get_env("FLAVOUR", default_flavour)
-flavour_path = System.get_env("FLAVOUR_PATH", "flavours/" <> flavour)
+# flavour_path = System.get_env("FLAVOUR_PATH", "flavours/" <> flavour)
 project_root = File.cwd!()
 as_desktop_app? = System.get_env("AS_DESKTOP_APP") in yes?
 env = config_env()
@@ -38,7 +38,7 @@ config :bonfire,
   env: env,
   project_path: project_root,
   flavour: flavour,
-  flavour_path: flavour_path,
+  # flavour_path: flavour_path,
   app_name: System.get_env("APP_NAME", "Bonfire"),
   repo_module: repo,
   use_pathex: System.get_env("WITH_PATHEX") not in no?,
@@ -166,7 +166,12 @@ config :logger, :console,
 
 config :elixir, :dbg_callback, {Untangle, :custom_dbg, []}
 
-config :surface, :compiler, warn_on_undefined_props: false
+config :surface, :compiler,
+  warn_on_undefined_props: false,
+  hooks_output_dir: "config/current_flavour/assets/hooks/",
+  css_output_file: "config/current_flavour/assets/components.css",
+  variants_output_file: "config/current_flavour/assets/variants.js",
+  enable_variants: true
 
 config :needle_uid, pride_enabled: false
 config :pride, use_rust: true
