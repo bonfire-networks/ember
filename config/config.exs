@@ -283,32 +283,37 @@ config :sentry,
 
 # native app
 if System.get_env("WITH_LV_NATIVE") in ["1", "true"] do
-  config :phoenix_template, :format_encoders, swiftui: Phoenix.HTML.Engine
-  # jetpack: Phoenix.HTML.Engine
-  config :live_view_native,
-    plugins: [
-      LiveViewNative.SwiftUI
-      # LiveViewNative.Jetpack
-    ]
-
-  config :phoenix, :template_engines, neex: LiveViewNative.Engine
 
   config :live_view_native_stylesheet,
     content:
       [
         swiftui:
           (["lib/**/*swiftui*"] ++
-             for dep <- bonfire_deps do
-               if Mix.Project.deps_paths()[dep], do: {dep, "lib/**/*swiftui*"}
-             end)
+            for dep <- bonfire_deps do
+              if Mix.Project.deps_paths()[dep], do: {dep, "lib/**/*swiftui*"}
+            end)
           |> Enum.reject(&is_nil/1)
       ]
       |> Bonfire.Mixer.log("SwiftUI stylesheet paths"),
     output: "assets/static/assets"
 
   import_config "native.exs"
+  
   IO.puts("Native app config prepared")
+else
+  config :live_view_native,
+      modularity: :disabled
+
+  IO.puts("Native app config skipped")
 end
+
+# NOTE: putting this here to avoid (LiveViewNative.PluginError) error in CI even when disabled
+config :live_view_native,
+  plugins: [
+    LiveViewNative.SwiftUI
+    # LiveViewNative.Jetpack
+  ]
+
 
 # TODO: refactor
 # if Code.ensure_loaded?(Bonfire.Mixer) and Code.ensure_loaded?(Hex) and Bonfire.Mixer.compile_disabled?() do
@@ -356,6 +361,7 @@ IO.puts("Flavours compile-time configs prepared")
 
 # federation library
 import_config "activity_pub.exs"
+
 
 # finally, append/override config based on env, which will override any config set above (including from imported files)
 import_config "#{env}.exs"
