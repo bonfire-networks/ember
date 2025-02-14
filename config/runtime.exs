@@ -4,6 +4,8 @@
 # remember to add this file to your .gitignore.
 import Config
 
+IO.puts("Preparing runtime config...")
+
 System.get_env("MIX_QUIET") || IO.puts("🔥 Welcome to Bonfire!")
 
 # flavour = System.get_env("FLAVOUR", "classic")
@@ -434,3 +436,5 @@ if api_key = System.get_env("OPEN_WEATHER_MAP_API_KEY") do
     # minutes to cache
     ttl: 14 * 60_000
 end
+
+IO.puts("Runtime config ready")
