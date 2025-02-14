@@ -1,5 +1,7 @@
 import Config
 
+IO.puts("Preparing compile-time config...")
+
 yes? = ~w(true yes 1)
 no? = ~w(false no 0)
 
@@ -27,6 +29,8 @@ dep_paths =
 repo = Bonfire.Common.Repo
 
 import_config "config_basics_extra.exs"
+
+IO.puts("Basic compile-time config prepared")
 
 config :bonfire,
   otp_app: :bonfire,
@@ -247,6 +251,8 @@ config :mime,
 # define which is preferred when more than one
 config :mime, :extensions, Bonfire.Files.MimeTypes.unique_extension_for_mime()
 
+IO.puts("Mime types prepared")
+
 config :os_mon,
   disk_space_check_interval: 60,
   memory_check_interval: 15,
@@ -275,39 +281,47 @@ config :sentry,
   context_lines: 15,
   tags: %{app_version: Mix.Project.config()[:version]}
 
-config :phoenix_template, :format_encoders, swiftui: Phoenix.HTML.Engine
-# jetpack: Phoenix.HTML.Engine
-config :live_view_native,
-  plugins: [
-    LiveViewNative.SwiftUI
-    # LiveViewNative.Jetpack
-  ]
-
-config :phoenix, :template_engines, neex: LiveViewNative.Engine
-
-config :live_view_native_stylesheet,
-  content:
-    [
-      swiftui:
-        (["lib/**/*swiftui*"] ++
-           for dep <- bonfire_deps do
-             if Mix.Project.deps_paths()[dep], do: {dep, "lib/**/*swiftui*"}
-           end)
-        |> Enum.reject(&is_nil/1)
+# native app
+if System.get_env("WITH_LV_NATIVE") in ["1", "true"] do
+  config :phoenix_template, :format_encoders, swiftui: Phoenix.HTML.Engine
+  # jetpack: Phoenix.HTML.Engine
+  config :live_view_native,
+    plugins: [
+      LiveViewNative.SwiftUI
+      # LiveViewNative.Jetpack
     ]
-    |> Bonfire.Mixer.log("SwiftUI stylesheet paths"),
-  output: "assets/static/assets"
 
-if Code.ensure_loaded?(Bonfire.Mixer) and Bonfire.Mixer.compile_disabled?() do
-  for dep <-
-        Bonfire.Mixer.mess_other_flavour_dep_names(flavour)
-        |> Bonfire.Mixer.log(
-          "NOTE: these extensions are not part of the #{flavour} flavour and will be available but disabled by default"
-        ) do
-    config dep,
-      modularity: :disabled
-  end
+  config :phoenix, :template_engines, neex: LiveViewNative.Engine
+
+  config :live_view_native_stylesheet,
+    content:
+      [
+        swiftui:
+          (["lib/**/*swiftui*"] ++
+             for dep <- bonfire_deps do
+               if Mix.Project.deps_paths()[dep], do: {dep, "lib/**/*swiftui*"}
+             end)
+          |> Enum.reject(&is_nil/1)
+      ]
+      |> Bonfire.Mixer.log("SwiftUI stylesheet paths"),
+    output: "assets/static/assets"
+
+  import_config "native.exs"
+  IO.puts("Native app config prepared")
 end
+
+# TODO: refactor
+# if Code.ensure_loaded?(Bonfire.Mixer) and Code.ensure_loaded?(Hex) and Bonfire.Mixer.compile_disabled?() do
+#   for dep <-
+#         Bonfire.Mixer.mess_other_flavour_dep_names(flavour)
+#         |> Bonfire.Mixer.log(
+#           "NOTE: these extensions are not part of the #{flavour} flavour and will be available but disabled by default"
+#         ) do
+#     config dep,
+#       modularity: :disabled
+#   end
+# end
+# IO.puts("Flavours prepared")
 
 if System.get_env("WITH_API_GRAPHQL") not in yes? do
   config :bonfire_api_graphql,
@@ -323,6 +337,8 @@ for config <- "bonfire_*.exs" |> Path.expand(__DIR__) |> Path.wildcard() do
   import_config config
 end
 
+IO.puts("Extensions compile-time configs prepared")
+
 # include configs for the current flavour (augmenting or overriding the previous ones)
 flavour_config = "flavour_#{flavour}.exs" |> Path.expand(__DIR__)
 
@@ -336,11 +352,10 @@ else
     IO.puts("You could put any flavour-specific config at `#{flavour_config}`")
 end
 
+IO.puts("Flavours compile-time configs prepared")
+
 # federation library
 import_config "activity_pub.exs"
-
-# native app
-import_config "native.exs"
 
 # finally, append/override config based on env, which will override any config set above (including from imported files)
 import_config "#{env}.exs"
