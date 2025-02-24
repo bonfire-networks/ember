@@ -1,4 +1,3 @@
-
 defmodule Bonfire.Web.Router.Routes do
   defmacro __using__(opts) do
     quote bind_quoted: [opts: opts] do
@@ -173,7 +172,9 @@ defmodule Bonfire.Web.Router.Routes do
               ],
               metrics: Bonfire.Common.Telemetry.Metrics,
               metrics_history:
-                if(Config.env() == :dev, do: {Bonfire.Common.Telemetry.Storage, :metrics_history, []}),
+                if(Config.env() == :dev,
+                  do: {Bonfire.Common.Telemetry.Storage, :metrics_history, []}
+                ),
               additional_pages: [
                 oban_queues: Bonfire.Web.ObanDashboard,
                 oban: Oban.LiveDashboard,
@@ -211,50 +212,49 @@ end
 IO.puts("Compile routes...")
 
 defmodule Bonfire.Web.Router do
-
   defmodule CORS do
-  use Corsica.Router,
-    max_age: 600,
-    allow_methods: :all,
-    allow_headers: :all,
-    origins: {__MODULE__, :local_origin?, [:global]}
+    use Corsica.Router,
+      max_age: 600,
+      allow_methods: :all,
+      allow_headers: :all,
+      origins: {__MODULE__, :local_origin?, [:global]}
 
-  import Untangle
+    import Untangle
 
-  # resource "/*"
+    # resource "/*"
 
-  resource("/api/*",
-    origins: "*",
-    allow_credentials: true
-  )
+    resource("/api/*",
+      origins: "*",
+      allow_credentials: true
+    )
 
-  resource("/oauth/*",
-    origins: "*",
-    allow_credentials: true
-  )
+    resource("/oauth/*",
+      origins: "*",
+      allow_credentials: true
+    )
 
-  resource("/openid/*",
-    origins: "*",
-    allow_credentials: true
-  )
+    resource("/openid/*",
+      origins: "*",
+      allow_credentials: true
+    )
 
-  resource("/.well-known/*",
-    origins: "*"
-  )
+    resource("/.well-known/*",
+      origins: "*"
+    )
 
-  def local_origin?(conn, origin, _scope) do
-    case Bonfire.Common.URIs.base_uri(conn) |> debug() do
-      %{host: local_host} ->
-        case URI.parse(origin) |> debug(origin) do
-          %{host: origin_host} -> origin_host == local_host
-          _ -> false
-        end
+    def local_origin?(conn, origin, _scope) do
+      case Bonfire.Common.URIs.base_uri(conn) |> debug() do
+        %{host: local_host} ->
+          case URI.parse(origin) |> debug(origin) do
+            %{host: origin_host} -> origin_host == local_host
+            _ -> false
+          end
 
-      _ ->
-        false
+        _ ->
+          false
+      end
     end
   end
-end
 
   use Bonfire.Web.Router.Routes
   # , generate_open_api: false
@@ -266,14 +266,13 @@ end
   #   include_masto_api()
   # end
 
-          @doc "(re)generates the reverse router (useful so it can be re-generated when extensions are enabled/disabled)"
-      def generate_reverse_router!(app \\ :bonfire) do
-        # IO.puts(:code.priv_dir(app))
-        Code.put_compiler_option(:ignore_module_conflict, true)
-        Code.eval_file(Path.join(:code.priv_dir(app), "extras/router_reverse.ex"))
-        Code.put_compiler_option(:ignore_module_conflict, false)
-      end
-
+  @doc "(re)generates the reverse router (useful so it can be re-generated when extensions are enabled/disabled)"
+  def generate_reverse_router!(app \\ :bonfire) do
+    # IO.puts(:code.priv_dir(app))
+    Code.put_compiler_option(:ignore_module_conflict, true)
+    Code.eval_file(Path.join(:code.priv_dir(app), "extras/router_reverse.ex"))
+    Code.put_compiler_option(:ignore_module_conflict, false)
+  end
 end
 
 # generate an initial version of the reverse router (note that it will be re-generated at app start and when extensions are enabled/disabled)

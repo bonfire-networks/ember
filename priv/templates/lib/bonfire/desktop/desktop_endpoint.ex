@@ -6,6 +6,5 @@ if System.get_env("AS_DESKTOP_APP") in ["1", "true"] do
     use Bonfire.UI.Common.Endpoint.LiveReload, code_reloading?
 
     plug(Bonfire.Web.Router)
-
   end
 end

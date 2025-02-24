@@ -12,6 +12,4 @@ defmodule Bonfire.Web.Endpoint do
   # defp router(conn, _), do: Bonfire.Web.Router.call(conn, [])
   # plug :router
   plug(Bonfire.Web.Router)
-
-
 end

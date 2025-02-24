@@ -3,5 +3,4 @@ defmodule Bonfire.Web.FakeRemoteEndpoint do
   use Bonfire.UI.Common.EndpointTemplate
 
   plug(Bonfire.Web.Router)
-
 end
