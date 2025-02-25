@@ -100,7 +100,7 @@ run_installer() {
     local script_path="$1"
     local script_name="$2"
     
-    echo "Running $script_name..."
+    echo "Running $script_name installer..."
     if [ -f "$script_path" ]; then
         if [ "$AUTO_YES" = true ]; then
             bash "$script_path" -y
@@ -108,9 +108,32 @@ run_installer() {
             bash "$script_path"
         fi
     else
-        echo "Error: $script_name not found at $script_path"
+        echo "Error: $script_name installer not found at $script_path"
         return 1
     fi
+}
+
+run_installers() {
+    local dep_names=("$@")
+
+    for dep_name in "${dep_names[@]}"; do
+
+        # Construct the paths based on the dependency name
+        local ext_path="./extensions/${dep_name}/install.sh"
+        local deps_path="./deps/${dep_name}/install.sh"
+
+        # Check if the extension installer exists and run it
+        if [ -f "$ext_path" ]; then
+            run_installer "$ext_path" "${dep_name}" || \
+            exit 1
+        elif [ -f "$deps_path" ]; then
+            run_installer "$deps_path" "${dep_name}" || \
+            exit 1
+        else
+            echo "No installers found for dependency: $dep_name"
+            exit 1
+        fi
+    done
 }
 
 # Function to create multiple directories
