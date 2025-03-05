@@ -39,7 +39,7 @@
         module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
         :if={@feed_component_id}
         id={@feed_component_id}
-        hide_tabs
+        hide_filters
         feed_id={@feed_id}
         feed_name={@feed_name}
         feed_ids={@feed_ids}
