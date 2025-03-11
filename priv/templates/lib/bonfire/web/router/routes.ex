@@ -57,18 +57,6 @@ defmodule Bonfire.Web.Router.Routes do
         live "/privacy", Bonfire.Web.Views.PrivacyPolicyLive, private: %{cache: true}
         live "/conduct", Bonfire.Web.Views.CodeOfConductLive, private: %{cache: true}
         live "/changelog", Bonfire.Web.Views.ChangelogLive, private: %{cache: true}
-        live "/pandora", Bonfire.PanDoRa.Web.SearchLive, private: %{cache: false}
-        live "/pandora/:section", Bonfire.PanDoRa.Web.SearchLive, private: %{cache: false}
-
-        live "/pandora/:section/:subsection", Bonfire.PanDoRa.Web.SearchLive,
-          private: %{cache: false}
-
-        live "/pandora/:section/:subsection/:subsubsection", Bonfire.PanDoRa.Web.SearchLive,
-          private: %{cache: false}
-
-        live "/pandora/:section/:subsection/:subsubsection/:subsubsubsection",
-             Bonfire.PanDoRa.Web.SearchLive,
-             private: %{cache: false}
 
         # TEMP: for testing native apps
         live("/app", Bonfire.Web.Views.DashboardLive)
