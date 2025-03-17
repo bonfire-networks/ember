@@ -1,0 +1,121 @@
+/* Ember flavor custom themes */
+
+/* Theme metadata for hook-based detection */
+:root {
+  --theme-names: "light,dark,ember,ember-dark";
+  --theme-dark-names: "dark,ember-dark";
+  --theme-light-names: "light,ember";
+}
+
+/* Define custom themes first */
+@plugin "daisyui/theme" {
+  name: "ember";
+  default: false;
+  prefersdark: false;
+  color-scheme: light;
+  
+  /* Ember theme - a warm, glowing theme */
+  --color-base-100: oklch(98% 0.01 60);
+  --color-base-200: oklch(95% 0.02 60);
+  --color-base-300: oklch(92% 0.03 60);
+  --color-base-content: oklch(25% 0.04 40);
+  
+  --color-primary: oklch(65% 0.25 30);
+  --color-primary-content: oklch(98% 0.01 30);
+  
+  --color-secondary: oklch(60% 0.25 60);
+  --color-secondary-content: oklch(98% 0.01 60);
+  
+  --color-accent: oklch(70% 0.28 90);
+  --color-accent-content: oklch(98% 0.01 90);
+  
+  --color-neutral: oklch(50% 0.05 40);
+  --color-neutral-content: oklch(98% 0.01 40);
+  
+  --color-info: oklch(70% 0.2 220);
+  --color-info-content: oklch(98% 0.01 220);
+  
+  --color-success: oklch(65% 0.2 150);
+  --color-success-content: oklch(98% 0.01 150);
+  
+  --color-warning: oklch(80% 0.25 60);
+  --color-warning-content: oklch(20% 0.05 60);
+  
+  --color-error: oklch(65% 0.25 30);
+  --color-error-content: oklch(98% 0.01 30);
+  
+  /* border radius */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  
+  /* border size */
+  --border: 1px;
+  
+  /* effects */
+  --depth: 0.6;
+  --noise: 0.03;
+}
+
+/* Dark Ember theme */
+@plugin "daisyui/theme" {
+  name: "ember-dark";
+  default: false;
+  prefersdark: true;
+  color-scheme: dark;
+  
+  /* Dark Ember theme - glowing embers in darkness */
+  --color-base-100: oklch(15% 0.02 30);
+  --color-base-200: oklch(12% 0.03 30);
+  --color-base-300: oklch(8% 0.04 30);
+  --color-base-content: oklch(90% 0.03 60);
+  
+  --color-primary: oklch(60% 0.3 30);
+  --color-primary-content: oklch(10% 0.01 30);
+  
+  --color-secondary: oklch(65% 0.25 60);
+  --color-secondary-content: oklch(10% 0.01 60);
+  
+  --color-accent: oklch(70% 0.28 90);
+  --color-accent-content: oklch(10% 0.01 90);
+  
+  --color-neutral: oklch(50% 0.05 40);
+  --color-neutral-content: oklch(98% 0.01 40);
+  
+  --color-info: oklch(70% 0.15 220);
+  --color-info-content: oklch(10% 0.01 220);
+  
+  --color-success: oklch(65% 0.15 150);
+  --color-success-content: oklch(10% 0.01 150);
+  
+  --color-warning: oklch(75% 0.2 60);
+  --color-warning-content: oklch(10% 0.05 60);
+  
+  --color-error: oklch(65% 0.2 30);
+  --color-error-content: oklch(10% 0.01 30);
+  
+  /* border radius */
+  --radius-selector: 0.5rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.5rem;
+  
+  /* base sizes */
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  
+  /* border size */
+  --border: 1px;
+  
+  /* effects */
+  --depth: 0.8;
+  --noise: 0.05;
+}
+
+/* Override the daisyUI themes configuration for this flavor */
+@plugin "daisyui" {
+  themes: light --default, dark --prefersdark, ember, ember-dark;
+}
