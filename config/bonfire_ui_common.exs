@@ -75,8 +75,8 @@ More details at https://bonfirenetworks.org",
     "Luciole",
     "OpenDyslexic"
   ],
-  themes: [
-    "bonfire",
+  themes_dark: [
+    "federated_archives_dark",
     "dark",
     "synthwave",
     "retro",
@@ -91,6 +91,22 @@ More details at https://bonfirenetworks.org",
     "bumblebee",
     "emerald",
     "corporate"
+  ],
+  themes_custom: [
+    [
+      name: "federated_archives_dark",
+      default: false,
+      prefersdark: true,
+      color_scheme: "dark",
+      "color-base-100": "#303030",
+      "color-base-200": "#333333",
+      "color-base-300": "#262626",
+      "color-base-content": "#f2f1f1",
+      "color-primary": "#B5FF00",
+      "color-primary-content": "#272e16",
+      "radius-box": "2rem",
+      "radius-field": "2rem"
+    ]
   ],
   show_trending_tags: [
     disabled: false,
