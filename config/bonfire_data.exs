@@ -368,11 +368,11 @@ common_assocs = %{
 
   ### Stuff I'm not sure how to categorise yet
 
-
   edge_emoji:
     quote(
+      # Note: we're going straight to the mixin instead of the virtual `Bonfire.Data.Social.Emoji`
       do:
-        has_one(:emoji, unquote(ExtraInfo), # Note: we're going straight to the mixin instead of the virtual `Bonfire.Data.Social.Emoji`
+        has_one(:emoji, unquote(ExtraInfo),
           foreign_key: :id,
           references: :table_id
         )
@@ -831,16 +831,15 @@ config :bonfire_data_social, Activity,
          where: [table_id: @follow_ulid]
        )
 
-        # has_one(:like, unquote(Edge),
-        #   foreign_key: :id,
-        #   references: :id,
-        #   where: [verb_id: "11KES11KET0BE11KEDY0VKN0WS"]
-        # )
+       # has_one(:like, unquote(Edge),
+       #   foreign_key: :id,
+       #   references: :id,
+       #   where: [verb_id: "11KES11KET0BE11KEDY0VKN0WS"]
+       # )
 
-        has_one(:emoji,
-          through: [:edge, :emoji]
-        )
-
+       has_one(:emoji,
+         through: [:edge, :emoji]
+       )
      end)
 
 config :bonfire_data_social, APActivity,
