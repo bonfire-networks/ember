@@ -1213,6 +1213,8 @@ config :bonfire_files, Media,
 config :bonfire_tag, Tagged,
   code:
     (quote do
+       has_one(:named, Named, foreign_key: :id, references: :tag_id)
+
        # mixins
        (unquote_splicing(common.([:activity])))
      end)
