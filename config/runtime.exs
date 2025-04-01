@@ -23,7 +23,8 @@ no? = ~w(false no 0)
 #   |> String.split(",")
 #   |> Enum.map(&"//#{&1}")
 
-System.get_env("DATABASE_URL") || System.get_env("CLOUDRON_POSTGRESQL_URL") || System.get_env("POSTGRES_PASSWORD") || System.get_env("CLOUDRON_POSTGRESQL_PASSWORD") ||
+System.get_env("DATABASE_URL") || System.get_env("CLOUDRON_POSTGRESQL_URL") ||
+  System.get_env("POSTGRES_PASSWORD") || System.get_env("CLOUDRON_POSTGRESQL_PASSWORD") ||
   System.get_env("MIX_QUIET") || System.get_env("CI") ||
   raise """
   Environment variables for database are missing.
@@ -35,7 +36,6 @@ System.get_env("DATABASE_URL") || System.get_env("CLOUDRON_POSTGRESQL_URL") || S
 ## load extensions' runtime configs (and behaviours) directly via extension-provided modules
 Bonfire.Common.Config.LoadExtensionsConfig.load_configs(Bonfire.RuntimeConfig)
 ##
-
 
 secret_key_base =
   System.get_env("SECRET_KEY_BASE") || System.get_env("MIX_QUIET") || System.get_env("CI") ||
@@ -149,7 +149,6 @@ finch_pools = %{
 config :bonfire, :finch_pools, finch_pools
 config :tesla, :adapter, {Tesla.Adapter.Finch, name: Bonfire.Finch, pools: finch_pools}
 
-
 config :bonfire, Oban,
   notifier: Oban.Notifiers.PG,
   repo: Bonfire.Common.Repo,
@@ -217,15 +216,15 @@ case System.get_env("GRAPH_DB_URL") do
 
   url ->
     pool_size =
-  case System.get_env("POOL_SIZE") do
-    pool when is_binary(pool) and pool not in ["", "0"] ->
-      String.to_integer(pool)
+      case System.get_env("POOL_SIZE") do
+        pool when is_binary(pool) and pool not in ["", "0"] ->
+          String.to_integer(pool)
 
-    # default to twice the number of CPU cores
-    _ ->
-      System.schedulers_online() * 2
-  end
-  
+        # default to twice the number of CPU cores
+        _ ->
+          System.schedulers_online() * 2
+      end
+
     config :bolt_sips, Bolt,
       url: url,
       basic_auth: [username: "memgraph", password: "memgraph"],
