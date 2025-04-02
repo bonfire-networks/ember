@@ -118,7 +118,7 @@ defmodule Bonfire.RuntimeConfig do
             {Bonfire.Social.Acts.AntiSpam, on: :post, mode: :flag}
           ],
 
-          # Once the activity/object exists (including in AP db), we can apply these side effects
+          # Once the activity/object exists (including in AP db), we can apply these extra side effects
           {Bonfire.Tags.Acts.AutoBoost, on: :post}
         ],
         delete: delete_object
