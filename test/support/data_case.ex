@@ -23,6 +23,8 @@ defmodule Ember.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       # import Ember.DataCase
+
+      @moduletag :backend
     end
   end
 

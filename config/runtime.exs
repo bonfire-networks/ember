@@ -8,14 +8,15 @@ IO.puts("Preparing runtime config...")
 
 System.get_env("MIX_QUIET") || IO.puts("🔥 Welcome to Bonfire!")
 
+yes? = ~w(true yes 1)
+no? = ~w(false no 0)
+
 # flavour = System.get_env("FLAVOUR", "classic")
 host = System.get_env("HOSTNAME", "localhost")
 server_port = String.to_integer(System.get_env("SERVER_PORT", "4000"))
 public_port = String.to_integer(System.get_env("PUBLIC_PORT", "4000"))
-test_instance = System.get_env("TEST_INSTANCE")
-
-yes? = ~w(true yes 1)
-no? = ~w(false no 0)
+test_instance? = System.get_env("TEST_INSTANCE") in yes?
+federate? = test_instance? or System.get_env("FEDERATE") in yes?
 
 # hosts =
 #   "#{host}#{System.get_env("EXTRA_DOMAINS")}"
@@ -88,7 +89,7 @@ end
 config :bonfire, Bonfire.Web.Endpoint,
   server:
     phx_server not in no? and
-      (config_env() != :test or test_instance in yes? or phx_server in yes?),
+      (config_env() != :test or test_instance? or phx_server in yes?),
   url: [
     host: host,
     port: public_port
@@ -147,7 +148,10 @@ finch_pools = %{
 
 # config :tesla, adapter: Tesla.Adapter.Hackney
 config :bonfire, :finch_pools, finch_pools
-config :tesla, :adapter, {Tesla.Adapter.Finch, name: Bonfire.Finch, pools: finch_pools}
+
+if config_env != :test or federate? do
+  config :tesla, :adapter, {Tesla.Adapter.Finch, name: Bonfire.Finch, pools: finch_pools}
+end
 
 config :bonfire, Oban,
   notifier: Oban.Notifiers.PG,
