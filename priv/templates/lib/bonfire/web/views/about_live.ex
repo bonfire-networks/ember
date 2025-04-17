@@ -31,13 +31,13 @@ defmodule Bonfire.Web.Views.AboutLive do
        page: "about",
        selected_tab: :about,
        nav_items: Bonfire.Common.ExtensionModule.default_nav(),
-       page_header: false,
+      #  page_header: false,
        is_guest?: is_guest?,
        users: users,
        page_info: page_info,
-       without_sidebar: is_guest?,
-       without_secondary_widgets: is_guest?,
-       no_header: is_guest?,
+      #  without_sidebar: is_guest?,
+      #  without_secondary_widgets: is_guest?,
+      #  no_header: is_guest?,
        page_title: l("About "),
        sidebar_widgets: [
          guests: [

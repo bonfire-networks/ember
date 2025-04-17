@@ -1,5 +1,5 @@
 <div class="lg:p-0 w-full h-full flex-1 flex flex-col max-w-[640px] mx-auto">
-  <section class="mb-4 flex flex-col gap-6 border border-base-content/10 shadow-lg bg-base-100 pb-8 rounded-box">
+  <!-- <section class="mb-4 flex flex-col gap-6 border border-base-content/10 shadow-lg bg-base-100 pb-8 rounded-box">
     <div
       :if={Config.get([:ui, :theme, :instance_image], nil)}
       style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
@@ -8,7 +8,6 @@
     </div>
     <div class="flex px-4 flex-col gap-3">
       <h2 class="text-4xl font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</h2>
-      <!-- <h3 class="text-xl font-medium mt-2">{Config.get([:ui, :theme, :instance_tagline])}</h3> -->
       <h3 class="md:text-base text-base-content/90">{Config.get([:ui, :theme, :instance_description])}</h3>
     </div>
 
@@ -23,11 +22,11 @@
         {l("Members")}
       </LinkLive>
     </div>
-  </section>
+  </section> -->
 
   <section class="">
-    <div class="w-full border border-base-content/10 shadow-lg bg-base-100 lg:!mt-0 rounded-box">
-      <div class="font-semibold h-[50px] flex items-center px-4">
+    <div class="w-full border border-base-content/5 shadow-lg bg-base-100 lg:!mt-0 rounded-box">
+      <div class="font-semibold h-[50px] border-b border-base-content/10 flex items-center px-4">
         {#case @feed_name}
           {#match :curated}
             {l("Top discussions")}

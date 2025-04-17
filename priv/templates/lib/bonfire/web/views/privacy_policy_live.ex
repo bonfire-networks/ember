@@ -13,9 +13,9 @@ defmodule Bonfire.Web.Views.PrivacyPolicyLive do
     {:ok,
      socket
      |> assign(
-       is_guest?: is_guest?,
-       without_sidebar: is_guest?,
-       without_secondary_widgets: is_guest?,
+      #  is_guest?: is_guest?,
+      #  without_sidebar: is_guest?,
+      #  without_secondary_widgets: is_guest?,
        page: "privacy",
        nav_items: Bonfire.Common.ExtensionModule.default_nav(),
        page_title: l("Privacy policy"),

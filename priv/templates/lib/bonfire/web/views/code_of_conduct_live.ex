@@ -15,10 +15,10 @@ defmodule Bonfire.Web.Views.CodeOfConductLive do
        page: "conduct",
        selected_tab: :conduct,
        page_title: l("Code of conduct"),
-       is_guest?: is_guest?,
-       without_sidebar: is_guest?,
-       without_secondary_widgets: is_guest?,
-       no_header: is_guest?,
+      #  is_guest?: is_guest?,
+      #  without_sidebar: is_guest?,
+      #  without_secondary_widgets: is_guest?,
+      #  no_header: is_guest?,
        nav_items: Bonfire.Common.ExtensionModule.default_nav(),
        terms: Config.get([:terms, :conduct])
      )}

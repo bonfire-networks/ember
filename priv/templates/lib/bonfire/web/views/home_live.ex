@@ -52,9 +52,9 @@ defmodule Bonfire.Web.Views.HomeLive do
      |> assign(
        page: "home",
        is_guest?: true,
-       without_sidebar: true,
-       without_secondary_widgets: true,
-       no_header: true,
+      #  without_sidebar: true,
+      #  without_secondary_widgets: true,
+      #  no_header: true,
        selected_tab: :home,
        page_title: app,
        links: links,
