@@ -55,6 +55,7 @@ defmodule Bonfire.Web.Router.Routes do
         live "/about", Bonfire.Web.Views.AboutLive, private: %{cache: true}
         live "/about/:section", Bonfire.Web.Views.AboutLive, private: %{cache: true}
         live "/privacy", Bonfire.Web.Views.PrivacyPolicyLive, private: %{cache: true}
+        # live "/admins", Bonfire.Web.Views.AdminsLive, private: %{cache: false}
         live "/conduct", Bonfire.Web.Views.CodeOfConductLive, private: %{cache: true}
         live "/changelog", Bonfire.Web.Views.ChangelogLive, private: %{cache: true}
 

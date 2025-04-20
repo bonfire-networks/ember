@@ -1,0 +1,7 @@
+<StatefulComponent
+    module={maybe_component(Bonfire.UI.Boundaries.CircleMembersLive, @__context__)}
+    id="admin_circle"
+    show_add={false}
+    read_only
+    circle_id={maybe_apply(Bonfire.Boundaries.Scaffold.Instance, :admin_circle, [])}
+/>
