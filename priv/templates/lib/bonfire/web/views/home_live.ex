@@ -51,6 +51,7 @@ defmodule Bonfire.Web.Views.HomeLive do
      socket
      |> assign(
        page: "home",
+       page_title: l("Home"),
        is_guest?: true,
       #  without_sidebar: true,
       #  without_secondary_widgets: true,

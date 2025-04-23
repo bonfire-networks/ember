@@ -52,7 +52,7 @@ defmodule Bonfire.Web.Router.Routes do
         live "/", Bonfire.Web.Views.HomeLive, as: :home, private: %{cache: false}
         # live "/explore", Bonfire.Web.ExploreLive
         # , private : %{cache: true}
-        live "/about", Bonfire.Web.Views.AboutLive, private: %{cache: true}
+        live "/about", Bonfire.Web.Views.AboutLive, private: %{cache: false}
         live "/about/:section", Bonfire.Web.Views.AboutLive, private: %{cache: true}
         live "/privacy", Bonfire.Web.Views.PrivacyPolicyLive, private: %{cache: true}
         # live "/admins", Bonfire.Web.Views.AdminsLive, private: %{cache: false}

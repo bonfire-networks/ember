@@ -4,8 +4,8 @@
     "shadow-sm rounded-xl border border-base-content/10": !current_user_id(@__context__)
   }>
     <div
-      style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
-      class="bg-center h-banner bg-no-repeat bg-cover bg-white"
+      style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)});height: 220px;"}
+      class="bg-center bg-no-repeat bg-cover"
     >
     </div>
     <div class="p-4 flex flex-col gap-3">
