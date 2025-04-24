@@ -53,6 +53,8 @@ defmodule Ember.MixProject do
               # error reporting
               {:sentry, "~> 10.0", optional: true},
               {:orion, "~> 1.0.5"},
+              {:oban_web, "~> 2.11"},
+
               # {:live_admin, #"~> 0.12.0"
               # git: "https://github.com/bonfire-networks/live_admin"
               # },
