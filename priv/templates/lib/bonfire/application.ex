@@ -5,7 +5,7 @@ defmodule Bonfire.Application do
 
   use Application
   require Cachex.Spec
-  alias Bonfire.Common.Config
+  use Bonfire.Common.Config
 
   @sup_name Bonfire.Supervisor
   @top_otp_app Config.get!(:otp_app)
@@ -27,13 +27,12 @@ defmodule Bonfire.Application do
         Bonfire.Common.Telemetry.Metrics,
         # Database
         @repo_module,
-        # behaviour modules are loaded prepared as part of `Config.LoadExtensionsConfig` so no need to duplicate
+        # NOTE: behaviour modules are loaded prepared as part of `Config.LoadExtensionsConfig` in `runtime.exs` so no need to duplicate
         # Bonfire.Common.ExtensionBehaviour,
-        # Config.LoadExtensionsConfig,
         # load instance Settings from DB into Config
-        # needs to be after LoadInstanceConfig for seeds/fixtures
         if(@repo_module, do: EctoSparkles.AutoMigrator),
         Needle.Tables,
+        Bonfire.Common.ConfigSettingsRegistry,
         Bonfire.Common.Settings.LoadInstanceConfig,
         # PubSub
         {Phoenix.PubSub, [name: Bonfire.Common.PubSub, adapter: Phoenix.PubSub.PG2]},

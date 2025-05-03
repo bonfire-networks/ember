@@ -1,6 +1,6 @@
 defmodule Bonfire do
   @moduledoc false
-  # alias Bonfire.Common.Config
+  # use Bonfire.Common.Config
 
   @deps_loaded Bonfire.Common.Extensions.loaded_deps(:nested)
   @deps_tree_flat Bonfire.Common.Extensions.loaded_deps(:tree_flat)

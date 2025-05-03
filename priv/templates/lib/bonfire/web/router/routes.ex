@@ -3,7 +3,7 @@ defmodule Bonfire.Web.Router.Routes do
     quote bind_quoted: [opts: opts] do
       use Bonfire.UI.Common.Web, :router
       # use Plug.ErrorHandler
-      alias Bonfire.Common.Config
+      use Bonfire.Common.Config
       require OrionWeb.Router
       require_if_enabled(LiveAdmin.Router)
       import_if_enabled(Bonfire.OpenID.Plugs.Authorize)
@@ -110,7 +110,7 @@ defmodule Bonfire.Web.Router.Routes do
           #   Surface.Catalogue.Router.surface_catalogue "/ui/"
           # end
 
-          if Config.env() != :test do
+          if Bonfire.Common.Config.env() != :test do
             pipe_through(:admin_required)
 
             if module_enabled?(Wobserver.Web.Router) do
@@ -161,7 +161,7 @@ defmodule Bonfire.Web.Router.Routes do
               ],
               metrics: Bonfire.Common.Telemetry.Metrics,
               metrics_history:
-                if(Config.env() == :dev,
+                if(Bonfire.Common.Config.env() == :dev,
                   do: {Bonfire.Common.Telemetry.Storage, :metrics_history, []}
                 ),
               additional_pages: [
@@ -177,7 +177,7 @@ defmodule Bonfire.Web.Router.Routes do
         end
       end
 
-      if Config.env() in [:dev, :test] do
+      if Bonfire.Common.Config.env() in [:dev, :test] do
         scope "/" do
           pipe_through(:browser)
 
