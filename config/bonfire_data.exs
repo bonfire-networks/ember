@@ -1213,7 +1213,7 @@ config :bonfire_files, Media,
     (quote do
        field(:url, :string, virtual: true)
        # multimixins - shouldn't be here really
-       unquote_splicing(common.([:controlled]))
+       unquote_splicing(common.([:controlled, :created, :activity, :caretaker, :peered]))
      end)
 
 config :bonfire_tag, Tagged,

@@ -32,7 +32,7 @@ defmodule Bonfire.Application do
         # load instance Settings from DB into Config
         if(@repo_module, do: EctoSparkles.AutoMigrator),
         Needle.Tables,
-        Bonfire.Common.ConfigSettingsRegistry,
+        # Bonfire.Common.ConfigSettingsRegistry, # ConfigSettingsRegistry can just be cached on first run instead
         Bonfire.Common.Settings.LoadInstanceConfig,
         # PubSub
         {Phoenix.PubSub, [name: Bonfire.Common.PubSub, adapter: Phoenix.PubSub.PG2]},
