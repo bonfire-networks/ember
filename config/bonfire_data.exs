@@ -318,6 +318,19 @@ common_assocs = %{
     quote do
       has_many(:files, unquote(Files), foreign_key: :id, references: :object_id)
 
+      # WIP: Combined approach that merges both media from files and direct media objects
+      # This directly models: LEFT JOIN bonfire_files_media AS b4 ON (b12.media_id = b4.id OR b4.id = b1.object_id)
+      # many_to_many(:media, unquote(Media),
+      #   join_through: unquote(Files),
+      #   join_keys: [id: :object_id, media_id: :id],
+      #   # where: [table_id: "B0NF1REMEDIA0F1LES1NVAR10VS"],
+      #   on_replace: :delete,
+      #   # Filter to also include media that are objects themselves
+      #   where: [
+      #     # {:fragment, "? = ? OR ? = ?", :media_id, parent_as(:object).object_id, :id, parent_as(:object).object_id}
+      #   ]
+      # )
+
       many_to_many(:media, unquote(Media),
         join_through: unquote(Files),
         unique: true,
