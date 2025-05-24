@@ -12,11 +12,16 @@ defmodule Bonfire.Application do
   @env Application.compile_env!(@top_otp_app, :env)
   @endpoint_module Application.compile_env!(@top_otp_app, :endpoint_module)
   @repo_module Application.compile_env(@top_otp_app, :repo_module)
-  @project if Code.ensure_loaded?(Bonfire.Umbrella.MixProject),
-             do: Bonfire.Umbrella.MixProject.project()
-  @config if Code.ensure_loaded?(Bonfire.Umbrella.MixProject),
-            do: Bonfire.Umbrella.MixProject.config(),
-            else: Mix.Project.config()
+
+  @config (if Code.ensure_loaded?(Bonfire.Umbrella.MixProject) do
+            Bonfire.Umbrella.MixProject.config()
+          else
+            Mix.Project.config()
+          end)
+
+    @project (if Code.ensure_loaded?(Bonfire.Umbrella.MixProject) do
+      Bonfire.Umbrella.MixProject.project_info()
+    end)
 
   def default_cache_hours, do: Config.get(:default_cache_hours) || 3
 
