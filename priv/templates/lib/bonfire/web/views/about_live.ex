@@ -7,8 +7,8 @@ defmodule Bonfire.Web.Views.AboutLive do
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
   def mount(params, _session, socket) do
-    is_guest? = is_nil(current_user_id(assigns(socket)))
-    current_user = current_user(assigns(socket))
+    is_guest? = is_nil(current_user_id(socket))
+    current_user = current_user(socket)
 
     show_users =
       Bonfire.Common.Settings.get(
@@ -58,7 +58,7 @@ defmodule Bonfire.Web.Views.AboutLive do
 
   def handle_event("load_more", attrs, socket) do
     {_title, %{page_info: page_info, edges: edges}} =
-      Bonfire.UI.Me.UsersDirectoryLive.list_users(current_user(assigns(socket)), attrs, nil)
+      Bonfire.UI.Me.UsersDirectoryLive.list_users(current_user(socket), attrs, nil)
 
     {:noreply,
      socket

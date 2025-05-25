@@ -13,7 +13,7 @@ defmodule Bonfire.Web.Views.HomeLive do
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
   def mount(params, session, socket) do
-    current_user = current_user(assigns(socket))
+    current_user = current_user(socket)
 
     case Settings.get([:ui, :homepage_redirect_to], nil, current_user) do
       url when is_binary(url) ->
