@@ -8,7 +8,7 @@ defmodule Bonfire.Web.ObanDashboard do
 
   @impl true
   def menu_link(_, _) do
-    {:ok, "Oban Jobs"}
+    {:ok, "Oban Queues"}
   end
 
   @impl true

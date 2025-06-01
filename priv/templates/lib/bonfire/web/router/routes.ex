@@ -165,11 +165,11 @@ defmodule Bonfire.Web.Router.Routes do
                   do: {Bonfire.Common.Telemetry.Storage, :metrics_history, []}
                 ),
               additional_pages: [
-                oban_queues: Bonfire.Web.ObanDashboard,
-                oban: Oban.LiveDashboard,
+                oban: Bonfire.Web.ObanDashboard, # will be overidden by ObanWeb if available
+                # oban_dash: Oban.LiveDashboard,
                 orion: Bonfire.Web.OrionLink,
                 data: Bonfire.Web.DataLink,
-                flame_on: FlameOn.DashboardPage
+                # flame_on: FlameOn.DashboardPage
                 # _profiler: {PhoenixProfiler.Dashboard, []}
               ]
             )
