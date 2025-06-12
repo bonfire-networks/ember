@@ -32,6 +32,7 @@ defmodule Bonfire.Application do
         Bonfire.Common.Telemetry.Metrics,
         # Database
         @repo_module,
+        # Bonfire.Common.ReadOnlyRepo,
         # NOTE: behaviour modules are loaded prepared as part of `Config.LoadExtensionsConfig` in `runtime.exs` so no need to duplicate
         # Bonfire.Common.ExtensionBehaviour,
         # load instance Settings from DB into Config

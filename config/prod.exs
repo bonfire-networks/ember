@@ -7,10 +7,15 @@ import Config
 # before starting your production server.
 config :bonfire, Bonfire.Web.Endpoint, cache_static_manifest: "priv/static/cache_manifest.json"
 
-config :logger, backends: [:console]
+config :logger,
+  backends: [:console],
+  # Do not print debug messages in production
+  level: :info
 
-# Do not print debug messages in production
-config :logger, level: :info
+# TODO: to optimise prod:
+# compile_time_purge_matching: [
+#   [level_lower_than: :info]
+# ]
 
 config :bonfire, Bonfire.Web.Endpoint, server: true
 
