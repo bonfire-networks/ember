@@ -10,9 +10,7 @@ defmodule Mix.Tasks.Ember.Install do
 
   @app :ember
 
-  def igniter(igniter, args) do
-    # IO.inspect(args, label: "Args")
-
+  def igniter(igniter) do
     app_dir = Application.app_dir(@app)
 
     igniter
