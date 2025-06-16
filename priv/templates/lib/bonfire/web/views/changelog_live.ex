@@ -9,7 +9,7 @@ defmodule Bonfire.Web.Views.ChangelogLive do
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
 
   def mount(_params, _session, socket) do
-    # app = String.capitalize(Bonfire.Application.name())
+    # app = String.capitalize(Bonfire.Application.name_and_flavour())
     # instance_name = Config.get([:ui, :theme, :instance_name], app)
 
     links =

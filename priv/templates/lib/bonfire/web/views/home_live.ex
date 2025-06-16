@@ -42,7 +42,7 @@ defmodule Bonfire.Web.Views.HomeLive do
         l("Contribute") => "https://bonfirenetworks.org/contribute/"
       })
 
-    app = String.capitalize(Bonfire.Application.name())
+    app = String.capitalize(Bonfire.Application.name_and_flavour())
 
     # instance_name =
     #   Config.get([:ui, :theme, :instance_name]) || l("An instance of %{app}", app: app)
