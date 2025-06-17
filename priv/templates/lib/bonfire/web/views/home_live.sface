@@ -1,4 +1,4 @@
-<div class="lg:p-0 w-full h-full flex-1 flex flex-col max-w-[640px] mx-auto">
+<div class="lg:p-0 w-full h-full flex-1 flex flex-col max-w-[596px] mx-auto">
   <!-- <section class="mb-4 flex flex-col gap-6 border border-base-content/10 shadow-lg bg-base-100 pb-8 rounded-box">
     <div
       :if={Config.get([:ui, :theme, :instance_image], nil)}
