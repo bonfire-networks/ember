@@ -7,7 +7,7 @@
     >
     </div>
     <div class="flex px-4 flex-col gap-3">
-      <h2 class="text-4xl font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name())}</h2>
+      <h2 class="text-4xl font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
       <h3 class="md:text-base text-base-content/90">{Config.get([:ui, :theme, :instance_description])}</h3>
     </div>
 

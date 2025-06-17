@@ -121,8 +121,10 @@ defmodule Bonfire.Application do
   def project, do: @project
   def config, do: @config
   def name, do: Application.get_env(:bonfire, :app_name) || config()[:name] || "Bonfire"
+  def flavour, do: Application.get_env(:bonfire, :flavour) || config()[:flavour] || ""
+  def name_and_flavour, do: "#{name()} #{String.trim_leading(flavour(), "Bonfire")}" |> String.replace("_", " ") |> String.trim()
+  def name_and_version, do: "#{name_and_flavour()} #{version()}"
   def version, do: config()[:version]
-  def named_version, do: "#{name()} #{version()}"
   def repository, do: project()[:sources_url] || project()[:source_url]
   def required_deps, do: project()[:required_deps]
 
