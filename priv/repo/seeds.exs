@@ -13,9 +13,8 @@ num_categories = 3
 num_locations = 3
 
 # Environment setup
-System.put_env("INVITE_ONLY", "false")
 System.put_env("SEARCH_INDEXING_DISABLED", "true")
-
+Application.put_env(:bonfire, :invite_only, false)
 # Configure anti-spam to use mock version for seeds
 Application.put_env(:bonfire_common, Bonfire.Common.AntiSpam,
   service: Bonfire.Common.AntiSpam.Mock
