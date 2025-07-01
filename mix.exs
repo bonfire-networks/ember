@@ -42,7 +42,7 @@ defmodule Ember.MixProject do
           Mess.deps(
             [
               {:phoenix_live_reload, "~> 1.2", only: :dev},
-              {:floki, ">= 0.0.0", only: [:dev, :test]},
+              {:floki, "~> 0.37.1", only: [:dev, :test]},
               {:ex_doc, ">= 0.0.0", only: :dev, runtime: false},
               {:finch, "~> 0.16"},
               # {:tz, "~> 0.26.2"},
