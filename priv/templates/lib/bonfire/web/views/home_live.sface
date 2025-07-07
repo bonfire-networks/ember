@@ -26,7 +26,7 @@
 
   <section class="">
     <div class="w-full border border-base-content/5 shadow-lg bg-base-100 lg:!mt-0 rounded-box">
-      <div class="font-semibold h-[50px] border-b border-base-content/10 flex items-center px-4">
+      <div class="font-semibold py-3 border-b border-base-content/10 flex items-center px-4">
         {#case @feed_name}
           {#match :curated}
             {l("Top discussions")}
