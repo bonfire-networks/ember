@@ -177,13 +177,12 @@ config :versioce, :changelog,
   datagrabber: Bonfire.Common.Changelog.Github.DataGrabber,
   formatter: Versioce.Changelog.Formatter.Keepachangelog,
   anchors: %{
-    added: ["Feature"],
-    changed: ["Improvement", "UI/UX", "Refactor", "Federation"],
-    deprecated: ["[DEP]"],
-    removed: ["[REM]"],
-    fixed: ["Bug"],
-    security: ["Security", "Safety"]
-    # other: ["Other"]
+    added: ["✨", "💡", "👷", "✅"],
+    changed: ["🚀", "💅", "🎨", "📝", "🌏", "⚡", "🔧", "👶", "🗄️", "📦", "💜", "💛", "❤️", "📰", "🔍", "🛡️", "💬"],
+    deprecated: ["♻️"],
+    removed: ["⚰️"],
+    fixed: ["🐛"],
+    security: ["🚨", "🔒"]
   }
 
 # config :source_inspector, :enabled, true
