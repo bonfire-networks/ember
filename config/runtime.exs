@@ -79,6 +79,10 @@ config :bonfire,
     dir: cute_gifs_dir
   ]
 
+if System.get_env("ENABLE_STATIC_CACHING") not in yes? do
+  config :bonfire_ui_common, Bonfire.UI.Common.StaticGenerator, modularity: :disabled
+end
+
 phx_server = System.get_env("PHX_SERVER")
 use_cowboy? = System.get_env("PLUG_SERVER") != "bandit"
 
