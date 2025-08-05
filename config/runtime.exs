@@ -86,7 +86,7 @@ end
 phx_server = System.get_env("PHX_SERVER")
 use_cowboy? = System.get_env("PLUG_SERVER") != "bandit"
 
-if System.get_env("DISABLE_LOG") == "yes" do
+if System.get_env("DISABLE_LOG") in yes? do
   # to suppress non-captured logs in tests (eg. in setup_all)
   config :logger, backends: []
 end
@@ -367,6 +367,22 @@ end
 ## bonfire_livebook
 if Code.ensure_loaded?(Livebook) do
   Livebook.config_runtime()
+end
+
+if api_key = System.get_env("PIRATE_WEATHER_API") do
+  config :forecastr,
+    backend: Forecastr.PirateWeather,
+    appid: api_key,
+    # minutes to cache
+    ttl: 14 * 60_000
+end
+
+if api_key = System.get_env("OPEN_WEATHER_MAP_API_KEY") do
+  config :forecastr,
+    backend: Forecastr.OWM,
+    appid: api_key,
+    # minutes to cache
+    ttl: 14 * 60_000
 end
 
 IO.puts("Runtime config ready")
