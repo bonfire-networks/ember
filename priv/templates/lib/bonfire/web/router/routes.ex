@@ -28,12 +28,11 @@ defmodule Bonfire.Web.Router.Routes do
       Bonfire.UI.Common.RoutesModule.use_modules()
 
       # mastodon-compatible API
-      # IO.inspect(opts, label: "router_opts")
-      # if opts[:generate_open_api] !=false and module_enabled?(Bonfire.API.GraphQL.MastoCompatible.Router) do
-      #   import Bonfire.API.GraphQL.MastoCompatible.Router
-      #   IO.puts("Generate Masto-compatible API...")
-      #   include_masto_api()
-      # end
+      if module_enabled?(Bonfire.API.GraphQL.MastoCompatible.Router) do
+        require Bonfire.API.GraphQL.MastoCompatible.Router
+        IO.puts("Generate Masto-compatible API...")
+        Bonfire.API.GraphQL.MastoCompatible.Router.include_masto_api()
+      end
 
       # include federation routes
       use_many_if_enabled([ActivityPub.Web.Router, NodeinfoWeb.Router])
@@ -246,14 +245,6 @@ defmodule Bonfire.Web.Router do
   end
 
   use Bonfire.Web.Router.Routes
-  # , generate_open_api: false
-
-  # mastodon-compatible API
-  # if module_enabled?(Bonfire.API.GraphQL.MastoCompatible.Router) do
-  #   import Bonfire.API.GraphQL.MastoCompatible.Router
-  #   IO.puts("Generate Masto-compatible API...")
-  #   include_masto_api()
-  # end
 
   @doc "(re)generates the reverse router (useful so it can be re-generated when extensions are enabled/disabled)"
   def generate_reverse_router!(app \\ :bonfire) do
