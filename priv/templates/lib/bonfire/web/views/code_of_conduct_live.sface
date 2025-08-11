@@ -1,4 +1,4 @@
-<div class="w-full bg-base-100 shadow rounded-xl">
+<div class="w-full bg-base-100">
   <Bonfire.UI.Common.WidgetTextLive text={e(
     @terms,
     l(

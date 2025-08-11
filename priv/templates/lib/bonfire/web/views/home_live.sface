@@ -25,15 +25,7 @@
   </section> -->
 
   <section class="">
-    <div class="w-full border border-base-content/5 shadow-lg bg-base-100 lg:!mt-0 rounded-box">
-      <div class="font-semibold py-3 border-b border-base-content/10 flex items-center px-4">
-        {#case @feed_name}
-          {#match :curated}
-            {l("Top discussions")}
-          {#match _}
-            {l("Recent activities")}
-        {/case}
-      </div>
+    <div class="w-full border border-base-content/5 bg-base-100 lg:!mt-0">
       <StatefulComponent
         module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
         :if={@feed_component_id}
