@@ -35,7 +35,7 @@ System.get_env("DATABASE_URL") || System.get_env("CLOUDRON_POSTGRESQL_URL") ||
   """
 
 ## load extensions' runtime configs (and behaviours) directly via extension-provided modules
-Bonfire.Common.Config.LoadExtensionsConfig.load_configs(Bonfire.RuntimeConfig)
+Bonfire.Common.Config.LoadExtensionsConfig.load_configs([Bonfire.RuntimeConfig])
 ##
 
 secret_key_base =
