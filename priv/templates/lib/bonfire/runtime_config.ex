@@ -68,20 +68,20 @@ defmodule Bonfire.RuntimeConfig do
 
             # possibly fetch contents of URLs (depends on PostContents),
             {Bonfire.Files.Acts.URLPreviews, on: :post},
-
-            # with extracted tags/mentions fully hooked up (depends on PostContents),
-            {Bonfire.Tag.Acts.Tag, on: :post},
-
+            
             # maybe set as sensitive (depends on PostContents),
-            {Bonfire.Social.Acts.Sensitivity, on: :post}
+            {Bonfire.Social.Acts.Sensitivity, on: :post},
+
+            # with appropriate boundaries established (depends on Threaded and PostContents),
+            {Bonfire.Boundaries.Acts.SetBoundaries, on: :post}
           ],
           # These steps are run in parallel and require the outputs of the previous ones
           [
             # possibly with uploaded/linked media (optionally depends on URLPreviews),
             {Bonfire.Files.Acts.AttachMedia, on: :post},
 
-            # with appropriate boundaries established (depends on Threaded),
-            {Bonfire.Boundaries.Acts.SetBoundaries, on: :post},
+            # with extracted tags/mentions fully hooked up (depends on PostContents, and optionally on URLPreviews),
+            {Bonfire.Tag.Acts.Tag, on: :post},
 
             # NOTE: the following ones are here only to avoid executing unless the rest is valid
 
