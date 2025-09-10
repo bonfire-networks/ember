@@ -48,7 +48,10 @@ end
 
 
 for %{preset: preset, filters: _filters} = params
-      when preset not in [:my, :audio, :videos, :user_followers, :user_following, :flagged_content] <- feed_preset_test_params() do
+      when preset not in [:my, :audio, :videos, :user_followers, :user_following, :flagged_content,
+             :trending_links,
+              :trending_discussions,
+              :trending] <- feed_preset_test_params() do
   IO.puts("[seeds] Creating data for #{preset}...")
   for i <- 1..num_posts do
     create_test_content(preset, random_user.(), random_user.(), i)
