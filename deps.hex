@@ -6,8 +6,8 @@ ecto_sparkles = "~> 0.2"
 
 # earmark = "~> 1.4.28" # handle markdown
 # earmark_parser = "~> 1.4.25" # parse markdown
-ex_cldr = "~> 2.42.0" # internationalisation
-ex_cldr_numbers = "~> 2.35.0"
+# ex_cldr = "<= 2.42.0" # internationalisation
+# ex_cldr_numbers = "~> 2.35.0"
 
 # Web
 # livebook = "~> 0.7.2"
