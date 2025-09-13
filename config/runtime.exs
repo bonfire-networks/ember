@@ -234,9 +234,14 @@ case System.get_env("GRAPH_DB_URL") do
           System.schedulers_online() * 2
       end
 
-    config :bolt_sips, Bolt,
-      url: url,
-      basic_auth: [username: "memgraph", password: "memgraph"],
+    # config :bolt_sips, Bolt,
+    #   url: url,
+    #   basic_auth: [username: "memgraph", password: "memgraph"],
+    #   pool_size: pool_size
+
+    config :boltx, Bolt,
+      uri: url,
+      auth: [username: "memgraph", password: "memgraph"],
       pool_size: pool_size
 end
 
