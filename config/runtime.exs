@@ -174,6 +174,7 @@ config :bonfire, Oban,
     database_prune: 1,
     static_generator: 1,
     # video_transcode: 1,
+    # boost_activities: 1,
     fetch_open_science: 1
   ],
   plugins: [
