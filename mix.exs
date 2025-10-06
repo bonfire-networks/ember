@@ -3,6 +3,10 @@ Code.eval_file("mess.exs", if(File.exists?("../../lib/mix/mess.exs"), do: "../..
 defmodule Ember.MixProject do
   use Mix.Project
 
+  @yes? ~w(true yes 1)
+  @no? ~w(false no 0)
+
+
   def project do
     if System.get_env("AS_UMBRELLA") == "1" do
       [
@@ -67,20 +71,20 @@ defmodule Ember.MixProject do
               {:phoenix_live_reload, "~> 1.3", optional: true},
               {:pbkdf2_elixir, "~> 2.0", optional: true}
             ] ++
-              if(System.get_env("AS_DESKTOP_WEBAPP") in ["1", "true"],
+              if(System.get_env("AS_DESKTOP_WEBAPP") in @yes?,
                 do: [
                   {:elixirkit,
                    git: "https://github.com/livebook-dev/livebook", sparse: "elixirkit"}
                 ],
                 else: []
               ) ++
-              if(System.get_env("AS_DESKTOP_APP") in ["1", "true"],
+              if(System.get_env("AS_DESKTOP_APP") in @yes?,
                 do: [
                   {:desktop, github: "elixir-desktop/desktop"}
                 ],
                 else: []
               ) ++
-              if(System.get_env("WITH_API_GRAPHQL") == "yes",
+              if(System.get_env("WITH_API_GRAPHQL") not in @no?,
                 do: [
                   {:absinthe, "~> 1.7"},
                   {:bonfire_api_graphql,
