@@ -166,8 +166,8 @@ config :bonfire, Oban,
   # time between making scheduled jobs available and notifying relevant queues that jobs are available, affects how frequently the database is checked for jobs to run
   stage_interval: :timer.seconds(2),
   queues: [
-    federator_incoming: 2,
-    federator_outgoing: 2,
+    federator_incoming: 6,
+    federator_outgoing: 6,
     remote_fetcher: 1,
     import: 1,
     deletion: 1,
