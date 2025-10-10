@@ -341,6 +341,31 @@ case System.get_env("SENTRY_DSN", "") do
     end
 end
 
+config :sentry,
+  source_code_exclude_patterns: [
+    ~r/\/flavours\//,
+    ~r/\/extensions\//,
+    ~r/\/deps\//,
+    ~r/\/_build\//,
+    ~r/\/priv\//,
+    ~r/\/test\//
+  ]
+
+case System.get_env("APPSIGNAL_PUSH_API_KEY", "") do
+  "" ->
+    config :appsignal, :config, active: false
+
+  api_key ->
+    IO.puts("NOTE: errors and performance metrics will be reported to AppSignal.")
+
+    config :appsignal, :config,
+      otp_app: :bonfire,
+      name: System.get_env("APPSIGNAL_APP_NAME", "bonfire"),
+      push_api_key: api_key,
+      env: config_env(),
+      active: true
+end
+
 config :untangle,
   env: config_env(),
   # level: :error,
