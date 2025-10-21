@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 copy_with_prompt() {
     local src="$1"
@@ -7,8 +7,7 @@ copy_with_prompt() {
     # If destination is a directory and doesn't have a filename, add the source filename
     if [ -d "$dest" ] && [ -f "$src" ]; then
         # Get just the filename from src
-        local filename;
-        filename=$(basename "$src")
+        local filename=$(basename "$src")
         dest="${dest%/}/$filename"  # Ensure no trailing slash before adding filename
     fi
 
@@ -25,8 +24,7 @@ copy_with_prompt() {
 copy_file_with_prompt() {
     local src="$1"
     local dest="$2"
-    local cwd;
-    cwd=$(pwd)
+    local cwd=$(pwd)
 
     # Check if source and destination are the same file
     if cmp -s "$src" "$dest"; then
@@ -51,7 +49,7 @@ copy_file_with_prompt() {
                     fi
 
                     # Prompt user to confirm overwriting the file
-                    read -r -p "Override existing file? (y/N) " response
+                    read -p "Override existing file? (y/N) " response
                     if [[ "$response" =~ ^[Yy]$ ]]; then
                         cp -f "$src" "$dest"
                         echo "File copied: $dest"
@@ -101,7 +99,7 @@ copy_glob_with_prompt() {
     
     echo "Processing $glob_pattern files"
     shopt -s nullglob
-    files=("$src_dir"/"$glob_pattern")
+    files=("$src_dir"/$glob_pattern)
     
     if [ ${#files[@]} -eq 0 ]; then
         echo "No files found matching $glob_pattern"
@@ -150,7 +148,7 @@ run_installers() {
             exit 1
         else
 
-            test -d extensions/"$dep_name" || (mkdir -p extensions && git clone https://github.com/bonfire-networks/"$dep_name" extensions/"$dep_name" || echo "Could not clone the $dep_name extension")
+            test -d extensions/$dep_name || (mkdir -p extensions && git clone https://github.com/bonfire-networks/$dep_name extensions/$dep_name || echo "Could not clone the $dep_name extension")
 
             run_installer "$ext_path" "${dep_name}" || \
             (echo "No installers found for dependency: $dep_name" ; exit 1)
