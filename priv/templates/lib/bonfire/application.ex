@@ -14,14 +14,14 @@ defmodule Bonfire.Application do
   @repo_module Application.compile_env(@top_otp_app, :repo_module)
 
   @config (if Code.ensure_loaded?(Bonfire.Umbrella.MixProject) do
-            Bonfire.Umbrella.MixProject.config()
-          else
-            Mix.Project.config()
-          end)
+             Bonfire.Umbrella.MixProject.config()
+           else
+             Mix.Project.config()
+           end)
 
-    @project (if Code.ensure_loaded?(Bonfire.Umbrella.MixProject) do
-      Bonfire.Umbrella.MixProject.project_info()
-    end)
+  @project (if Code.ensure_loaded?(Bonfire.Umbrella.MixProject) do
+              Bonfire.Umbrella.MixProject.project_info()
+            end)
 
   def default_cache_hours, do: Config.get(:default_cache_hours) || 3
 
@@ -30,6 +30,8 @@ defmodule Bonfire.Application do
       [
         # Metrics
         Bonfire.Common.Telemetry.Metrics,
+        # Rate limiter
+        rate_limiter(),
         # Database
         @repo_module,
         # Bonfire.Common.ReadOnlyRepo,
@@ -115,14 +117,17 @@ defmodule Bonfire.Application do
     end
   end
 
-  @plug_protect {PlugAttack.Storage.Ets,
-                 name: Bonfire.UI.Common.PlugProtect.Storage, clean_period: 60_000}
-
   def project, do: @project
   def config, do: @config
   def name, do: Application.get_env(:bonfire, :app_name) || config()[:name] || "Bonfire"
   def flavour, do: Application.get_env(:bonfire, :flavour) || config()[:flavour] || ""
-  def name_and_flavour, do: "#{name()} #{String.trim_leading(flavour(), "Bonfire")}" |> String.replace("_", " ") |> String.trim()
+
+  def name_and_flavour,
+    do:
+      "#{name()} #{String.trim_leading(flavour(), "Bonfire")}"
+      |> String.replace("_", " ")
+      |> String.trim()
+
   def name_and_version, do: "#{name_and_flavour()} #{version()}"
   def version, do: config()[:version]
   def repository, do: project()[:sources_url] || project()[:source_url]
@@ -174,7 +179,7 @@ defmodule Bonfire.Application do
   def applications(_, true = _test_instance?, _any, as_desktop) do
     apps_before() ++
       [Bonfire.Common.TestInstanceRepo] ++
-      [@plug_protect, endpoint_module(as_desktop), Bonfire.Web.FakeRemoteEndpoint] ++
+      [endpoint_module(as_desktop), Bonfire.Web.FakeRemoteEndpoint] ++
       maybe_pages_beacon() ++
       apps_after()
   end
@@ -199,7 +204,7 @@ defmodule Bonfire.Application do
     endpoint_module = endpoint_module(true)
 
     apps_before() ++
-      [@plug_protect, endpoint_module] ++
+      [endpoint_module] ++
       maybe_pages_beacon() ++
       apps_after() ++
       [
@@ -220,7 +225,7 @@ defmodule Bonfire.Application do
   # default apps
   def applications(_env, _, _any, _false) do
     apps_before() ++
-      [@plug_protect, endpoint_module(false)] ++
+      [endpoint_module(false)] ++
       maybe_pages_beacon() ++
       apps_after()
   end
@@ -292,5 +297,12 @@ defmodule Bonfire.Application do
       _ ->
         pool_config
     end
+  end
+
+  defp rate_limiter do
+    # Read cleanup interval from config (default: 60 seconds)
+    clean_period = 60_000
+
+    {Bonfire.UI.Common.RateLimit, clean_period: clean_period}
   end
 end
