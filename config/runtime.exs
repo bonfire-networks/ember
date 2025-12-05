@@ -84,18 +84,54 @@ if System.get_env("ENABLE_STATIC_CACHING") not in yes? do
 end
 
 phx_server = System.get_env("PHX_SERVER")
-use_cowboy? = System.get_env("PLUG_SERVER") != "bandit"
-socket_file_path = System.get_env("SOCKET_FILE_PATH", "/run/bonfire/socket")
+plug_server = System.get_env("PLUG_SERVER")
+use_cowboy? = plug_server != "bandit"
+use_socket_file? = plug_server == "cowboy_socket"
+socket_file_path = System.get_env("SOCKET_FILE_PATH", "/tmp/bonfire_socket")
+phx_compress? = System.get_env("PHX_COMPRESS_HTTP") not in no?
 
 if System.get_env("DISABLE_LOG") in yes? do
   # to suppress non-captured logs in tests (eg. in setup_all)
   config :logger, backends: []
 end
 
-http_config = [
-  port: server_port,
-  compress: System.get_env("PHX_COMPRESS_HTTP") not in no?
-]
+http_options =
+  cond do
+    use_socket_file? ->
+      [
+        ip: {:local, socket_file_path},
+        port: 0,
+        compress: phx_compress?,
+        transport_options: [
+          post_listen_callback: fn _ ->
+            File.touch!(socket_file_path)
+            File.chmod!(socket_file_path, 0o660)
+          end,
+          socket_opts: []
+        ]
+      ]
+
+    use_cowboy? ->
+      [
+        # only bind the app to localhost when serving behind a proxy
+        # ip: (if public_port != server_port, do: {127, 0, 0, 1}),
+        port: server_port,
+        compress: phx_compress?,
+        transport_options: [
+          max_connections: 16_384,
+          socket_opts: [:inet6]
+        ]
+      ]
+
+    true ->
+      # for bandit
+      [
+        port: server_port,
+        http_options: [
+          compress: phx_compress?
+        ]
+      ]
+  end
 
 config :bonfire, Bonfire.Web.Endpoint,
   server:
@@ -112,18 +148,7 @@ config :bonfire, Bonfire.Web.Endpoint,
       do: Phoenix.Endpoint.Cowboy2Adapter,
       else: Bandit.PhoenixAdapter
     ),
-  http:
-    if(use_cowboy?,
-      do:
-        http_config ++
-          [
-            # only bind the app to localhost when serving behind a proxy
-            # ip: (if public_port != server_port, do: {127, 0, 0, 1}),
-            transport_options: [max_connections: 16_384, socket_opts: [:inet6]]
-          ],
-      # for bandit
-      else: http_config
-    ),
+  http: http_options,
   thousand_island: [transport_ports: [hibernate_after: 15_000]],
   secret_key_base: secret_key_base,
   live_view: [signing_salt: signing_salt]
