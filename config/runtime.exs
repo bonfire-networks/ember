@@ -85,6 +85,7 @@ end
 
 phx_server = System.get_env("PHX_SERVER")
 use_cowboy? = System.get_env("PLUG_SERVER") != "bandit"
+socket_file_path = System.get_env("SOCKET_FILE_PATH", "/run/bonfire/socket")
 
 if System.get_env("DISABLE_LOG") in yes? do
   # to suppress non-captured logs in tests (eg. in setup_all)
