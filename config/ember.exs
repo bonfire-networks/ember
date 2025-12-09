@@ -2,6 +2,9 @@ import Config
 
 #### Flavour-specific compile-time configuration goes here, everything else should be in `Ember.RuntimeConfig`
 
+# config :bonfire_social, 
+#   feed_activities_schema: Ember.TaggedOrFeedActivityView
+
 # enable marking comment as answer?
 # config :bonfire_social, Bonfire.Social.Answers, modularity: :disabled
 
