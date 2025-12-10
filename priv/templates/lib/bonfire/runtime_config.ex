@@ -59,7 +59,10 @@ defmodule Bonfire.RuntimeConfig do
             {Bonfire.Social.Acts.PostContents, on: :post},
 
             # possibly occurring in a thread,
-            {Bonfire.Social.Acts.Threaded, on: :post}
+            {Bonfire.Social.Acts.Threaded, on: :post},
+
+            # maybe set language,
+            {Bonfire.Social.Acts.Language, on: :post}
           ],
           # These steps are run in parallel and require the outputs of the previous ones
           [
