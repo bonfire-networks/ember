@@ -2,9 +2,6 @@ import Config
 
 #### Flavour-specific compile-time configuration goes here, everything else should be in `Ember.RuntimeConfig`
 
-# config :bonfire_social, 
-#   feed_activities_schema: Ember.TaggedOrFeedActivityView
-
 # enable marking comment as answer?
 # config :bonfire_social, Bonfire.Social.Answers, modularity: :disabled
 
@@ -45,3 +42,278 @@ config :bonfire, :ui,
 config :bonfire_valueflows_api_schema, modularity: :disabled
 
 config :bonfire_notify, modularity: :disabled
+
+compile_all_locales? =
+  config_env() == :prod or System.get_env("COMPILE_ALL_LOCALES") in ["true", "1"]
+
+locales =
+  if compile_all_locales?,
+    do: [
+      # Afrikaans
+      :af,
+      # Arabic
+      :ar,
+      # Azerbaijani
+      :az,
+      # Belarusian
+      :be,
+      # Bulgarian
+      :bg,
+      # Bengali
+      :bn,
+      # Tibetan
+      :bo,
+      # Bosnian
+      :bs,
+      # Breton
+      :br,
+      # Catalan
+      :ca,
+      # Chechen
+      :ce,
+      # Cherokee
+      :chr,
+      # Corsican
+      :co,
+      # Czech
+      :cs,
+      # Central Kurdish
+      :ckb,
+      # Kurdish / Kurmanji
+      :ku,
+      # Southern Kurdish
+      :sdh,
+      # Danish
+      :da,
+      # German
+      :de,
+      # German (Switzerland)
+      :"de-CH",
+      # Dzongkha
+      :dz,
+      # Greek
+      :el,
+      # English
+      :en,
+      # English (United States)
+      :"en-US",
+      # English (United Kingdom)
+      :"en-GB",
+      # English (Canada)
+      :"en-CA",
+      # English (Sweden)
+      :"en-SE",
+      # Esperanto
+      :eo,
+      # Spanish
+      :es,
+      # Spanish (Argentina)
+      :"es-AR",
+      # Spanish (Mexico)
+      :"es-MX",
+      # Spanish (Spain)
+      :"es-ES",
+      # Estonian
+      :et,
+      # Basque
+      :eu,
+      # Persian
+      :fa,
+      # Finnish
+      :fi,
+      # Filipino
+      :fil,
+      # French
+      :fr,
+      # French (France)
+      :"fr-FR",
+      # French (Canada)
+      :"fr-CA",
+      # French (Switzerland)
+      :"fr-CH",
+      # Irish
+      :ga,
+      # Scottish Gaelic
+      :gd,
+      # Galician
+      :gl,
+      # Swiss German
+      :gsw,
+      # Hausa
+      :ha,
+      # Hebrew
+      :he,
+      # Hindi
+      :hi,
+      # Croatian
+      :hr,
+      # Hungarian
+      :hu,
+      # Haitian Creole
+      :ht,
+      # Armenian
+      :hy,
+      # Indonesian
+      :id,
+      # Icelandic
+      :is,
+      # Italian
+      :it,
+      # Italian (Italy)
+      :"it-IT",
+      # Italian (Switzerland)
+      :"it-CH",
+      # Inuktitut
+      :iu,
+      # Japanese
+      :ja,
+      # Javanese
+      :jv,
+      # Georgian
+      :ka,
+      # Kazakh
+      :kk,
+      # Greenlandic
+      :kl,
+      # Khmer
+      :km,
+      # Kannada
+      :kn,
+      # Korean
+      :ko,
+      # Luxembourgish
+      :lb,
+      # Lao
+      :lo,
+      # Lithuanian
+      :lt,
+      # Latvian
+      :lv,
+      # Malagasy
+      :mg,
+      # Maori
+      :mi,
+      # Macedonian
+      :mk,
+      # Malayalam
+      :ml,
+      # Mongolian
+      :mn,
+      # Malay
+      :ms,
+      # Maltese
+      :mt,
+      # Burmese
+      :my,
+      # Norwegian (Bokmål)
+      :nb,
+      # Nepali
+      :ne,
+      # Dutch
+      :nl,
+      # Norwegian (Nynorsk)
+      :nn,
+      # Norwegian
+      :no,
+      # Occitan
+      :oc,
+      # Panjabi (Punjabi)
+      :pa,
+      # Polish
+      :pl,
+      # Pashto
+      :ps,
+      # Portuguese
+      :pt,
+      # Portuguese (Brazil)
+      :"pt-BR",
+      # Portuguese (Portugal)
+      :"pt-PT",
+      # Quechua
+      :qu,
+      # Romansh
+      :rm,
+      # Romanian
+      :ro,
+      # Russian
+      :ru,
+      # Sardinian
+      :sc,
+      # Sicilian
+      :scn,
+      # Slovak
+      :sk,
+      # Slovenian
+      :sl,
+      # :sm, # Samoan
+      # Somali
+      :so,
+      # Albanian
+      :sq,
+      # Serbian
+      :sr,
+      # Sotho
+      :st,
+      # Sundanese
+      :su,
+      # Swedish
+      :sv,
+      # Swahili
+      :sw,
+      # Tamil
+      :ta,
+      # Telugu
+      :te,
+      # Tigrinya
+      :ti,
+      # Tajik
+      :tg,
+      # Thai
+      :th,
+      # Turkmen
+      :tk,
+      # :tl, # Tagalog (see also Filipino)
+      # Tongan
+      :to,
+      # Turkish
+      :tr,
+      # Tsonga
+      :ts,
+      # Ukrainian
+      :uk,
+      # Uyghur
+      :ug,
+      # Urdu
+      :ur,
+      # Uzbek
+      :uz,
+      # Vietnamese
+      :vi,
+      # Wolof
+      :wo,
+      # Xhosa
+      :xh,
+      # Yiddish
+      :yi,
+      # Yoruba
+      :yo,
+      # Cantonese
+      :yue,
+      # Chinese
+      :zh,
+      # Traditional Chinese
+      :"zh-Hant",
+      # Chinese (Hong Kong)
+      :"zh-Hant-HK",
+      # Chinese (Taiwan)
+      :"zh-Hant-TW",
+      # Simplified Chinese
+      :"zh-Hans",
+      # Chinese (Singapore)
+      :"zh-Hans-SG",
+      # Zulu
+      :zu
+    ],
+    else: ["en", "fr", "es", "it"]
+
+config :bonfire_common, Bonfire.Common.Localise.Cldr, locales: locales
