@@ -257,6 +257,8 @@ defmodule Bonfire.RuntimeConfig do
           EctoActs.Work,
           EctoActs.Commit,
 
+          {Bonfire.Poll.Acts.Choices.Create, @question_act_opts},
+
           # These things are free to happen casually in the background.
           # Publish live feed updates via (in-memory) pubsub?
           # {LivePush, @question_act_opts},
