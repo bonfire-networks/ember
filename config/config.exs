@@ -339,6 +339,9 @@ else
     modularity: true
 end
 
+# federation library
+import_config "activity_pub.exs"
+
 # include Bonfire-specific config files
 for config <- "bonfire_*.exs" |> Path.expand(__DIR__) |> Path.wildcard() do
   # System.get_env("MIX_QUIET") || IO.inspect(include_config: config)
@@ -346,6 +349,9 @@ for config <- "bonfire_*.exs" |> Path.expand(__DIR__) |> Path.wildcard() do
 end
 
 IO.puts("Extensions compile-time configs prepared")
+
+# import config for base flavour
+import_config "ember.exs"
 
 # include configs for the current flavour (augmenting or overriding the previous ones)
 flavour_config = "#{flavour}.exs" |> Path.expand(__DIR__)
@@ -361,9 +367,6 @@ else
 end
 
 IO.puts("Flavours compile-time configs prepared")
-
-# federation library
-import_config "activity_pub.exs"
 
 # finally, append/override config based on env, which will override any config set above (including from imported files)
 import_config "#{env}.exs"
