@@ -6,13 +6,38 @@ defmodule Bonfire.Web.Router.Routes do
       use Bonfire.Common.Config
       require OrionWeb.Router
       require_if_enabled(LiveAdmin.Router)
-      import_if_enabled(Bonfire.OpenID.Plugs.Authorize)
+      # import_if_enabled(Bonfire.OpenID.Plugs.Authorize)
 
       pipeline :load_current_auth do
         if module = maybe_module(Bonfire.UI.Me.Plugs.LoadCurrentUser) do
           # plug(Bonfire.UI.Me.Plugs.LoadCurrentAccount)
           # ^ no need to call LoadCurrentAccount if also calling LoadCurrentUser
           plug(module)
+        end
+      end
+
+      def load_authorization(conn, opts) do
+        if module = maybe_module(Bonfire.OpenID.Plugs.Authorize) do
+          Bonfire.OpenID.Plugs.Authorize.load_authorization(conn, opts)
+        else
+          if module = maybe_module(Bonfire.UI.Me.Plugs.LoadCurrentUser) do
+            module.call(conn, opts)
+          else
+            conn
+          end
+        end
+      end
+
+      def authorize(conn, opts) do
+        if module = maybe_module(Bonfire.OpenID.Plugs.Authorize) do
+          Bonfire.OpenID.Plugs.Authorize.authorize(conn, opts)
+        else
+          if module = maybe_module(Bonfire.UI.Me.Plugs.UserRequired) do
+            module.call(conn, opts)
+          else
+            error("Authorization required but no authorization plug available")
+            raise Bonfire.Fail, :unauthorized
+          end
         end
       end
 
@@ -26,13 +51,6 @@ defmodule Bonfire.Web.Router.Routes do
       # include routes for active Bonfire extensions
       require Bonfire.UI.Common.RoutesModule
       Bonfire.UI.Common.RoutesModule.use_modules()
-
-      # mastodon-compatible API
-      if module_enabled?(Bonfire.API.GraphQL.MastoCompatible.Router) do
-        require Bonfire.API.GraphQL.MastoCompatible.Router
-        IO.puts("Generate Masto-compatible API...")
-        Bonfire.API.GraphQL.MastoCompatible.Router.include_masto_api()
-      end
 
       # include federation routes
       use_many_if_enabled([ActivityPub.Web.Router, NodeinfoWeb.Router])
@@ -164,10 +182,11 @@ defmodule Bonfire.Web.Router.Routes do
                   do: {Bonfire.Common.Telemetry.Storage, :metrics_history, []}
                 ),
               additional_pages: [
-                oban: Bonfire.Web.ObanDashboard, # will be overidden by ObanWeb if available
+                #  will be overidden by ObanWeb if available
+                oban: Bonfire.Web.ObanDashboard,
                 # oban_dash: Oban.LiveDashboard,
                 orion: Bonfire.Web.OrionLink,
-                data: Bonfire.Web.DataLink,
+                data: Bonfire.Web.DataLink
                 # flame_on: FlameOn.DashboardPage
                 # _profiler: {PhoenixProfiler.Dashboard, []}
               ]
