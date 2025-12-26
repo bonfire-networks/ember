@@ -1,6 +1,6 @@
 defmodule Ember.Repo.Migrations.TaggedOrFeedActivityIntegrationTrigger do
   use Ecto.Migration
-alias Ember.TaggedOrFeedActivityIntegration
+alias Bonfire.Social.TaggedOrFeedActivityIntegration
 
   def up do
     TaggedOrFeedActivityIntegration.up()
