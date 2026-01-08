@@ -166,6 +166,8 @@ config :logger, :console,
 
 config :elixir, :dbg_callback, {Untangle, :custom_dbg, []}
 
+config :untangle, env: config_env()
+
 config :surface, :compiler,
   warn_on_undefined_props: false,
   hooks_output_dir: "config/current_flavour/assets/hooks/",
@@ -184,19 +186,21 @@ config :paper_trail,
 
 config :nx, default_backend: EXLA.Backend
 
+# NOTE: need to declare any types we want to allow to upload in `Bonfire.Files.MimeTypes` to avoid LiveView uploads failing with `invalid accept filter provided to allow_upload. Expected a file extension with a known MIME type.`
 Code.eval_file(
   "mime_types.ex",
   cond do
     File.exists?("extensions/bonfire_files/lib/mime_types.ex") -> "extensions/bonfire_files/lib/"
     File.exists?("deps/bonfire_files/lib/mime_types.ex") -> "deps/bonfire_files/lib/"
-    true -> Path.dirname(__ENV__.file)
+    true -> 
+      # fallback in case the extension is not present
+      Path.dirname(__ENV__.file)
   end
 )
 
-# NOTE: need to declare any types we want to allow to upload to avoid LiveView uploads failing with `invalid accept filter provided to allow_upload. Expected a file extension with a known MIME type.`
 config :mime,
        :types,
-       Bonfire.Files.MimeTypes.supported_media()
+         Bonfire.Files.MimeTypes.supported_media()
 
 # define which is preferred when more than one
 config :mime, :extensions, Bonfire.Files.MimeTypes.unique_extension_for_mime()
