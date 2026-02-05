@@ -45,6 +45,8 @@ defmodule Bonfire.Application do
         # PubSub
         {Phoenix.PubSub, [name: Bonfire.Common.PubSub, adapter: Phoenix.PubSub.PG2]},
         Bonfire.UI.Common.Presence,
+        # Page profiler storage (for LiveDashboard profiler page)
+        Bonfire.UI.Common.PageTimingStorage,
         # Persistent Data Services
         # Bonfire.Data.AccessControl.Accesses,
         ## these populate on first call, so no need to run on startup:
