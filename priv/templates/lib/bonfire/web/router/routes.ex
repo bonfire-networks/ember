@@ -182,7 +182,9 @@ defmodule Bonfire.Web.Router.Routes do
                   do: {Bonfire.Common.Telemetry.Storage, :metrics_history, []}
                 ),
               additional_pages: [
-                #  will be overidden by ObanWeb if available
+                load_test: Bonfire.Web.LoadTestDashboard,
+                page_profiler: Bonfire.UI.Common.ProfilerDashboardPage,
+                #  will be overidden by ObanWeb if available
                 oban: Bonfire.Web.ObanDashboard,
                 # oban_dash: Oban.LiveDashboard,
                 orion: Bonfire.Web.OrionLink,
