@@ -19,7 +19,7 @@ defmodule Bonfire.Web.Views.AdminsLive do
       #  without_sidebar: is_guest?,
       #  without_secondary_widgets: is_guest?,
       #  no_header: is_guest?,
-       nav_items: Bonfire.Common.ExtensionModule.default_nav(),
+       
      )}
   end
 end

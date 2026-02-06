@@ -30,7 +30,7 @@ defmodule Bonfire.Web.Views.ChangelogLive do
        page: "Changelog",
        page_title: l("Changelog"),
        links: links,
-       nav_items: Bonfire.Common.ExtensionModule.default_nav(),
+       
        changelog: changelog,
        without_sidebar: false
      )}

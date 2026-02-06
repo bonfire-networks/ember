@@ -67,7 +67,7 @@ defmodule Bonfire.Web.Views.HomeLive do
        feed_ids: nil,
        feed_component_id: nil,
        page_info: nil
-       #  nav_items: Bonfire.Common.ExtensionModule.default_nav()
+       #  
      )}
   end
 
