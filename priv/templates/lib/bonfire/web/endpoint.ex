@@ -5,7 +5,7 @@ defmodule Bonfire.Web.Endpoint do
   use Bonfire.UI.Common.Endpoint.LiveReload, code_reloading?
 
   # NOTE: putting it here (after Plug.Static which is EndpointTemplate) means it does not apply to static assets
-  plug Bonfire.Web.Router.CORS
+  # plug Bonfire.Web.Router.CORS
 
   # NOTE: can use the following to time the router
   # @decorate time()

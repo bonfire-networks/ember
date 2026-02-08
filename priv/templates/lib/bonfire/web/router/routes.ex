@@ -221,49 +221,49 @@ end
 IO.puts("Compile routes...")
 
 defmodule Bonfire.Web.Router do
-  defmodule CORS do
-    use Corsica.Router,
-      max_age: 600,
-      allow_methods: :all,
-      allow_headers: :all,
-      origins: {__MODULE__, :local_origin?, [:global]}
+  # defmodule CORS do
+  #   use Corsica.Router,
+  #     max_age: 600,
+  #     allow_methods: :all,
+  #     allow_headers: :all,
+  #     origins: {__MODULE__, :local_origin?, [:global]}
 
-    import Untangle
+  #   import Untangle
 
-    # resource "/*"
+  #   # resource "/*"
 
-    resource("/api/*",
-      origins: "*",
-      allow_credentials: true
-    )
+  #   resource("/api/*",
+  #     origins: "*",
+  #     allow_credentials: true
+  #   )
 
-    resource("/oauth/*",
-      origins: "*",
-      allow_credentials: true
-    )
+  #   resource("/oauth/*",
+  #     origins: "*",
+  #     allow_credentials: true
+  #   )
 
-    resource("/openid/*",
-      origins: "*",
-      allow_credentials: true
-    )
+  #   resource("/openid/*",
+  #     origins: "*",
+  #     allow_credentials: true
+  #   )
 
-    resource("/.well-known/*",
-      origins: "*"
-    )
+  #   resource("/.well-known/*",
+  #     origins: "*"
+  #   )
 
-    def local_origin?(conn, origin, _scope) do
-      case Bonfire.Common.URIs.base_uri(conn) |> debug() do
-        %{host: local_host} ->
-          case URI.parse(origin) |> debug(origin) do
-            %{host: origin_host} -> origin_host == local_host
-            _ -> false
-          end
+  #   def local_origin?(conn, origin, _scope) do
+  #     case Bonfire.Common.URIs.base_uri(conn) |> debug() do
+  #       %{host: local_host} ->
+  #         case URI.parse(origin) |> debug(origin) do
+  #           %{host: origin_host} -> origin_host == local_host
+  #           _ -> false
+  #         end
 
-        _ ->
-          false
-      end
-    end
-  end
+  #       _ ->
+  #         false
+  #     end
+  #   end
+  # end
 
   use Bonfire.Web.Router.Routes
 
