@@ -63,26 +63,27 @@ defmodule Bonfire.Web.Router.Routes do
 
       import_if_enabled(Oban.Web.Router)
 
-      # pages anyone can view
+      # Public pages — cached at CDN and/or served from static disk cache for guests.
       scope "/" do
-        pipe_through(:browser)
-        live "/", Bonfire.Web.Views.HomeLive, as: :home, private: %{cache: true}
+        pipe_through(:cacheable_page)
+        live "/", Bonfire.Web.Views.HomeLive, as: :home
         # live "/explore", Bonfire.Web.ExploreLive
-        # , private : %{cache: true}
-        live "/about", Bonfire.Web.Views.AboutLive, private: %{cache: true}
-        live "/about/:section", Bonfire.Web.Views.AboutLive, private: %{cache: true}
-        live "/privacy", Bonfire.Web.Views.PrivacyPolicyLive, private: %{cache: true}
-        # live "/admins", Bonfire.Web.Views.AdminsLive, private: %{cache: false}
-        live "/conduct", Bonfire.Web.Views.CodeOfConductLive, private: %{cache: true}
-        live "/changelog", Bonfire.Web.Views.ChangelogLive, private: %{cache: true}
-
-        # TEMP: for testing native apps
-        live("/app", Bonfire.Web.Views.DashboardLive)
+        live "/about", Bonfire.Web.Views.AboutLive
+        live "/about/:section", Bonfire.Web.Views.AboutLive
+        live "/privacy", Bonfire.Web.Views.PrivacyPolicyLive
+        # live "/admins", Bonfire.Web.Views.AdminsLive
+        live "/conduct", Bonfire.Web.Views.CodeOfConductLive
+        live "/changelog", Bonfire.Web.Views.ChangelogLive
 
         # a default homepage which you can customise (at path "/")
-        # can be replaced with something else (eg. bonfire_website extension or similar), in which case you may want to rename this default path (eg. to "/home")
+        # can be replaced with something else (eg. bonfire_website extension or similar)
         # live "/", Bonfire.Website.HomeGuestLive, as: :landing
         # live "/home", Bonfire.Web.Views.HomeLive, as: :home
+      end
+
+      # Pages anyone can view that need the full interactive browser pipeline
+      scope "/" do
+        pipe_through(:browser)
 
         if !module_exists?(Bonfire.UI.Groups),
           do: live("/&:username", Bonfire.UI.Me.CharacterLive, as: :group)
