@@ -85,7 +85,7 @@ end
 
 phx_server = System.get_env("PHX_SERVER")
 plug_server = System.get_env("PLUG_SERVER")
-use_cowboy? = plug_server != "bandit"
+use_cowboy? = plug_server == "cowboy"
 use_socket_file? = plug_server == "cowboy_socket"
 socket_file_path = System.get_env("SOCKET_FILE_PATH", "/tmp/bonfire_socket")
 phx_compress? = System.get_env("PHX_COMPRESS_HTTP") not in no?
