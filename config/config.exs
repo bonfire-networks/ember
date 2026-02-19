@@ -109,16 +109,8 @@ end
 # Optionally run a 2nd endpoint for testing federation (only used in dev/prod)
 config :bonfire, Bonfire.Web.FakeRemoteEndpoint,
   server: true,
-  url: [
-    host: "localhost",
-    port: 4002
-  ],
-  http: [
-    port: 4002
-  ],
   render_errors: [view: Bonfire.UI.Common.ErrorView, accepts: ~w(html json), layout: false],
-  live_view: endpoint_live_view,
-  secret_key_base: System.get_env("SECRET_KEY_BASE")
+  live_view: endpoint_live_view
 
 config :bonfire, :markdown_library, MDEx
 
@@ -145,7 +137,7 @@ config :bonfire, Bonfire.Common.Repo, types: Bonfire.Geolocate.PostgresTypes
 
 config :bonfire, Bonfire.Common.TestInstanceRepo,
   types: Bonfire.Geolocate.PostgresTypes,
-  database: "bonfire_test_dance_instance_#{System.get_env("MIX_TEST_PARTITION") || 0}"
+  database: "bonfire_#{env}_dance_instance_#{System.get_env("MIX_TEST_PARTITION") || 0}"
 
 # priv: flavour_path <> "/repo"
 

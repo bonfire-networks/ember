@@ -149,9 +149,30 @@ config :bonfire, Bonfire.Web.Endpoint,
       else: Bandit.PhoenixAdapter
     ),
   http: http_options,
-  thousand_island: [transport_ports: [hibernate_after: 15_000]],
+  thousand_island: [transport_ports: [hibernate_after: to_timeout(second: 15)]],
   secret_key_base: secret_key_base,
   live_view: [signing_salt: signing_salt]
+
+if test_instance? do
+  test_instance_hostname = System.get_env("TEST_INSTANCE_HOSTNAME", "localhost")
+
+  test_instance_server_port =
+    String.to_integer(System.get_env("TEST_INSTANCE_SERVER_PORT", "4002"))
+
+  config :bonfire, Bonfire.Web.FakeRemoteEndpoint,
+    url: [
+      host: test_instance_hostname,
+      port:
+        if(test_instance_hostname != "localhost",
+          do: public_port,
+          else: test_instance_server_port
+        )
+    ],
+    http: [
+      port: test_instance_server_port
+    ],
+    secret_key_base: secret_key_base
+end
 
 # HTTP client(s) configuration
 
@@ -182,10 +203,14 @@ finch_pools = %{
     conn_opts: finch_conn_opts
   ],
   "https://icons.duckduckgo.com" => [
-    conn_opts: [transport_opts: [size: 8, timeout: 3_000, conn_opts: finch_conn_opts]]
+    conn_opts: [
+      transport_opts: [size: 8, timeout: to_timeout(second: 3), conn_opts: finch_conn_opts]
+    ]
   ],
   "https://www.google.com/s2/favicons" => [
-    conn_opts: [transport_opts: [size: 8, timeout: 3_000, conn_opts: finch_conn_opts]]
+    conn_opts: [
+      transport_opts: [size: 8, timeout: to_timeout(second: 3), conn_opts: finch_conn_opts]
+    ]
   ]
 }
 
@@ -461,7 +486,7 @@ if api_key = System.get_env("PIRATE_WEATHER_API") do
     backend: Forecastr.PirateWeather,
     appid: api_key,
     # minutes to cache
-    ttl: 14 * 60_000
+    ttl: to_timeout(minute: 14)
 end
 
 if api_key = System.get_env("OPEN_WEATHER_MAP_API_KEY") do
@@ -469,7 +494,7 @@ if api_key = System.get_env("OPEN_WEATHER_MAP_API_KEY") do
     backend: Forecastr.OWM,
     appid: api_key,
     # minutes to cache
-    ttl: 14 * 60_000
+    ttl: to_timeout(minute: 14)
 end
 
 IO.puts("Runtime config ready")
