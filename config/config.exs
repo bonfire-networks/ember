@@ -119,7 +119,6 @@ config :phoenix_gon, :json_library, Jason
 
 repos = [repo]
 config :bonfire, ecto_repos: repos
-config :bonfire, ecto_repos: repos
 config :paginator, ecto_repos: repos
 config :activity_pub, ecto_repos: repos
 config :rauversion_extension, :repo_module, repo

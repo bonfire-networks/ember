@@ -47,7 +47,6 @@ config :bonfire, Bonfire.Web.Endpoint,
     if(use_cowboy?,
       do: [protocol_options: [idle_timeout: 120_000]],
       else: [
-        http_1_options: [max_requests: max_requests],
         http_1_options: [max_requests: max_requests]
       ]
     )

@@ -338,7 +338,7 @@ if (config_env() == :prod or System.get_env("OTEL_ENABLED") in yes?) and
   config :opentelemetry_exporter,
     # You can configure the compression type for exporting traces.
     otlp_compression: :gzip,
-    oltp_traces_compression: :gzip
+    otlp_traces_compression: :gzip
 
   if System.get_env("OTEL_LIGHTSTEP_API_KEY") do
     IO.puts("NOTE: OTLP (open telemetry) data will be sent to lightstep / servicenow.com")
@@ -446,7 +446,7 @@ if config_env() == :prod do
     # ssl: true,
     # database: System.get_env("POSTGRES_DB", "bonfire"),
     # Note: keep this disabled if using ecto_dev_logger or EctoSparkles.Log instead #
-    log: String.to_atom(System.get_env("DB_QUERIES_LOG_LEVEL", "false"))
+    log: String.to_existing_atom(System.get_env("DB_QUERIES_LOG_LEVEL", "false"))
 end
 
 # end prod only config
@@ -481,7 +481,7 @@ if Code.ensure_loaded?(Livebook) do
   Livebook.config_runtime()
 end
 
-if api_key = System.get_env("PIRATE_WEATHER_API") do
+if api_key = System.get_env("PIRATE_WEATHER_API_KEY") do
   config :forecastr,
     backend: Forecastr.PirateWeather,
     appid: api_key,
