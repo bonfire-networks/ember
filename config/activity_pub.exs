@@ -5,7 +5,20 @@ config :activity_pub,
   reject_unsigned: true,
   env: config_env(),
   adapter: Bonfire.Federate.ActivityPub.Adapter,
-  repo: Bonfire.Common.Repo
+  repo: Bonfire.Common.Repo,
+  # FEP-844e: capabilities advertised via actor generator.implements
+  implements: [
+    "https://www.w3.org/TR/activitypub/",
+    "https://datatracker.ietf.org/doc/html/rfc9421"
+  ],
+  # Known software that validates RFC 9421 signatures, with minimum version (:any = all versions).
+  # Used by nodeinfo-based format inference in Instances.maybe_infer_format_from_nodeinfo/2.
+  rfc9421_software: %{
+    "mastodon" => "4.5.0",
+    "hollo" => :any,
+    "mitra" => :any,
+    "fedify" => "1.6.0"
+  }
 
 config :nodeinfo, :adapter, Bonfire.Federate.ActivityPub.NodeinfoAdapter
 
