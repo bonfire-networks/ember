@@ -8,8 +8,8 @@ config :activity_pub,
   repo: Bonfire.Common.Repo,
   # FEP-844e: capabilities advertised via actor generator.implements
   implements: [
-    "https://www.w3.org/TR/activitypub/",
-    "https://datatracker.ietf.org/doc/html/rfc9421"
+    %{"href" => "https://www.w3.org/TR/activitypub/"},
+    %{"href" => "https://datatracker.ietf.org/doc/html/rfc9421"}
   ],
   # Known software that validates RFC 9421 signatures, with minimum version (:any = all versions).
   # Used by nodeinfo-based format inference in Instances.maybe_infer_format_from_nodeinfo/2.
@@ -102,7 +102,13 @@ config :activity_pub,
       },
       "sensitive" => "as:sensitive",
       # TODO
-      "manuallyApprovesFollowers" => "as:manuallyApprovesFollowers"
+      "manuallyApprovesFollowers" => "as:manuallyApprovesFollowers",
+      # FEP-844e: capability discovery:
+      "implements" => %{
+        "@id" => "https://w3id.org/fep/844e#implements",
+        "@type" => "@id",
+        "@container" => "@set"
+      }
     },
     object: %{
       "Hashtag" => "as:Hashtag",
