@@ -356,7 +356,8 @@ common_assocs = %{
         join_through: Tagged,
         unique: true,
         join_keys: [id: :id, tag_id: :id],
-        on_replace: :delete
+        on_replace: :delete,
+        preload_order: {Tagged, :preload_order, []}
       )
     end,
   object_tags:
@@ -370,7 +371,8 @@ common_assocs = %{
         join_through: Tagged,
         unique: true,
         join_keys: [id: :object_id, tag_id: :id],
-        on_replace: :delete
+        on_replace: :delete,
+        preload_order: {Tagged, :preload_order, []}
       )
     end,
 
@@ -1299,7 +1301,8 @@ config :bonfire_classify, Category,
          join_through: Tagged,
          unique: true,
          join_keys: [tag_id: :id, id: :id],
-         on_replace: :delete
+         on_replace: :delete,
+         preload_order: {Tagged, :preload_order, []}
        )
      end)
 
