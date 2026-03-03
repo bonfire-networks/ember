@@ -11,10 +11,11 @@ compile_all_locales? =
   (System.get_env("COMPILE_ALL_LOCALES") not in no? and config_env() == :prod) or
     System.get_env("COMPILE_ALL_LOCALES") in yes?
 
+#  fr_CA is a good test case for regional locale with underscore
 locales =
   if compile_all_locales?,
-    do: [default_locale, "fr", "fr-CA", "es", "it"],
-    else: [default_locale, "fr-CA"]
+    do: [default_locale, "fr", "fr-FR", "fr_CA", "es", "it"],
+    else: [default_locale, "fr_CA"]
 
 config :bonfire_common,
   otp_app: :bonfire,
@@ -54,13 +55,32 @@ config :ex_cldr,
   default_backend: Bonfire.Common.Localise.Cldr,
   json_library: Jason
 
+pg_username = System.get_env("POSTGRES_USER") || "postgres"
+pg_pw = System.get_env("POSTGRES_PASSWORD") || "postgres"
+database = System.get_env("POSTGRES_DB") || "bonfire_dev"
+pg_host = System.get_env("POSTGRES_HOST") || "localhost"
+
 config :bonfire_common, Bonfire.Common.Repo,
-  database: System.get_env("POSTGRES_DB", "bonfire_dev"),
-  username: System.get_env("POSTGRES_USER", "postgres"),
-  password: System.get_env("POSTGRES_PASSWORD", "postgres"),
+  database: database,
+  username: pg_username,
+  password: pg_pw,
+  hostname: pg_host,
   # show_sensitive_data_on_connection_error: true,
   # EctoSparkles does the logging instead
   log: false,
   stacktrace: true
+
+config :sql,
+  pools: [
+    default: %{
+      username: pg_username,
+      password: pg_pw,
+      hostname: pg_host,
+      database: database,
+      adapter: SQL.Adapters.Postgres,
+      repo: Bonfire.Common.Repo,
+      ssl: false
+    }
+  ]
 
 config :rustler_precompiled, force_build_all: System.get_env("RUSTLER_BUILD_ALL") in ["true", "1"]
