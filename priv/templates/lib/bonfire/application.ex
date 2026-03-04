@@ -97,25 +97,32 @@ defmodule Bonfire.Application do
         )
 
   # Stuff that depends on the Endpoint and/or the above
-  def apps_after,
+  def apps_after(test_instance? \\ false),
     do:
-      maybe_oban() ++
+      maybe_oban(test_instance?) ++
         maybe_desktop_webapp()
 
   # ++ [
   #   {Tz.UpdatePeriodically, [interval_in_days: 10]}
   # ] 
 
-  def maybe_oban do
+  def maybe_oban(test_instance? \\ false) do
     case Application.get_env(:bonfire, Oban, []) do
       [] ->
         []
 
       config ->
-        [
-          # Job Queue
-          {Oban, config}
-        ]
+        [{Oban, config}] ++
+          if test_instance? do
+            test_config =
+              config
+              |> Keyword.put(:name, Oban.TestInstance)
+              |> Keyword.put(:repo, Bonfire.Common.TestInstanceRepo)
+
+            [{Oban, test_config}]
+          else
+            []
+          end
     end
   end
 
@@ -183,7 +190,7 @@ defmodule Bonfire.Application do
       [Bonfire.Common.TestInstanceRepo] ++
       [endpoint_module(as_desktop), Bonfire.Web.FakeRemoteEndpoint] ++
       maybe_pages_beacon() ++
-      apps_after()
+      apps_after(true)
   end
 
   # def applications(:test, _, _any, _as_desktop) do
