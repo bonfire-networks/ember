@@ -201,7 +201,8 @@ defmodule Bonfire.Application do
     if Code.ensure_loaded?(CircularBuffer) do
       [
         # simple ETS based storage for non-prod
-        {Bonfire.Common.Telemetry.Storage, Bonfire.Common.Telemetry.Metrics.metrics()}
+        {Bonfire.Common.Telemetry.Storage, Bonfire.Common.Telemetry.Metrics.metrics()},
+        Bonfire.Common.Localise.POAnnotator
       ]
     else
       []
