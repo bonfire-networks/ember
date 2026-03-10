@@ -25,7 +25,7 @@
   </section> --}
 
   <section class="">
-    <div class="w-full border border-base-content/5 bg-base-100 lg:!mt-0">
+    <div class="w-full lg:!mt-0">
       <StatefulComponent
         module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
         :if={@feed_component_id}
