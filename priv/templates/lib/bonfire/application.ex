@@ -6,6 +6,7 @@ defmodule Bonfire.Application do
   use Application
   require Cachex.Spec
   use Bonfire.Common.Config
+  import Untangle
 
   @sup_name Bonfire.Supervisor
   @top_otp_app Config.get!(:otp_app)
@@ -167,7 +168,7 @@ defmodule Bonfire.Application do
       System.get_env("AS_DESKTOP_APP") in ["1", "true"]
     )
     |> Enum.reject(&is_nil/1)
-    |> IO.inspect(label: "apps tree")
+    |> io_inspect("Application supervision tree")
     |> Supervisor.start_link(strategy: :one_for_one, name: @sup_name)
   end
 
@@ -197,16 +198,15 @@ defmodule Bonfire.Application do
   #   applications(nil, nil, nil)
   # end
 
-  def applications(:dev, _, _any, as_desktop) do
+  def applications(env, _, _any, as_desktop) when env in [:dev, :test] do
     if Code.ensure_loaded?(CircularBuffer) do
       [
         # simple ETS based storage for non-prod
-        {Bonfire.Common.Telemetry.Storage, Bonfire.Common.Telemetry.Metrics.metrics()},
-        Bonfire.Common.Localise.POAnnotator
+        {Bonfire.Common.Telemetry.Storage, Bonfire.Common.Telemetry.Metrics.metrics()}
       ]
     else
       []
-    end ++ applications(nil, nil, nil, as_desktop)
+    end ++ applications(nil, nil, nil, as_desktop) ++ [Bonfire.Common.Localise.POAnnotator]
   end
 
   # running as desktop app
