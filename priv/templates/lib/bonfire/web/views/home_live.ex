@@ -11,31 +11,26 @@ defmodule Bonfire.Web.Views.HomeLive do
   # @changelog File.read!("#{Config.get(:project_path, "../..")}/docs/CHANGELOG.md")
 
   on_mount {LivePlugs, [Bonfire.UI.Me.LivePlugs.LoadCurrentUser]}
+  on_mount {__MODULE__, :pre_mount}
 
-  def mount(params, session, socket) do
-    current_user = current_user(socket)
-
+  def on_mount(:pre_mount, _params, _session, socket) do
+    if current_user = current_user_or_id(socket) do
+      flood("redir to user dashboard")
     case Settings.get([:ui, :homepage_redirect_to], nil, current_user) do
       url when is_binary(url) ->
-        # redirect to configured homepage
-        {:ok,
-         socket
-         |> redirect_to(url, fallback: "/dashboard", replace: false)}
-
+        {:halt, redirect_to(socket, url, fallback: "/dashboard", replace: false)}
       _ ->
-        if is_nil(current_user) do
-          # show guest homepage
-          do_mount(params, session, socket)
-        else
-          # redirect to user dashboard
-          {:ok,
-           socket
-           |> redirect_to("/dashboard", replace: false)}
-        end
+        {:halt, redirect_to(socket, "/dashboard", replace: false)}
     end
+  else
+    flood("only reached for guests, continues to regular mount to show guest homepage")
+    {:cont, socket}
+  end
   end
 
-  defp do_mount(_params, _session, socket) do
+  def mount(_params, _session, socket) do
+    flood("mounting HomeLive")
+    
     links =
       Config.get([:ui, :theme, :instance_welcome, :links], %{
         l("About Bonfire") => "https://bonfirenetworks.org/",
