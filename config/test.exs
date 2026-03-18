@@ -1,7 +1,7 @@
 import Config
 
 yes? = ~w(true yes 1)
-no? = ~w(false no 0)
+no? = ~w(false no none 0)
 
 test_instance? = System.get_env("TEST_INSTANCE") == "yes"
 federate? = test_instance? or System.get_env("FEDERATE") == "yes"

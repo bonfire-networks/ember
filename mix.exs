@@ -4,7 +4,7 @@ defmodule Ember.MixProject do
   use Mix.Project
 
   @yes? ~w(true yes 1)
-  @no? ~w(false no 0)
+  @no? ~w(false no none 0)
 
 
   def project do
