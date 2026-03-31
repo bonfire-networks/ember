@@ -30,7 +30,7 @@ defmodule Bonfire.Web.Views.AboutLive do
      |> assign(
        page: "about",
        selected_tab: :about,
-       
+
       #  page_header: false,
        is_guest?: is_guest?,
        users: users,
@@ -42,8 +42,8 @@ defmodule Bonfire.Web.Views.AboutLive do
        sidebar_widgets: [
          guests: [
            secondary: [
-             {Bonfire.Tag.Web.WidgetTagsLive, []},
-             {Bonfire.UI.Me.WidgetAdminsLive, []}
+            #  {Bonfire.Tag.Web.WidgetTagsLive, []},
+            #  {Bonfire.UI.Me.WidgetAdminsLive, []}
            ]
          ],
          users: [
