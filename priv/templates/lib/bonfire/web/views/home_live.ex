@@ -15,7 +15,7 @@ defmodule Bonfire.Web.Views.HomeLive do
 
   def on_mount(:pre_mount, _params, _session, socket) do
     if current_user = current_user_or_id(socket) do
-      flood("redir to user dashboard")
+      debug("redir to user dashboard")
     case Settings.get([:ui, :homepage_redirect_to], nil, current_user) do
       url when is_binary(url) ->
         {:halt, redirect_to(socket, url, fallback: "/dashboard", replace: false)}
@@ -23,13 +23,13 @@ defmodule Bonfire.Web.Views.HomeLive do
         {:halt, redirect_to(socket, "/dashboard", replace: false)}
     end
   else
-    flood("only reached for guests, continues to regular mount to show guest homepage")
+    debug("only reached for guests, continues to regular mount to show guest homepage")
     {:cont, socket}
   end
   end
 
   def mount(_params, _session, socket) do
-    flood("mounting HomeLive")
+    debug("mounting HomeLive")
     
     links =
       Config.get([:ui, :theme, :instance_welcome, :links], %{
