@@ -30,12 +30,13 @@ defmodule Bonfire.Web.Views.HomeLive do
 
   def mount(_params, _session, socket) do
     debug("mounting HomeLive")
-    
+
     links =
-      Config.get([:ui, :theme, :instance_welcome, :links], %{
-        l("About Bonfire") => "https://bonfirenetworks.org/",
-        l("Contribute") => "https://bonfirenetworks.org/contribute/"
-      })
+      Config.get([:ui, :theme, :instance_welcome, :links], [
+        {"About Bonfire", "https://bonfirenetworks.org/"},
+        {"Contribute", "https://bonfirenetworks.org/contribute/"}
+      ])
+      |> Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links()
 
     app = String.capitalize(Bonfire.Application.name_and_flavour())
 
@@ -46,14 +47,19 @@ defmodule Bonfire.Web.Views.HomeLive do
      socket
      |> assign(
        page: "home",
-       page_title: l("Home"),
        is_guest?: true,
-      #  without_sidebar: true,
-      #  without_secondary_widgets: true,
-      #  no_header: true,
+       #  without_sidebar: true,
+       #  without_secondary_widgets: true,
+       no_header: true,
        selected_tab: :home,
        page_title: app,
-       links: links,
+       sidebar_widgets: [
+         guests: [
+           secondary: [
+             {Bonfire.UI.Common.WidgetCommunityLinksLive, [links: links]}
+           ]
+         ]
+       ],
        #  changelog: @changelog,
        error: nil,
        loading: true,
@@ -62,7 +68,7 @@ defmodule Bonfire.Web.Views.HomeLive do
        feed_ids: nil,
        feed_component_id: nil,
        page_info: nil
-       #  
+       #
      )}
   end
 
@@ -84,10 +90,8 @@ defmodule Bonfire.Web.Views.HomeLive do
         :curated
       else
         # e(assigns(socket), :live_action, nil) ||
-        Config.get(
-          [Bonfire.UI.Social.FeedLive, :default_feed]
-        ) ||
-        :local
+        Config.get([Bonfire.UI.Social.FeedLive, :default_feed]) ||
+          :local
       end
 
     {

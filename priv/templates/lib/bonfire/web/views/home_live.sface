@@ -1,4 +1,14 @@
 <div class="lg:p-0 w-full h-full flex-1 flex flex-col max-w-[596px] mx-auto">
+  <div class="flex justify-end bg-primary px-4 mb-4 rounded-b-lg">
+    <div :if={!@current_user_id} class="flex gap-3 py-4">
+      <LinkLive to={path(:login, :index)} class="btn btn-sm" parent_id="layout">{l("Log in")}</LinkLive>
+
+      {#if Bonfire.Me.Accounts.instance_is_invite_only?() != true}
+        <LinkLive to={path(:signup)} class="btn btn-sm" parent_id="layout">{l("Create account")}</LinkLive>
+      {/if}
+    </div>
+  </div>
+
   {!-- <section class="mb-4 flex flex-col gap-6 border border-base-content/10 shadow-lg bg-base-100 pb-8 rounded-box">
     <div
       :if={Config.get([:ui, :theme, :instance_image], nil)}
@@ -25,7 +35,13 @@
   </section> --}
 
   <section class="">
+    <StatefulComponent
+      module={maybe_component(Bonfire.UI.Common.InstancePinnedLive, @__context__)}
+      id="instance_pinned_widget"
+    />
+
     <div class="w-full lg:!mt-0">
+      <div class="text-lg font-semibold mt-4 mb-2">{l("Front page")}</div>
       <StatefulComponent
         module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
         :if={@feed_component_id}
