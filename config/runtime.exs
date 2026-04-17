@@ -273,6 +273,12 @@ config :bonfire, Oban,
            IO.puts("Open science extension is not enabled")
            []
          end}
+    # ++
+    # if Bonfire.Common.Extend.module_enabled?(Bonfire.Social.TrendingLinksCacheWorker) do
+    #   [{"@hourly", Bonfire.Social.TrendingLinksCacheWorker, max_attempts: 1}]
+    # else
+    #   []
+    # end
   ]
 
 config :activity_pub, :oban_queues,
