@@ -243,7 +243,8 @@ config :bonfire, Oban,
     static_generator: String.to_integer(System.get_env("QUEUE_SIZE_STATIC_GEN", "1")),
     # video_transcode: 1,
     # boost_activities: 1,
-    fetch_open_science: String.to_integer(System.get_env("QUEUE_SIZE_OPEN_SCIENCE_FETCH", "1"))
+    fetch_open_science: String.to_integer(System.get_env("QUEUE_SIZE_OPEN_SCIENCE_FETCH", "1")),
+    ghost_webhooks: String.to_integer(System.get_env("QUEUE_SIZE_GHOST_WEBHOOKS", "2"))
   ],
   plugins: [
     # delete job history after 6 hours
