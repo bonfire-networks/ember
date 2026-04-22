@@ -28,7 +28,7 @@ config :activity_pub, :instance,
   federation_reachability_timeout_days: 7,
   # Max. depth of reply-to and reply activities fetching on incoming federation, to prevent out-of-memory situations while fetching very long threads.
   federation_incoming_max_recursion: 10,
-  rewrite_policy: [Bonfire.Federate.ActivityPub.BoundariesMRF],
+  rewrite_policy: [ActivityPub.MRF.KeywordPolicy, Bonfire.Federate.ActivityPub.BoundariesMRF],
   handle_unknown_activities: true
 
 config :activity_pub, :boundaries,
