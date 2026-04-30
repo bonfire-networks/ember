@@ -202,8 +202,8 @@ defmodule Bonfire.Web.Router.Routes do
         scope "/" do
           pipe_through(:browser)
 
-          if module_enabled?(Bamboo.SentEmailViewerPlug) do
-            forward("/admin/emails", Bamboo.SentEmailViewerPlug)
+          if module_enabled?(Plug.Swoosh.MailboxPreview) do
+            forward("/admin/emails", Plug.Swoosh.MailboxPreview)
           end
         end
       end

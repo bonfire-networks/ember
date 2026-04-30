@@ -17,7 +17,6 @@ config :bonfire,
   skip_all_boundary_checks: false,
   ui: [infinite_scroll: false]
 
-config :bonfire_mailer, Bonfire.Mailer.Bamboo, adapter: Bamboo.TestAdapter
 config :bonfire_mailer, Bonfire.Mailer.Swoosh, adapter: Swoosh.Adapters.Test
 
 if System.get_env("DISABLE_IMAGE_CLASSIFIER") in yes? do
