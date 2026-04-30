@@ -35,6 +35,11 @@
 
   </div>
 
+    <StatelessComponent
+      module={maybe_component(Bonfire.CommunityRules.Web.InstanceRulesDisplayLive, @__context__)}
+    />
+
+
   <div
     :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
     class="bg-base-100 "
