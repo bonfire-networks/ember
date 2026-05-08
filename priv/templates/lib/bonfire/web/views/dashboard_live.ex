@@ -15,11 +15,16 @@ defmodule Bonfire.Web.Views.DashboardLive do
     current_user = current_user(socket)
     is_guest? = is_nil(current_user)
 
+    community_links =
+      Config.get([:ui, :theme, :instance_welcome, :links], [])
+      |> Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links()
+
     sidebar_widgets = [
       users: [
         secondary:
           Enum.filter(
             [
+              {Bonfire.UI.Common.WidgetCommunityLinksLive, [links: community_links]},
               Settings.get(
                 [Bonfire.Web.Views.DashboardLive, :include, :popular_topics],
                 true,

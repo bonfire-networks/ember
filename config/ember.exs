@@ -6,7 +6,7 @@ yes? = ~w(true yes 1)
 no? = ~w(false no none 0)
 
 # enable marking comment as answer?
-# config :bonfire_social, Bonfire.Social.Answers, modularity: :disabled
+config :bonfire_social, Bonfire.Social.Answers, modularity: :disabled
 
 # enable content labelling?
 # config :bonfire_label, modularity: :disabled

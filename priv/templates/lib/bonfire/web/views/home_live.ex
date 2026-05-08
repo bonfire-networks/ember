@@ -89,9 +89,7 @@ defmodule Bonfire.Web.Views.HomeLive do
            ) do
         :curated
       else
-        # e(assigns(socket), :live_action, nil) ||
-        Config.get([Bonfire.UI.Social.FeedLive, :default_feed]) ||
-          :local
+        :local
       end
 
     {
