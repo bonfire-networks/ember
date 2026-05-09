@@ -127,6 +127,7 @@ if System.get_env("HOT_CODE_RELOAD") != "-1" do
       web_console_logger: false
     ],
     watchers: [
+      tailwind_sources: {Bonfire.UI.Common.TailwindSources, :generate, []},
       yarn: [
         "watch.js",
         cd: Path.expand("assets", File.cwd!())
