@@ -71,7 +71,7 @@ defmodule Bonfire.RuntimeConfig do
 
             # possibly fetch contents of URLs (depends on PostContents),
             {Bonfire.Files.Acts.URLPreviews, on: :post},
-            
+
             # maybe set as sensitive (depends on PostContents),
             {Bonfire.Social.Acts.Sensitivity, on: :post},
 
@@ -226,54 +226,9 @@ defmodule Bonfire.RuntimeConfig do
         ]
       ]
 
-    config :bonfire_poll, Bonfire.Poll.Questions,
-      epics: [
-        create: [
-          # Prep: a little bit of querying and a lot of preparing changesets
-          # Create a changeset for insertion
-          {Bonfire.Poll.Question.Create, @question_act_opts},
-          # with a sanitised body and tags extracted,
-          {Bonfire.Social.Acts.PostContents, @question_act_opts},
-          # a caretaker,
-          {Bonfire.Me.Acts.Caretaker, @question_act_opts},
-          # and a creator,
-          {Bonfire.Me.Acts.Creator, @question_act_opts},
-          # and possibly fetch contents of URLs,
-          {Bonfire.Files.Acts.URLPreviews, @question_act_opts},
-          # possibly with uploaded files,
-          {Bonfire.Files.Acts.AttachMedia, @question_act_opts},
-          # with extracted tags fully hooked up,
-          {Bonfire.Tag.Acts.Tag, @question_act_opts},
-          # and the appropriate boundaries established,
-          {Bonfire.Boundaries.Acts.SetBoundaries, @question_act_opts},
-          # summarised by an activity?
-          {Bonfire.Social.Acts.Activity, @question_act_opts},
-          # appearing in feeds?
-          {Bonfire.Social.Acts.Feeds, @question_act_opts},
-
-          # Now we have a short critical section
-          EctoActs.Begin,
-          # Run our inserts
-          EctoActs.Work,
-          EctoActs.Commit,
-
-          {Bonfire.Poll.Acts.Choices.Create, @question_act_opts},
-
-          # These things are free to happen casually in the background.
-          # Publish live feed updates via (in-memory) pubsub?
-          # {LivePush, @question_act_opts},
-          # Enqueue for indexing by meilisearch
-          {Bonfire.Search.Acts.Queue, @question_act_opts},
-
-          # Oban would rather we put these here than in the transaction
-          # above because it knows better than us, obviously.
-          # Prepare for federation and do the queue insert (oban).
-          {Bonfire.Social.Acts.Federate, @question_act_opts},
-
-          # Once the activity/object exists, we can apply side effects
-          {Bonfire.Tags.Acts.AutoBoost, @question_act_opts}
-        ]
-      ]
+    # NOTE: the Question creation epic (config :bonfire_poll, Bonfire.Poll.Questions, epics: [...])
+    # is owned by `Bonfire.Poll.RuntimeConfig` in extensions/bonfire_poll/lib/runtime_config.ex
+    # so the extension is self-contained. Don't re-add it here.
 
     config :bonfire_label, Bonfire.Label.Labelling,
       epics: [
