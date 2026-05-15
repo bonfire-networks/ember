@@ -9,6 +9,7 @@ verbs = [
   "Edit",
   "Flag",
   "Follow",
+  "Join",
   "Like",
   "Mention",
   "Message",
@@ -1428,6 +1429,7 @@ config :bonfire_poll, Bonfire.Poll.Question,
            :activity,
            :caretaker,
            :created,
+           :peered,
            :post_content,
            :like_count,
            :boost_count
@@ -1479,4 +1481,5 @@ config :bonfire_poll, Bonfire.Poll.Vote,
   code:
     (quote do
        (unquote_splicing(edges))
+       unquote_splicing(common.([:peered]))
      end)
