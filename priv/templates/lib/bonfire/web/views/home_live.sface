@@ -1,5 +1,5 @@
 <div class="lg:p-0 w-full h-full flex-1 flex flex-col max-w-[596px] mx-auto">
-  <div class="flex justify-end bg-primary px-4 mb-4 rounded-b-lg">
+  <div class="flex justify-end bg-primary px-4 mb-4 rounded-b-xl">
     <div :if={!@current_user_id} class="flex gap-3 py-4">
       <LinkLive to={path(:login, :index)} class="btn btn-sm" parent_id="layout">{l("Log in")}</LinkLive>
 
@@ -41,7 +41,7 @@
     />
 
     <div class="w-full lg:!mt-0">
-      <div class="text-lg font-semibold mt-4 mb-2">{l("Front page")}</div>
+      <div class="text-lg font-semibold mt-4 mx-4 mb-2">{l("Front page")}</div>
       <StatefulComponent
         module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
         :if={@feed_component_id}
