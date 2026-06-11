@@ -73,17 +73,13 @@ defmodule Bonfire.Web.Router.Routes do
         live "/privacy", Bonfire.Web.Views.PrivacyPolicyLive
         # live "/admins", Bonfire.Web.Views.AdminsLive
         live "/conduct", Bonfire.Web.Views.CodeOfConductLive
+        live "/impressum", Bonfire.Web.Views.ImpressumLive
         live "/changelog", Bonfire.Web.Views.ChangelogLive
 
         # a default homepage which you can customise (at path "/")
         # can be replaced with something else (eg. bonfire_website extension or similar)
         # live "/", Bonfire.Website.HomeGuestLive, as: :landing
         # live "/home", Bonfire.Web.Views.HomeLive, as: :home
-      end
-
-      scope "/" do
-        pipe_through(:browser_or_cacheable)
-        live "/impressum", Bonfire.Web.Views.ImpressumLive
       end
 
       # Pages anyone can view that need the full interactive browser pipeline
