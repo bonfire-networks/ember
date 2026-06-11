@@ -81,6 +81,11 @@ defmodule Bonfire.Web.Router.Routes do
         # live "/home", Bonfire.Web.Views.HomeLive, as: :home
       end
 
+      scope "/" do
+        pipe_through(:browser_or_cacheable)
+        live "/impressum", Bonfire.Web.Views.ImpressumLive
+      end
+
       # Pages anyone can view that need the full interactive browser pipeline
       scope "/" do
         pipe_through(:browser)
