@@ -48,6 +48,8 @@ defmodule Bonfire.Application do
         Bonfire.UI.Common.Presence,
         # Page profiler storage (for LiveDashboard profiler page)
         Bonfire.UI.Common.PageTimingStorage,
+        # Log streaming lifecycle/filter (for LiveDashboard logs page)
+        Bonfire.UI.Common.LogStreamManager,
         # Persistent Data Services
         # Bonfire.Data.AccessControl.Accesses,
         ## these populate on first call, so no need to run on startup:

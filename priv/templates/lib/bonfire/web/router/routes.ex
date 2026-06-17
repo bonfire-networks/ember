@@ -186,6 +186,7 @@ defmodule Bonfire.Web.Router.Routes do
               additional_pages: [
                 load_test: Bonfire.Web.LoadTestDashboard,
                 page_profiler: Bonfire.UI.Common.ProfilerDashboardPage,
+                app_logs: Bonfire.UI.Common.LogStreamPage,
                 #  will be overidden by ObanWeb if available
                 oban: Bonfire.Web.ObanDashboard,
                 # oban_dash: Oban.LiveDashboard,
