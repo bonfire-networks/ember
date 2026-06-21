@@ -36,7 +36,7 @@
 
   <section class="">
     <StatefulComponent
-      module={maybe_component(Bonfire.UI.Common.InstancePinnedLive, @__context__)}
+      module={maybe_component(Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive, @__context__)}
       id="instance_pinned_widget"
     />
 
