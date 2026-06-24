@@ -115,18 +115,27 @@ defmodule Bonfire.Application do
         []
 
       config ->
-        [{Oban, config}] ++
+        [oban_child(config)] ++
           if test_instance? do
             test_config =
               config
               |> Keyword.put(:name, Oban.TestInstance)
               |> Keyword.put(:repo, Bonfire.Common.TestInstanceRepo)
 
-            [{Oban, test_config}]
+            [oban_child(test_config)]
           else
             []
           end
     end
+  end
+
+  # Use a lazy start MFA (instead of `{Oban, config}`) so the Oban child computes its queue
+  # limits from the instance throughput preset *at start time* — by then `LoadInstanceConfig`
+  # (earlier in the tree) has loaded instance settings into Config. See `Bonfire.Common.ObanPresets`. (#1638)
+  defp oban_child(config) do
+    config
+    |> Oban.child_spec()
+    |> Map.put(:start, {Bonfire.Common.ObanPresets, :start_oban, [config]})
   end
 
   def project, do: @project
