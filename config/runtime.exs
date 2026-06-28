@@ -4,6 +4,10 @@
 # remember to add this file to your .gitignore.
 import Config
 
+# Allow any secret to be provided via a file (`<NAME>_FILE`, e.g. Docker secrets / systemd
+# LoadCredential) instead of a plain env var. See bonfire-app#1663.
+alias Bonfire.Common.EnvSecrets
+
 IO.puts("Preparing runtime config...")
 
 System.get_env("MIX_QUIET") || IO.puts("🔥 Welcome to Bonfire!")
@@ -24,8 +28,9 @@ hosts =
   |> String.split(",")
   |> Enum.map(&"//#{&1}")
 
-System.get_env("DATABASE_URL") || System.get_env("CLOUDRON_POSTGRESQL_URL") ||
-  System.get_env("POSTGRES_PASSWORD") || System.get_env("CLOUDRON_POSTGRESQL_PASSWORD") ||
+EnvSecrets.env_or_file("DATABASE_URL") || EnvSecrets.env_or_file("CLOUDRON_POSTGRESQL_URL") ||
+  EnvSecrets.env_or_file("POSTGRES_PASSWORD") ||
+  EnvSecrets.env_or_file("CLOUDRON_POSTGRESQL_PASSWORD") ||
   System.get_env("MIX_QUIET") || System.get_env("CI") ||
   raise """
   Environment variables for database are missing.
@@ -39,20 +44,22 @@ Bonfire.Common.Config.LoadExtensionsConfig.load_configs([Bonfire.RuntimeConfig])
 ##
 
 secret_key_base =
-  System.get_env("SECRET_KEY_BASE") || System.get_env("MIX_QUIET") || System.get_env("CI") ||
+  EnvSecrets.env_or_file("SECRET_KEY_BASE") || System.get_env("MIX_QUIET") ||
+    System.get_env("CI") ||
     raise """
     environment variable SECRET_KEY_BASE is missing.
     You can generate one by calling: mix phx.gen.secret
     """
 
 signing_salt =
-  System.get_env("SIGNING_SALT") || System.get_env("MIX_QUIET") || System.get_env("CI") ||
+  EnvSecrets.env_or_file("SIGNING_SALT") || System.get_env("MIX_QUIET") || System.get_env("CI") ||
     raise """
     environment variable SIGNING_SALT is missing.
     """
 
 encryption_salt =
-  System.get_env("ENCRYPTION_SALT") || System.get_env("MIX_QUIET") || System.get_env("CI") ||
+  EnvSecrets.env_or_file("ENCRYPTION_SALT") || System.get_env("MIX_QUIET") ||
+    System.get_env("CI") ||
     raise """
     environment variable ENCRYPTION_SALT is missing.
     """
@@ -68,7 +75,7 @@ config :bonfire,
   app_name: System.get_env("APP_NAME", "Bonfire"),
   ap_base_path: System.get_env("AP_BASE_PATH", "/pub"),
   # github_app_client_id: System.get_env("GITHUB_APP_CLIENT_ID", "Iv1.8d612e6e5a2149c9"),
-  github_token: System.get_env("GITHUB_TOKEN"),
+  github_token: EnvSecrets.env_or_file("GITHUB_TOKEN"),
   show_debug_errors_in_dev: System.get_env("SHOW_DEBUG_IN_DEV"),
   encryption_salt: encryption_salt,
   signing_salt: signing_salt,
@@ -220,13 +227,29 @@ if config_env() != :test or federate? do
   config :tesla, :adapter, {Tesla.Adapter.Finch, name: Bonfire.Finch, pools: finch_pools}
 end
 
+oban_notifier =
+  case System.get_env("OBAN_NOTIFIER", "postgres") do
+    "pg" -> Oban.Notifiers.PG
+    "phoenix" -> Oban.Notifiers.Phoenix
+    _postgres -> Oban.Notifiers.Postgres
+  end
+
+# disable insert notifications?
+oban_insert_trigger = System.get_env("OBAN_INSERT_TRIGGER", "true") in ["true", "1", "yes"]
+
+# with insert_trigger enabled, polling is just a safety net for future-scheduled jobs and missed
+# notifications — 30s is sufficient and avoids constant background DB queries
+oban_stage_interval = System.get_env("OBAN_STAGE_INTERVAL_MS", "30000") |> String.to_integer()
+
+# average ms a producer waits before fetching more jobs after a trigger; jitter applies (0-2x actual)
+oban_dispatch_cooldown = System.get_env("OBAN_DISPATCH_COOLDOWN_MS", "5") |> String.to_integer()
+
 config :bonfire, Oban,
-  notifier: Oban.Notifiers.PG,
+  notifier: oban_notifier,
   repo: Bonfire.Common.Repo,
-  # avoid extra PubSub chatter as we don't need that much precision
-  insert_trigger: false,
-  # time between making scheduled jobs available and notifying relevant queues that jobs are available, affects how frequently the database is checked for jobs to run
-  stage_interval: :timer.seconds(2),
+  insert_trigger: oban_insert_trigger,
+  stage_interval: oban_stage_interval,
+  dispatch_cooldown: oban_dispatch_cooldown,
   queues: [
     federator_incoming_mentions:
       String.to_integer(System.get_env("QUEUE_SIZE_AP_IN_MENTIONS", "3")),
@@ -324,8 +347,9 @@ case System.get_env("GRAPH_DB_URL") do
 end
 
 if (config_env() == :prod or System.get_env("OTEL_ENABLED") in yes?) and
-     (System.get_env("OTEL_EXPORTER_OTLP_ENDPOINT") || System.get_env("OTEL_LIGHTSTEP_API_KEY") ||
-        System.get_env("OTEL_HONEYCOMB_API_KEY")) do
+     (System.get_env("OTEL_EXPORTER_OTLP_ENDPOINT") ||
+        EnvSecrets.env_or_file("OTEL_LIGHTSTEP_API_KEY") ||
+        EnvSecrets.env_or_file("OTEL_HONEYCOMB_API_KEY")) do
   # Enable tracing only when we have a configured endpoint
   config :opentelemetry,
     span_processor: :batch,
@@ -348,18 +372,18 @@ if (config_env() == :prod or System.get_env("OTEL_ENABLED") in yes?) and
     otlp_compression: :gzip,
     otlp_traces_compression: :gzip
 
-  if System.get_env("OTEL_LIGHTSTEP_API_KEY") do
+  if EnvSecrets.env_or_file("OTEL_LIGHTSTEP_API_KEY") do
     IO.puts("NOTE: OTLP (open telemetry) data will be sent to lightstep / servicenow.com")
 
     # Example configuration, for more refer to: https://github.com/open-telemetry/opentelemetry-erlang/tree/main/apps/opentelemetry_exporter#application-environment
     config :opentelemetry_exporter,
       otlp_traces_endpoint: "https://ingest.lightstep.com:443/traces/otlp/v0.9",
       otlp_headers: [
-        {"lightstep-access-token", System.get_env("OTEL_LIGHTSTEP_API_KEY")}
+        {"lightstep-access-token", EnvSecrets.env_or_file("OTEL_LIGHTSTEP_API_KEY")}
       ]
   end
 
-  if System.get_env("OTEL_HONEYCOMB_API_KEY") do
+  if EnvSecrets.env_or_file("OTEL_HONEYCOMB_API_KEY") do
     IO.puts("NOTE: OTLP (open telemetry) data will be sent to honeycomb.io")
 
     config :opentelemetry, :processors,
@@ -379,7 +403,7 @@ if (config_env() == :prod or System.get_env("OTEL_ENABLED") in yes?) and
                ]}
             ],
             headers: [
-              {"x-honeycomb-team", System.fetch_env!("OTEL_HONEYCOMB_API_KEY")},
+              {"x-honeycomb-team", EnvSecrets.env_or_file!("OTEL_HONEYCOMB_API_KEY")},
               {"x-honeycomb-dataset", System.get_env("OTEL_SERVICE_NAME", "bonfire")}
             ],
             protocol: :grpc
@@ -428,7 +452,7 @@ config :sentry,
     ~r/\/test\//
   ]
 
-case System.get_env("APPSIGNAL_PUSH_API_KEY", "") do
+case EnvSecrets.env_or_file("APPSIGNAL_PUSH_API_KEY", "") do
   "" ->
     config :appsignal, :config, active: false
 
@@ -489,7 +513,7 @@ if Code.ensure_loaded?(Livebook) do
   Livebook.config_runtime()
 end
 
-if api_key = System.get_env("PIRATE_WEATHER_API_KEY") do
+if api_key = EnvSecrets.env_or_file("PIRATE_WEATHER_API_KEY") do
   config :forecastr,
     backend: Forecastr.PirateWeather,
     appid: api_key,
@@ -497,7 +521,7 @@ if api_key = System.get_env("PIRATE_WEATHER_API_KEY") do
     ttl: to_timeout(minute: 14)
 end
 
-if api_key = System.get_env("OPEN_WEATHER_MAP_API_KEY") do
+if api_key = EnvSecrets.env_or_file("OPEN_WEATHER_MAP_API_KEY") do
   config :forecastr,
     backend: Forecastr.OWM,
     appid: api_key,
