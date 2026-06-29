@@ -50,7 +50,7 @@ config :http_signatures, adapter: ActivityPub.Safety.HTTP.Signatures
 
 config :activity_pub, :http,
   proxy_url: nil,
-  user_agent: "Bonfire ActivityPub federation",
+  user_agent: "Bonfire federation",
   send_user_agent: true,
   adapter: [
     recv_timeout: 30_000,
