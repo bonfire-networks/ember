@@ -85,5 +85,4 @@ config :sql,
     }
   ]
 
-
 config :rustler_precompiled, force_build_all: System.get_env("RUSTLER_BUILD_ALL") in ["true", "1"]

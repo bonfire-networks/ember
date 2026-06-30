@@ -317,7 +317,11 @@ config :activity_pub, Oban,
   repo: Bonfire.Common.Repo
 
 config :activity_pub, :http,
-    user_agent: System.get_env("AP_USER_AGENT", "#{System.get_env("APP_NAME") || Bonfire.Application.name() || "Bonfire"} federation")
+  user_agent:
+    System.get_env(
+      "AP_USER_AGENT",
+      "#{System.get_env("APP_NAME") || Bonfire.Application.name() || "Bonfire"} federation"
+    )
 
 config :activity_pub, ActivityPub.Federator.HTTP.RateLimit,
   scale_ms: String.to_integer(System.get_env("AP_RATELIMIT_PER_MS", "10000")),
