@@ -31,12 +31,12 @@ defmodule Bonfire.Web.Views.HomeLive do
   def mount(_params, _session, socket) do
     debug("mounting HomeLive")
 
-    links =
-      Config.get([:ui, :theme, :instance_welcome, :links], [
-        {"About Bonfire", "https://bonfirenetworks.org/"},
-        {"Contribute", "https://bonfirenetworks.org/contribute/"}
-      ])
-      |> Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links()
+    # links =
+    #   Config.get([:ui, :theme, :instance_welcome, :links], [
+    #     {"About Bonfire", "https://bonfirenetworks.org/"},
+    #     {"Contribute", "https://bonfirenetworks.org/contribute/"}
+    #   ])
+    #   |> Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links()
 
     app = String.capitalize(Bonfire.Application.name_and_flavour())
 
@@ -56,7 +56,7 @@ defmodule Bonfire.Web.Views.HomeLive do
        sidebar_widgets: [
          guests: [
            secondary: [
-             {Bonfire.UI.Common.WidgetCommunityLinksLive, [links: links]}
+            #  {Bonfire.UI.Common.WidgetCommunityLinksLive, [links: links]}
            ]
          ]
        ],
