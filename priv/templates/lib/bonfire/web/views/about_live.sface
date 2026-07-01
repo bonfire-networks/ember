@@ -1,53 +1,33 @@
 <section class="w-full mt-0 grid items-start">
-  <div class={
-    "flex flex-col bg-base-100 gap-2"
-  }>
+  <div class="flex flex-col bg-base-100">
     <div
-      style={"#{Bonfire.UI.Common.NextGenImageLive.background_image_set(Config.get([:ui, :theme, :instance_image], nil))};height: 220px;"}
-      class="bg-center bg-no-repeat bg-cover"
+      style={"#{Bonfire.UI.Common.NextGenImageLive.background_image_set(Config.get([:ui, :theme, :instance_image], nil))};height: 200px;"}
+      class="bg-center bg-no-repeat bg-contain"
     >
     </div>
-    <div class="p-4 flex flex-col gap-3">
-      <h1 class="text-2xl text-base-content text-center font-bold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h1>
-      <h2 class="text-lg text-center font-medium">{rich(Config.get([:ui, :theme, :instance_tagline], "Welcome to #{Bonfire.Application.name_and_flavour()}"))}</h2>
+
+    <div class="py-[18px] border-y-hair border-secondary">
+      <h2 class="text-feature max-w-md mx-auto text-center text-primary font-medium">{rich(
+          Config.get(
+            [:ui, :theme, :instance_tagline],
+            "Welcome to #{Bonfire.Application.name_and_flavour()}"
+          )
+        )}</h2>
     </div>
   </div>
 
-  
-<div class="flex flex-col gap-2">
-  <div x-data="{open: true}" class="bg-base-100 ">
-    <div x-on:click="open = !open" class="p-4 justify-between text-xl font-bold flex items-center gap-4 border-b border-base-content/10">
-      <div class="flex items-center gap-4">
-        <div iconify="eos-icons:network" class="w-6 h-6 text-base-content/80" aria-hidden="true"></div>
-        <span>{l "About"}</span>
-      </div>
-      <button type="button" x-cloak class="btn btn-circle btn-sm btn-ghost" x-show="open">
-        <#Icon iconify="fluent:triangle-down-12-filled" class="w-4 h-4 text-muted" />
-      </button>
-      <button type="button" class="btn btn-circle btn-sm btn-ghost" x-show="!open">
-        <#Icon iconify="fluent:triangle-right-12-filled" class="w-4 h-4 text-muted" />
-      </button>
-    </div>
+  <div class="flex flex-col gap-2">
+    <article class="p-card prose max-w-max">{templated_or_remote_markdown(Config.get([:ui, :theme, :instance_welcome, :description], ""))}</article>
+    <StatelessComponent module={maybe_component(Bonfire.CommunityRules.Web.InstanceRulesDisplayLive, @__context__)} />
 
-    <div x-show="open" x-cloak x-collapse>
-      <article class="p-4 prose prose-sm max-w-max">{templated_or_remote_markdown(Config.get([:ui, :theme, :instance_welcome, :description], ""))}</article>
-    </div>
-
-  </div>
-
-    <StatelessComponent
-      module={maybe_component(Bonfire.CommunityRules.Web.InstanceRulesDisplayLive, @__context__)}
-    />
-
-
-  <div
-    :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
-    class="bg-base-100 "
+    <div
+      :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
+      class="bg-base-100 bonfire-wrapper"
     >
-    <StatelessComponent
-      selected_tab={@selected_tab}
-      module={maybe_component(Bonfire.UI.Me.SettingsViewsLive.InstanceSummaryLive, @__context__)}
-    />
+      <StatelessComponent
+        selected_tab={@selected_tab}
+        module={maybe_component(Bonfire.UI.Me.SettingsViewsLive.InstanceSummaryLive, @__context__)}
+      />
+    </div>
   </div>
-</div>
 </section>
