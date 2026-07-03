@@ -31,7 +31,7 @@ defmodule Bonfire.Web.Views.AboutLive do
        page: "about",
        selected_tab: :about,
 
-      #  page_header: false,
+        page_header: false,
        is_guest?: is_guest?,
        users: users,
        page_info: page_info,

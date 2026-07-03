@@ -22,7 +22,7 @@
 
     <div
       :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
-      class="bg-base-100 bonfire-wrapper"
+      class="bonfire-wrapper !px-0"
     >
       <StatelessComponent
         selected_tab={@selected_tab}
