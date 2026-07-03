@@ -17,7 +17,7 @@
     >
     </div>
     <div class="flex px-4 flex-col gap-3">
-      <h2 class="text-4xl font-semibold">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
+      <h2 class="text-4xl font-medium">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
       <h3 class="md:text-base text-base-content">{Config.get([:ui, :theme, :instance_description])}</h3>
     </div>
 
@@ -41,7 +41,7 @@
     />
 
     <div class="w-full lg:!mt-0">
-      <div class="text-lg font-semibold mt-4 mx-4 mb-2">{l("Front page")}</div>
+      <div class="text-lg font-medium mt-4 mx-4 mb-2">{l("Front page")}</div>
       <StatefulComponent
         module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
         :if={@feed_component_id}
