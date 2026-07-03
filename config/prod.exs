@@ -9,13 +9,12 @@ config :bonfire, Bonfire.Web.Endpoint, cache_static_manifest: "priv/static/cache
 
 config :logger,
   backends: [:console],
-  # Do not print debug messages in production
+  # compile-time floor: debug-level Logger calls are purged from the release entirely (zero runtime cost, but PROD_LOG_LEVEL=debug can't bring them back — rebuild required). Calls that don't go through Logger macros (e.g. some Untangle paths) aren't affected by purging.
+  compile_time_purge_matching: [
+    [level_lower_than: :info]
+  ],
+  # overriden in runtime.exs:
   level: :info
-
-# TODO: to optimise prod:
-# compile_time_purge_matching: [
-#   [level_lower_than: :info]
-# ]
 
 config :bonfire, Bonfire.Web.Endpoint, server: true
 
