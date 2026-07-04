@@ -198,6 +198,9 @@ finch_conn_opts =
         [proxy: {String.to_existing_atom(uri.scheme), uri.host, uri.port, []}]
     end
 
+# Connect (TCP+TLS) timeout for outbound HTTP (federation etc.): without it, connections to dead/blackholed fediverse instances otherwise would hang for Mint's default (~30s), pinning a pool connection + Oban worker each. Healthy servers connect in well under a second, refused connections fail instantly, and deliveries retry via Oban anyway, so failing fast is cheap.
+finch_connect_timeout = String.to_integer(System.get_env("FINCH_CONNECT_TIMEOUT", "5000"))
+
 finch_pools = %{
   :default => [
     # Number of connections to maintain in each pool (HTTP1)
@@ -206,17 +209,18 @@ finch_pools = %{
     count: String.to_integer(System.get_env("FINCH_POOL_COUNT", "1")),
     # 10 min by default
     pool_max_idle_time: String.to_integer(System.get_env("FINCH_POOL_MAX_IDLE_TIME", "600000")),
-    conn_opts: finch_conn_opts
+    conn_opts: [transport_opts: [timeout: finch_connect_timeout]] ++ finch_conn_opts
   ],
+  # NOTE pool option shapes: `size:` is a top-level pool option (it was previously nested inside
+  # transport_opts where it was silently ignored); Mint options like `case_sensitive_headers`/proxy
+  # go in `conn_opts`; only gen_tcp/ssl options (like the connect `timeout`) go in `transport_opts`.
   "https://icons.duckduckgo.com" => [
-    conn_opts: [
-      transport_opts: [size: 8, timeout: to_timeout(second: 3), conn_opts: finch_conn_opts]
-    ]
+    size: 8,
+    conn_opts: [transport_opts: [timeout: to_timeout(second: 3)]] ++ finch_conn_opts
   ],
   "https://www.google.com/s2/favicons" => [
-    conn_opts: [
-      transport_opts: [size: 8, timeout: to_timeout(second: 3), conn_opts: finch_conn_opts]
-    ]
+    size: 8,
+    conn_opts: [transport_opts: [timeout: to_timeout(second: 3)]] ++ finch_conn_opts
   ]
 }
 
@@ -246,12 +250,11 @@ oban_dispatch_cooldown = System.get_env("OBAN_DISPATCH_COOLDOWN_MS", "5") |> Str
 
 # Set OBAN_TESTING=inline to run jobs synchronously on insert (useful for e2e tests — makes federation between servers effectively instant so tests don't need to poll and wait).
 # Set to "manual" to disable automatic job execution entirely (useful for unit tests).
-oban_testing =
-  case System.get_env("OBAN_TESTING") do
-    "inline" -> [testing: :inline]
-    "manual" -> [testing: :manual]
-    _ -> []
-  end
+oban_testing = case System.get_env("OBAN_TESTING") do
+  "inline" -> [testing: :inline]
+  "manual" -> [testing: :manual]
+  _ -> []
+end
 
 config :bonfire, Oban,
   notifier: oban_notifier,
@@ -331,11 +334,7 @@ if oban_testing != [] do
 end
 
 config :activity_pub, :http,
-  user_agent:
-    System.get_env(
-      "AP_USER_AGENT",
-      "#{System.get_env("APP_NAME") || Bonfire.Application.name() || "Bonfire"} federation"
-    )
+    user_agent: System.get_env("AP_USER_AGENT", "#{System.get_env("APP_NAME") || Bonfire.Application.name() || "Bonfire"} federation")
 
 config :activity_pub, ActivityPub.Federator.HTTP.RateLimit,
   scale_ms: String.to_integer(System.get_env("AP_RATELIMIT_PER_MS", "10000")),
@@ -532,8 +531,7 @@ if config_env() != :test do
         System.get_env("DB_STATEMENT_TIMEOUT") ||
           to_string(max(db_query_timeout - 5_000, div(db_query_timeout * 3, 4))),
       # idle-in-transaction timeout: terminates any session with an open transaction that has been idle for longer than the specified amount of time. This allows any locks held by that session to be released and the connection slot to be reused. WARNING: this seems to also apply to migrations when running in a release, so needs to be high enough for DB migrations and fixtures to run.
-      idle_in_transaction_session_timeout:
-        System.get_env("DB_IDLE_TRANSACTION_TIMEOUT", "120000"),
+      idle_in_transaction_session_timeout: System.get_env("DB_IDLE_TRANSACTION_TIMEOUT", "120000"),
       # JIT compiles query expressions via LLVM when the planner's cost ESTIMATE crosses a threshold — a win for long analytics scans, but a pure per-execution CPU tax (often 100ms+) on complex-but-fast OLTP queries like boundarised feeds/threads, whose 20-join shape inflates estimates. Off per-connection so it applies on any Postgres, including shared/managed ones.
       jit: System.get_env("DB_JIT", "off")
     ]
