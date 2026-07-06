@@ -48,6 +48,9 @@ defmodule Bonfire.Application do
         Bonfire.UI.Common.Presence,
         # Page profiler storage (for LiveDashboard profiler page)
         Bonfire.UI.Common.PageTimingStorage,
+        # Overload sampler: publishes the shared load level the shedding plugs read
+        # (after PubSub, which its transition broadcasts use; ~free in :off mode)
+        Bonfire.Common.Overload,
         # Log streaming lifecycle/filter (for LiveDashboard logs page)
         Bonfire.UI.Common.LogStreamManager,
         # Persistent Data Services

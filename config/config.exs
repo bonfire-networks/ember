@@ -64,9 +64,10 @@ config :bonfire_common,
   localisation_path: "priv/localisation"
 
 endpoint_live_view = [
-  # the time of inactivity allowed in the LiveView before compressing its own memory and state. Defaults to 15000ms (15 seconds)
+  # the time of inactivity allowed in the LiveView before compressing its own memory and state (LV's own default is 15000ms).
+  # Compile-time fallback only: the `LV_HIBERNATE_AFTER` env read lives in runtime.exs (so it works in releases), and the value is also live-tunable via the instance-tuning knob.
   # NOTE: see also `LV_TIMEOUT` and `LV_FULLSWEEP_AFTER` for the socket in the endpoint module
-  hibernate_after: String.to_integer(System.get_env("LV_HIBERNATE_AFTER", "7000")),
+  hibernate_after: 7_000,
   signing_salt: System.get_env("SIGNING_SALT")
   # ^ should be overridden at runtime
 ]
