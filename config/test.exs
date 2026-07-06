@@ -130,3 +130,7 @@ config :bonfire_common, Bonfire.Common.Settings.Calm.InstanceTuning,
     postgres: Bonfire.Common.Settings.Calm.InstanceTuning.DisabledApplier,
     elixir: Bonfire.Common.Settings.Calm.InstanceTuning.DisabledApplier
   ]
+
+# the app-tree Overload sampler must not tick in tests (real run-queue samples would race the
+# per-test sampler instances, which use their own process name + injected samples)
+config :bonfire_common, Bonfire.Common.Overload, mode: :off
