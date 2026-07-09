@@ -812,6 +812,12 @@ config :bonfire_data_identity, User,
          join_keys: [shared_user_id: :id, account_id: :id]
        )
 
+       # the specific users behind each co-manager link (the invited co-managers + creator), for the roster; never the account's other personas
+       many_to_many(:caretaker_users, unquote(User),
+         join_through: "bonfire_data_shared_user_accounts",
+         join_keys: [shared_user_id: :id, user_id: :id]
+       )
+
        # has_many :account, through: [:accounted, :account] # this is private info, do not expose
        # has_one :geolocation, Bonfire.Geolocate.Geolocation # enable if using Geolocate extension
      end)

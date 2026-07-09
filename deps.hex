@@ -77,7 +77,7 @@ faker_fork = "~> 0.19"
 # surface_catalogue = "~> 0.1.0"  
 
 # Language 
-text = "~> 0.6.1"
+text = "~> 0.6.2"
 text_corpus_udhr = "~> 0.1.0"
 
 # Version overrides
