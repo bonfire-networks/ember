@@ -73,7 +73,7 @@ config :bonfire, :ui,
     "OpenDyslexic"
   ],
   themes_dark: [
-    "dark",
+    "dark"
     # "synthwave",
     # "forest",
     # "dracula",
@@ -91,7 +91,7 @@ config :bonfire, :ui,
     # "garden"
   ],
   themes_light: [
-    "light",
+    "light"
     # "silk",
     # "caramellatte",
     # "nord",
