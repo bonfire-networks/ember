@@ -26,6 +26,10 @@ end
 
 config :bonfire_common, Bonfire.Common.AntiSpam, service: Bonfire.Common.AntiSpam.Mock
 
+# Epoch-zero ID cutoffs: tests run NEW-format behaviour by default, like a fresh instance (every generated id sorts after this sentinel). Boot-time auto-recording is skipped in test env; a test covering LEGACY behaviour sets a far-future cutoff instead — see the `Bonfire.Common.Settings.IdCutoffs` moduledoc (and ulid_actor_ids_test.exs for an example).
+config :bonfire_common, Bonfire.Common.Settings.IdCutoffs,
+  recorded: [ulid_actor_ids_since: "00000000000000000000000000"]
+
 # use DB based search in tests by default
 config :bonfire_search, adapter: nil
 

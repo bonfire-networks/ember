@@ -545,6 +545,7 @@ config :needle, Pointer,
        has_one(:message, unquote(Message), foreign_key: :id)
        has_one(:category, unquote(Category), foreign_key: :id)
        has_one(:geolocation, unquote(Geolocation), foreign_key: :id)
+
        # optional shared-user mixin (User-only), declared here too so heterogeneous preloads that include `:shared_user` (e.g. formatting a batch of actors for outgoing federation) don't raise an ArgumentError on non-User pointers and get silently dropped
        has_one(:shared_user, Bonfire.Data.SharedUser, foreign_key: :id)
        # mixins
@@ -1321,9 +1322,13 @@ config :bonfire_files, Media,
          foreign_key: :newest_activity_id
        )
 
-       # [multi]mixins 
+       # [multi]mixins
        # , :boost_count, :like_count
-       unquote_splicing(common.([:controlled, :created, :activity, :caretaker, :peered]))
+       # :replied + :tags so media can participate in reply threading and mention/tag people
+       # (e.g. Feeds.target_feeds preloads both when publishing)
+       unquote_splicing(
+         common.([:controlled, :created, :activity, :caretaker, :peered, :replied, :tags])
+       )
      end)
 
 config :bonfire_tag, Tagged,
