@@ -30,7 +30,7 @@ defmodule Bonfire.Web.Views.AboutLive do
      |> assign(
        page: "about",
        selected_tab: :about,
-        page_header: false,
+       no_header: true,
        is_guest?: is_guest?,
        users: users,
        page_info: page_info,
