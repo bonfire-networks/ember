@@ -1,12 +1,8 @@
 <div class="lg:p-0 w-full h-full flex-1 flex flex-col max-w-[596px] mx-auto">
-  <div class="flex justify-end bg-primary px-4 mb-4 rounded-b-xl">
-    <div :if={!@current_user_id} class="flex gap-3 py-4">
-      <LinkLive to={path(:login, :index)} class="btn btn-ds-outline" parent_id="layout">{l("Log in")}</LinkLive>
-
-      {#if Bonfire.Me.Accounts.instance_is_invite_only?() != true}
-        <LinkLive to={path(:signup)} class="btn btn-ds-outline" parent_id="layout">{l("Create account")}</LinkLive>
-      {/if}
-    </div>
+  <div class="flex bg-primary mb-4 rounded-b-xl">
+    <h1 class="text-feature  p-card  font-medium text-primary-content">
+        {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}
+      </h1>
   </div>
 
   {!-- <section class="mb-4 flex flex-col gap-6 border border-secondary shadow-lg bg-base-100 pb-8 rounded-box">
@@ -41,7 +37,7 @@
     />
 
     <div class="w-full lg:!mt-0">
-      <div class="text-lg font-medium mt-4 mx-4 mb-2">{l("Front page")}</div>
+      <div class="text-lg font-medium mt-4 mx-4 mb-2">{l("Recent Activities")}</div>
       <StatefulComponent
         module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
         :if={@feed_component_id}
