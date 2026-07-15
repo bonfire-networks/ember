@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  {!-- <section class="mb-4 flex flex-col gap-6 border border-base-content/10 shadow-lg bg-base-100 pb-8 rounded-box">
+  {!-- <section class="mb-4 flex flex-col gap-6 border border-secondary shadow-lg bg-base-100 pb-8 rounded-box">
     <div
       :if={Config.get([:ui, :theme, :instance_image], nil)}
       style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
