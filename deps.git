@@ -102,7 +102,7 @@ voodoo = "https://github.com/bonfire-networks/voodoo"
 
 # surface_catalogue = "https://github.com/surface-ui/surface_catalogue"  # Testing a UI component library 
 
-# paper_trail = "https://github.com/bonfire-networks/paper_trail#with-pointers"
+paper_trail = "https://github.com/bonfire-networks/paper_trail#runtime-configured-types"
 
 # source_inspector = "https://github.com/tmbb/source_inspector"
 
