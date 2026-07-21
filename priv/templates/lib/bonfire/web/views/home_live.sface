@@ -1,8 +1,8 @@
 <div class="lg:p-0 w-full h-full flex-1 flex flex-col max-w-[596px] mx-auto">
-  <div class="flex bg-primary mb-4 rounded-b-xl">
-    <h1 class="text-feature  p-card  font-medium text-primary-content">
+  <div class="flex bg-primary mb-4 py-card rounded-b-xl">
+    <!-- <h1 class="text-feature  p-card  font-medium text-primary-content">
         {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}
-      </h1>
+      </h1> -->
   </div>
 
   {!-- <section class="mb-4 flex flex-col gap-6 border border-secondary shadow-lg bg-base-100 pb-8 rounded-box">
