@@ -38,7 +38,7 @@
     />
 
     <div class="w-full lg:!mt-0">
-      <div class="text-lg font-medium mt-4 mx-4 mb-2">{l("Recent Activities")}</div>
+      <div class="text-xs uppercase text-muted mx-4 mb-2">{l("Recent Activities")}</div>
       <StatefulComponent
         module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
         :if={@feed_component_id}
