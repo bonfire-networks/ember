@@ -1,5 +1,5 @@
 <div class="lg:p-0 w-full h-full flex-1 flex flex-col max-w-[596px] mx-auto">
-  <div class="flex bg-primary mb-4 py-card rounded-b-xl">
+  <div class="flex bg-primary mb-4 h-[75px] rounded-b-xl">
     <!-- <h1 class="text-feature  p-card  font-medium text-primary-content">
         {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}
       </h1> -->
@@ -30,7 +30,8 @@
     </div>
   </section> --}
 
-  <section class="">
+  <section class="pl-2">
+    <div class="px-2 text-xs uppercase text-muted">{l("Spotlight")}</div>
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive, @__context__)}
       id="instance_pinned_widget"
