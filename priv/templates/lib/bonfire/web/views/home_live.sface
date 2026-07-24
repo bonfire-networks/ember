@@ -31,10 +31,10 @@
   </section> --}
 
   <section class="pl-2">
-    <div class="px-2 text-xs uppercase text-muted">{l("Spotlight")}</div>
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive, @__context__)}
       id="instance_pinned_widget"
+      title={l("Spotlight")}
     />
 
     <div class="w-full lg:!mt-0">
