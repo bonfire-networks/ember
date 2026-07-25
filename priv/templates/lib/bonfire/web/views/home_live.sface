@@ -35,6 +35,7 @@
       module={maybe_component(Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive, @__context__)}
       id="instance_pinned_widget"
       title={l("Spotlight")}
+      wrapper_class="p-card border-t-hair border-secondary"
     />
 
     <div class="w-full lg:!mt-0">
