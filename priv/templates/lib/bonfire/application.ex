@@ -43,10 +43,8 @@ defmodule Bonfire.Application do
         Needle.Tables,
         # Bonfire.Common.ConfigSettingsRegistry, # ConfigSettingsRegistry can just be cached on first run instead
         Bonfire.Common.Settings.LoadInstanceConfig,
-        # record per-instance chronological ID cutoffs (e.g. :ulid_actor_ids_since) once, at
-        # the first boot where a feature declaring one is present (must run after
-        # LoadInstanceConfig so already-recorded cutoffs are visible in Config)
-        Bonfire.Common.Settings.IdCutoffs,
+        # one-shot startup tasks registered by any extension (e.g. recording per-instance ID cutoffs, one-off data rollouts), runs after LoadInstanceConfig so instance Settings are in Config, and off the boot-blocking path (see `Bonfire.Common.StartupTasks`)
+        Bonfire.Common.StartupTasks,
         # PubSub
         {Phoenix.PubSub, [name: Bonfire.Common.PubSub, adapter: Phoenix.PubSub.PG2]},
         Bonfire.UI.Common.Presence,
