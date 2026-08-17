@@ -179,13 +179,13 @@ defmodule Bonfire.Web.Router.Routes do
                 long_running_queries: [threshold: "400 milliseconds"]
               ],
               metrics: Bonfire.Common.Telemetry.Metrics,
-              metrics_history:
-                if(Bonfire.Common.Config.env() == :dev,
-                  do: {Bonfire.Common.Telemetry.Storage, :metrics_history, []}
-                ),
+              # Storage decides for itself whether it collects anything (off in prod by default),
+              # so charts simply open empty rather than the page losing the callback entirely
+              metrics_history: {Bonfire.Common.Telemetry.Storage, :metrics_history, []},
               additional_pages: [
                 load_test: Bonfire.Web.LoadTestDashboard,
                 page_profiler: Bonfire.UI.Common.ProfilerDashboardPage,
+                process_cpu: Bonfire.UI.Common.ProcessCpuDashboardPage,
                 app_logs: Bonfire.UI.Common.LogStreamPage,
                 #  will be overidden by ObanWeb if available
                 oban: Bonfire.Web.ObanDashboard,

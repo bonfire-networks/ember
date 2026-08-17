@@ -108,6 +108,7 @@ defmodule Bonfire.Application do
   def apps_after(test_instance? \\ false),
     do:
       maybe_oban(test_instance?) ++
+        maybe_telemetry_storage() ++
         maybe_desktop_webapp()
 
   # ++ [
@@ -215,14 +216,22 @@ defmodule Bonfire.Application do
   # end
 
   def applications(env, _, _any, as_desktop) when env in [:dev, :test] do
-    if Code.ensure_loaded?(CircularBuffer) do
-      [
-        # simple ETS based storage for non-prod
-        {Bonfire.Common.Telemetry.Storage, Bonfire.Common.Telemetry.Metrics.metrics()}
-      ]
+    applications(nil, nil, nil, as_desktop) ++ [Bonfire.Common.Localise.POAnnotator]
+  end
+
+  @doc """
+  In-memory history for LiveDashboard's metric charts, when switched on.
+
+  Available in every env now, but `Bonfire.Common.Telemetry.Storage` defaults to disabled in prod,
+  since the only thing that reads it is chart backfill. Not starting it at all when off means it
+  costs nothing rather than nearly nothing.
+  """
+  def maybe_telemetry_storage do
+    if Code.ensure_loaded?(CircularBuffer) and Bonfire.Common.Telemetry.Storage.enabled?() do
+      [{Bonfire.Common.Telemetry.Storage, Bonfire.Common.Telemetry.Metrics.metrics()}]
     else
       []
-    end ++ applications(nil, nil, nil, as_desktop) ++ [Bonfire.Common.Localise.POAnnotator]
+    end
   end
 
   # running as desktop app
