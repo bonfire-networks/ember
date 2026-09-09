@@ -114,8 +114,3 @@
   --depth: 0.8;
   --noise: 0.05;
 }
-
-/* Override the daisyUI themes configuration for this flavor */
-@plugin "daisyui" {
-  themes: light --default, dark --prefersdark, ember, ember-dark;
-}
