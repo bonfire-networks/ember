@@ -72,40 +72,8 @@ config :bonfire, :ui,
     "Luciole",
     "OpenDyslexic"
   ],
-  themes_dark: [
-    "dark"
-    # "synthwave",
-    # "forest",
-    # "dracula",
-    # "aqua",
-    # "luxury",
-    # "night",
-    # "coffee",
-    # "dim",
-    # "sunset",
-    # "abyss",
-    # "retro",
-    # "cyberpunk",
-    # "valentine",
-    # "halloween",
-    # "garden"
-  ],
-  themes_light: [
-    "light"
-    # "silk",
-    # "caramellatte",
-    # "nord",
-    # "cmyk",
-    # "acid",
-    # "autumn",
-    # "lofi",
-    # "pastel",
-    # "fantasy",
-    # "cupcake",
-    # "bumblebee",
-    # "emerald",
-    # "corporate"
-  ],
+  themes_dark: ["dark"],
+  themes_light: ["light"],
   show_trending_tags: [
     disabled: false,
     for_last_x_days: 30,
