@@ -89,7 +89,8 @@ defmodule Bonfire.RuntimeConfig do
             # NOTE: the following ones are here only to avoid executing unless the rest is valid
 
             # summarised by an activity (possibly appearing in feeds),
-            {Bonfire.Social.Acts.Activity, on: :post},
+            # `enqueue_notify: false` because `Bonfire.Social.Acts.LivePush` below notifies after the transaction commits, where a failure can be reported. Drop it and the write path notifies instead, from inside the transaction and silently. Set it only in an epic that has that Act, or nobody is notified
+            {Bonfire.Social.Acts.Activity, on: :post, enqueue_notify: false},
             # {Bonfire.Social.Acts.Feeds,       on: :post},
 
             # assign a caretaker,
