@@ -158,7 +158,6 @@ defmodule Bonfire.Application do
   def name_and_version, do: "#{name_and_flavour()} #{version()}"
   def version, do: config()[:version]
   def repository, do: project()[:sources_url] || project()[:source_url]
-  def required_deps, do: project()[:required_deps]
 
   # NOTE: bellow was moved to `Bonfire`
 
