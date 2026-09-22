@@ -174,7 +174,7 @@ defmodule Bonfire.Application do
     # |> IO.inspect(label: "SystemMonitor is set up")
 
     # Application.get_env(:bonfire, Bonfire.Web.Endpoint, [])
-    # |> IO.inspect()
+    # 
 
     applications(
       @env,
@@ -184,7 +184,7 @@ defmodule Bonfire.Application do
       System.get_env("AS_DESKTOP_APP") in ["1", "true"]
     )
     |> Enum.reject(&is_nil/1)
-    |> io_inspect("Application supervision tree")
+    |> IO.inspect(label: "Application supervision tree")
     |> Supervisor.start_link(strategy: :one_for_one, name: @sup_name)
   end
 
