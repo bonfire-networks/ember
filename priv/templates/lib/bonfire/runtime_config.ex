@@ -78,13 +78,14 @@ defmodule Bonfire.RuntimeConfig do
             # with appropriate boundaries established (depends on Threaded and PostContents),
             {Bonfire.Boundaries.Acts.SetBoundaries, on: :post}
           ],
+
+          # with extracted tags/mentions fully hooked up (depends on PostContents, and optionally on URLPreviews). On its own rather than beside Activity, since an Act in a parallel group cannot see what the others assign, and Activity needs the groups this resolves (`categories_auto_boost`) to notify whoever enabled a bell on them
+          {Bonfire.Tag.Acts.Tag, on: :post},
+
           # These steps are run in parallel and require the outputs of the previous ones
           [
             # possibly with uploaded/linked media (optionally depends on URLPreviews),
             {Bonfire.Files.Acts.AttachMedia, on: :post},
-
-            # with extracted tags/mentions fully hooked up (depends on PostContents, and optionally on URLPreviews),
-            {Bonfire.Tag.Acts.Tag, on: :post},
 
             # NOTE: the following ones are here only to avoid executing unless the rest is valid
 
