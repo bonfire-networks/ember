@@ -73,17 +73,17 @@ defmodule Bonfire.RuntimeConfig do
             {Bonfire.Files.Acts.URLPreviews, on: :post},
 
             # maybe set as sensitive (depends on PostContents),
-            {Bonfire.Social.Acts.Sensitivity, on: :post},
-
-            # with appropriate boundaries established (depends on Threaded and PostContents),
-            {Bonfire.Boundaries.Acts.SetBoundaries, on: :post}
+            {Bonfire.Social.Acts.Sensitivity, on: :post}
           ],
 
-          # with extracted tags/mentions fully hooked up (depends on PostContents, and optionally on URLPreviews). On its own rather than beside Activity, since an Act in a parallel group cannot see what the others assign, and Activity needs the groups this resolves (`categories_auto_boost`) to notify whoever enabled a bell on them
+          # with extracted tags/mentions fully hooked up (depends on PostContents, and optionally on URLPreviews). On its own rather than beside Activity, since an Act in a parallel group cannot see what the others assign, and Activity and SetBoundaries need what this resolves: the groups (`categories_auto_boost`) to notify whoever enabled a bell on them, and the ACLs that come with publishing in one (`published_in_acl_ids`)
           {Bonfire.Tag.Acts.Tag, on: :post},
 
           # These steps are run in parallel and require the outputs of the previous ones
           [
+            # with appropriate boundaries established (depends on Threaded and PostContents, and on Tag for the group's ACLs),
+            {Bonfire.Boundaries.Acts.SetBoundaries, on: :post},
+
             # possibly with uploaded/linked media (optionally depends on URLPreviews),
             {Bonfire.Files.Acts.AttachMedia, on: :post},
 

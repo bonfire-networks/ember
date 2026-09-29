@@ -896,7 +896,8 @@ config :bonfire_data_social, APActivity,
             :profile,
             :character,
             :post_content,
-            :feed_publishes
+            :feed_publishes,
+            :tree
           ])
         ))
 
