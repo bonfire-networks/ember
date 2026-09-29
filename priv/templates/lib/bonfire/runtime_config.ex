@@ -76,7 +76,7 @@ defmodule Bonfire.RuntimeConfig do
             {Bonfire.Social.Acts.Sensitivity, on: :post}
           ],
 
-          # with extracted tags/mentions fully hooked up (depends on PostContents, and optionally on URLPreviews). On its own rather than beside Activity, since an Act in a parallel group cannot see what the others assign, and Activity and SetBoundaries need what this resolves: the groups (`categories_auto_boost`) to notify whoever enabled a bell on them, and the ACLs that come with publishing in one (`published_in_acl_ids`)
+          # with extracted tags/mentions fully hooked up (depends on PostContents, and optionally on URLPreviews). On its own rather than beside Activity, since an Act in a parallel group cannot see what the others assign, and Activity and SetBoundaries need what this resolves: the groups (`categories_auto_boost`) to notify whoever enabled a bell on them, and the boundary options that come with publishing in one (`published_in_boundary_options`)
           {Bonfire.Tag.Acts.Tag, on: :post},
 
           # These steps are run in parallel and require the outputs of the previous ones
