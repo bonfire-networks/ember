@@ -1,70 +1,59 @@
-<div class="lg:p-0 w-full h-full flex-1 flex flex-col max-w-[596px] mx-auto">
-  <div style="height: 75px" class="flex bg-primary mb-4 h-[75px] rounded-b-xl">
-    <!-- <h1 class="text-feature  p-card  font-medium text-primary-content">
-        {Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}
-      </h1> -->
-  </div>
+<Bonfire.UI.Common.GuestBoardLive page={:home}>
+  {!-- the instance name is shown in the board header; this gives the page its one top-level heading --}
+  <h1 class="sr-only">{Bonfire.UI.Common.GuestBoardLive.instance_name()}</h1>
 
-  {!-- <section class="mb-4 flex flex-col gap-6 border border-secondary shadow-lg bg-base-100 pb-8 rounded-box">
-    <div
-      :if={Config.get([:ui, :theme, :instance_image], nil)}
-      style={"background-image: url(#{Config.get([:ui, :theme, :instance_image], nil)})"}
-      class="bg-center bg-no-repeat h-banner bg-cover bg-white w-full rounded-t-box"
-    >
-    </div>
-    <div class="flex px-4 flex-col gap-3">
-      <h2 class="text-4xl font-medium">{Config.get([:ui, :theme, :instance_name], Bonfire.Application.name_and_flavour())}</h2>
-      <h3 class="md:text-base text-base-content">{Config.get([:ui, :theme, :instance_description])}</h3>
-    </div>
-
-    <div class="flex items-center justify-center px-4 gap-4">
-      <LinkLive to={~p"/about"} class="btn btn-sm lg:btn-md btn-secondary btn-soft flex-1">
-        {l("About")}
-      </LinkLive>
-      <LinkLive to={~p"/conduct"} class="btn btn-sm lg:btn-md btn-secondary btn-soft flex-1">
-        {l("Conduct")}
-      </LinkLive>
-      <LinkLive to={~p"/users"} class="btn btn-sm lg:btn-md btn-secondary btn-soft flex-1">
-        {l("Members")}
-      </LinkLive>
-    </div>
-  </section> --}
-
-  <section class="">
+  <section :if={@show_spotlight?} id="guest-spotlight">
+    {!-- the `!`s beat the Stream preset's own Spotlight insets and borders (interface.css), so the board gutter applies --}
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive, @__context__)}
       id="instance_pinned_widget"
       title={l("Spotlight")}
-      wrapper_class="p-card border-t-hair border-secondary"
+      subtitle={l("Pinned by the community")}
+      wrapper_class="w-full !border-t !border-base-content/14 !px-0 pb-5.5 pt-4.5"
+      title_class="gap-3 !px-5 pb-3.5 sm:!px-6"
+      heading_class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold"
+      subtitle_class="mt-0.5 text-xs text-muted theme-light:text-xs"
+      button_class="size-11 border-base-content/14 bg-transparent text-primary"
+      carousel_class="px-5 scroll-px-5 sm:px-6 sm:scroll-px-6"
+      card_class="rounded-box bg-(--stream-surface) p-4 [--activity-padding:0] sm:p-5"
+      visible_items={1.3}
+      visible_items_mobile={1.15}
+      hide_empty
     />
-
-    <div class="w-full lg:!mt-0">
-      <div class="text-xs uppercase text-muted mx-4 mb-2">{l("Recent Activities")}</div>
-      <StatefulComponent
-        module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
-        :if={@feed_component_id}
-        id={@feed_component_id}
-        hide_filters
-        feed_id={@feed_id}
-        feed_name={@feed_name}
-        feed_ids={@feed_ids}
-        top_page="Explore"
-        page_title={@page_title}
-        feed={@feed}
-        page_info={@page_info}
-        loading={@loading}
-        time_limit={30}
-        current_url="/feed/"
-      />
-      <!-- cache_strategy={:guest_cache} -->
-    </div>
-    {!-- <div class="lg:flex hidden flex-col gap-4 w-full col-span-2">
-      <!-- <StatelessComponent module={maybe_component(Bonfire.UI.Common.WidgetInstanceInfoLive, @__context__)} /> -->
-      <StatelessComponent module={maybe_component(Bonfire.Tag.Web.WidgetTagsLive, @__context__)} />
-      <StatelessComponent module={maybe_component(Bonfire.UI.Me.WidgetAdminsLive, @__context__)} />
-      <div>
-        <Bonfire.UI.Common.ImpressumLive />
-      </div>
-    </div> --}
   </section>
-</div>
+
+  <section :if={@show_groups?} id="guest-groups">
+    <StatefulComponent
+      module={maybe_component(Bonfire.UI.Groups.WidgetGroupsCarouselLive, @__context__)}
+      id="guest_groups_widget"
+      title={l("Groups")}
+      subtitle={l("Public spaces in this community")}
+    />
+  </section>
+
+  {!-- activities carry the board gutter as their own padding, so no wrapper adds a second one --}
+  <section
+    class="[--activity-padding:22px_20px] sm:[--activity-padding:22px_24px]"
+    aria-labelledby="guest-feed-title"
+  >
+    <div class="border-y border-base-content/14 bg-base-content/4 px-5 py-3 sm:px-6 theme-light:bg-base-200">
+      <h2 id="guest-feed-title" class="text-sm font-medium leading-snug">{l("Recent activity")}</h2>
+    </div>
+    <StatefulComponent
+      module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
+      :if={@feed_component_id}
+      id={@feed_component_id}
+      hide_filters
+      feed_id={@feed_id}
+      feed_name={@feed_name}
+      feed_ids={@feed_ids}
+      top_page="Explore"
+      page_title={@page_title}
+      feed={@feed}
+      page_info={@page_info}
+      loading={@loading}
+      time_limit={30}
+      current_url="/feed/"
+    />
+  </section>
+</Bonfire.UI.Common.GuestBoardLive>

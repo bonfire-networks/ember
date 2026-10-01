@@ -34,15 +34,12 @@ defmodule Bonfire.Web.Views.AboutLive do
        is_guest?: is_guest?,
        users: users,
        page_info: page_info,
-      #  without_sidebar: is_guest?,
-      #  without_secondary_widgets: is_guest?,
-      #  no_header: is_guest?,
        page_title: l("About "),
        sidebar_widgets: [
          guests: [
            secondary: [
-            #  {Bonfire.Tag.Web.WidgetTagsLive, []},
-            #  {Bonfire.UI.Me.WidgetAdminsLive, []}
+             #  {Bonfire.Tag.Web.WidgetTagsLive, []},
+             #  {Bonfire.UI.Me.WidgetAdminsLive, []}
            ]
          ],
          users: [
@@ -52,7 +49,24 @@ defmodule Bonfire.Web.Views.AboutLive do
            ]
          ]
        ]
-     )}
+     )
+     # guests get the public board; About always hides the page header
+     |> assign(Bonfire.UI.Common.GuestBoardLive.layout_assigns(is_guest?))
+     |> assign(no_header: true)
+     |> assign_guest_board(is_guest?)}
+  end
+
+  @doc "Loads shared About content once so empty rules and administrator sections can be hidden."
+  def assign_guest_board(socket, _is_guest?) do
+    rules_sections =
+      maybe_apply(Bonfire.CommunityRules, :get_instance_rules_sections, [], fallback_return: [])
+
+    assign(socket,
+      rules_sections: rules_sections,
+      has_rules?:
+        maybe_apply(Bonfire.CommunityRules, :any_rules?, [rules_sections], fallback_return: false),
+      admins: Bonfire.UI.Me.WidgetAdminsLive.list_visible(assigns(socket))
+    )
   end
 
   def handle_event("load_more", attrs, socket) do

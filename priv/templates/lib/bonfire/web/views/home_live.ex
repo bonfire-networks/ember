@@ -16,16 +16,18 @@ defmodule Bonfire.Web.Views.HomeLive do
   def on_mount(:pre_mount, _params, _session, socket) do
     if current_user = current_user_or_id(socket) do
       debug("redir to user dashboard")
-    case Settings.get([:ui, :homepage_redirect_to], nil, current_user) do
-      url when is_binary(url) ->
-        {:halt, redirect_to(socket, url, fallback: "/dashboard", replace: false)}
-      _ ->
-        {:halt, redirect_to(socket, "/dashboard", replace: false)}
+
+      case Settings.get([:ui, :homepage_redirect_to], nil, current_user) do
+        url when is_binary(url) ->
+          {:halt, redirect_to(socket, url, fallback: "/dashboard", replace: false)}
+
+        _ ->
+          {:halt, redirect_to(socket, "/dashboard", replace: false)}
+      end
+    else
+      debug("only reached for guests, continues to regular mount to show guest homepage")
+      {:cont, socket}
     end
-  else
-    debug("only reached for guests, continues to regular mount to show guest homepage")
-    {:cont, socket}
-  end
   end
 
   def mount(_params, _session, socket) do
@@ -48,15 +50,15 @@ defmodule Bonfire.Web.Views.HomeLive do
      |> assign(
        page: "home",
        is_guest?: true,
-       #  without_sidebar: true,
-       #  without_secondary_widgets: true,
-       no_header: true,
+       show_spotlight?:
+         include?(:instance_pinned, Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive, socket),
+       show_groups?: include?(:groups, Bonfire.UI.Groups.WidgetGroupsCarouselLive, socket),
        selected_tab: :home,
        page_title: app,
        sidebar_widgets: [
          guests: [
            secondary: [
-            #  {Bonfire.UI.Common.WidgetCommunityLinksLive, [links: links]}
+             #  {Bonfire.UI.Common.WidgetCommunityLinksLive, [links: links]}
            ]
          ]
        ],
@@ -69,7 +71,8 @@ defmodule Bonfire.Web.Views.HomeLive do
        feed_component_id: nil,
        page_info: nil
        #
-     )}
+     )
+     |> assign(Bonfire.UI.Common.GuestBoardLive.layout_assigns(true))}
   end
 
   # def handle_params(%{"tab" => _tab} = params, url, socket) do
@@ -105,6 +108,12 @@ defmodule Bonfire.Web.Views.HomeLive do
         )
       )
     }
+  end
+
+  @doc "Whether the guest home includes an optional section: its component's extension is enabled and the instance's `[HomeLive, :include, key]` setting (default on) isn't turned off."
+  def include?(key, component, socket) do
+    module_enabled?(component, socket) and
+      Settings.get([__MODULE__, :include, key], true, assigns(socket)) != false
   end
 
   # # render_sface_or_native()

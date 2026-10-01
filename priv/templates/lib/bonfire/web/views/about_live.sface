@@ -1,33 +1,27 @@
-<section class="w-full mt-0 grid items-start">
-  <div class="flex flex-col bg-base-100">
+{#if @is_guest?}
+  <Bonfire.UI.Common.GuestBoardLive page={:about}>
+    <Bonfire.Web.Components.AboutContentLive
+      is_guest?={@is_guest?}
+      selected_tab={@selected_tab}
+      has_rules?={@has_rules?}
+      rules_sections={@rules_sections}
+      admins={@admins}
+    />
+  </Bonfire.UI.Common.GuestBoardLive>
+{#else}
+  <div id="member-about" class="min-w-0 bg-base-100 font-(family-name:--font-inter) text-sm leading-relaxed text-base-content">
     <div
-      style={"#{Bonfire.UI.Common.NextGenImageLive.background_image_set(Config.get([:ui, :theme, :instance_image], nil))};height: 200px;"}
-      class="bg-center bg-no-repeat bg-contain"
-    >
-    </div>
-
-    <div class="py-[18px] border-y-hair border-secondary">
-      <h2 class="text-feature max-w-md mx-auto text-center text-primary font-medium">{rich(
-          Config.get(
-            [:ui, :theme, :instance_tagline],
-            "Welcome to #{Bonfire.Application.name_and_flavour()}"
-          )
-        )}</h2>
-    </div>
+      data-role="about-banner"
+      class="h-35 bg-base-content/4 bg-cover bg-center"
+      aria-hidden="true"
+      style={Bonfire.UI.Common.NextGenImageLive.background_image_set(Bonfire.UI.Common.GuestBoardLive.banner_image())}
+    />
+    <Bonfire.Web.Components.AboutContentLive
+      is_guest?={@is_guest?}
+      selected_tab={@selected_tab}
+      has_rules?={@has_rules?}
+      rules_sections={@rules_sections}
+      admins={@admins}
+    />
   </div>
-
-  <div class="flex flex-col gap-2">
-    <article class="p-card prose max-w-max">{templated_or_remote_markdown(Config.get([:ui, :theme, :instance_welcome, :description], ""))}</article>
-    <StatelessComponent module={maybe_component(Bonfire.CommunityRules.Web.InstanceRulesDisplayLive, @__context__)} />
-
-    <div
-      :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
-      class="bonfire-wrapper !px-0"
-    >
-      <StatelessComponent
-        selected_tab={@selected_tab}
-        module={maybe_component(Bonfire.UI.Me.SettingsViewsLive.InstanceSummaryLive, @__context__)}
-      />
-    </div>
-  </div>
-</section>
+{/if}

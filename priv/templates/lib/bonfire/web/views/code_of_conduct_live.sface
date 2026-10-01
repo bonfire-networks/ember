@@ -1,8 +1,14 @@
-<div class="w-full bg-base-100">
-  <Bonfire.UI.Common.WidgetTextLive text={e(
-    @terms,
-    l(
-      "The instance operator(s) have not yet added a code of conduct. Please use your best judgment, and consult the [code of conduct of the Bonfire project](https://bonfirenetworks.org/conduct) as a reference."
-    )
-  )} />
-</div>
+{#if @is_guest?}
+  <Bonfire.UI.Common.GuestBoardLive page={:conduct}>
+    <header class="pb-4 pt-7 px-5 sm:px-6">
+      <h1 data-role="page-title" class="text-2xl font-medium leading-tight tracking-tight wrap-anywhere sm:text-3xl theme-light:font-semibold">{l("Code of conduct")}</h1>
+    </header>
+    <div id="conduct-body" class="pb-8 prose max-w-none px-5 text-sm leading-relaxed text-base-content/92 wrap-anywhere sm:px-6 sm:text-base prose-headings:text-base-content prose-h2:text-xl prose-h2:font-medium prose-a:text-primary *:max-w-2xl *:first:mt-0">
+      {templated_or_remote_markdown(@terms, nil)}
+    </div>
+  </Bonfire.UI.Common.GuestBoardLive>
+{#else}
+  <div class="w-full bg-base-100">
+    <Bonfire.UI.Common.WidgetTextLive text={@terms} />
+  </div>
+{/if}

@@ -1,0 +1,157 @@
+    <article aria-labelledby="about-tagline">
+      <header class="pb-5 pt-7 px-5 sm:px-6">
+        <span
+          data-role="about-eyebrow"
+          class="text-xs font-bold uppercase tracking-wider text-primary"
+        >{l("About %{name}", name: Bonfire.UI.Common.GuestBoardLive.instance_name())}</span>
+        <h1
+          id="about-tagline"
+          class="mt-3 max-w-xl text-balance text-2xl font-medium leading-snug tracking-tight text-primary wrap-anywhere sm:text-3xl *:m-0 theme-light:font-semibold theme-light:text-base-content"
+        >{rich(
+            Config.get(
+              [:ui, :theme, :instance_tagline],
+              "Welcome to #{Bonfire.Application.name_and_flavour()}"
+            )
+          )}</h1>
+      </header>
+
+      {#case Config.get([:ui, :theme, :instance_welcome, :description], "")}
+        {#match description when description in [nil, ""]}
+        {#match description}
+          <div
+            id="about-description"
+            class="pb-6 prose max-w-none px-5 text-sm leading-relaxed text-base-content/92 wrap-anywhere sm:px-6 sm:text-base prose-headings:text-base-content prose-h2:text-xl prose-h2:font-medium prose-a:text-primary *:max-w-2xl *:first:mt-0"
+          >{templated_or_remote_markdown(description)}</div>
+      {/case}
+
+      <section
+        :if={@has_rules?}
+        class="border-b border-base-content/14 px-5 py-6 last:border-b-0 sm:px-6 "
+        id="community-rules"
+        aria-labelledby="community-rules-title"
+      >
+        <div class="mb-4.5 flex flex-col gap-1">
+          <h2 id="community-rules-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold">{l("Community rules")}</h2>
+          <span class="text-xs text-muted">{l("How we look after this space")}</span>
+        </div>
+        <StatelessComponent
+          module={maybe_component(Bonfire.CommunityRules.Web.InstanceRulesDisplayLive, @__context__)}
+          sections={@rules_sections}
+          show_header={false}
+          classes={%{
+            list: "mb-2",
+            item: "flex items-baseline gap-4 border-t border-base-content/14 py-4",
+            index: "min-w-6 shrink-0 text-sm font-medium tabular-nums text-primary",
+            name: "text-sm font-semibold leading-relaxed text-base-content"
+          }}
+        />
+        <LinkLive to="/conduct" class="inline-flex min-h-11 items-center gap-2.5 text-sm font-medium text-primary underline-offset-3 hover:underline">
+          {l("Read the full code of conduct")}
+          <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
+        </LinkLive>
+      </section>
+
+      <section
+        :if={@admins != []}
+        class="border-b border-base-content/14 px-5 py-6 last:border-b-0 sm:px-6 "
+        id="community-admins"
+        aria-labelledby="community-admins-title"
+      >
+        <div class="mb-4.5 flex flex-col gap-1">
+          <h2 id="community-admins-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold">{l("Administrators")}</h2>
+          <span class="text-xs text-muted">{l("People who help care for this space")}</span>
+        </div>
+        <ul class="border-t border-base-content/14">
+          {#for admin <- @admins}
+            <li class="border-b border-base-content/14">
+              <LinkLive
+                to={path(admin)}
+                class="group flex min-w-0 items-center gap-3 py-4"
+                opts={["data-role": "admin-link"]}
+              >
+                <Bonfire.UI.Common.AvatarLive
+                  wrapper_class="avatar size-11 shrink-0"
+                  class="size-11 rounded-full"
+                  is_remote={false}
+                  bg_class="rounded-full"
+                  src={Media.avatar_url(admin)}
+                  user_id={id(admin)}
+                  title=""
+                />
+                <span class="min-w-0">
+                  <strong class="block text-sm wrap-anywhere underline-offset-3 group-hover:underline">{e(admin, :profile, :name, nil) || e(admin, :character, :username, nil)}</strong>
+                  <small
+                    :if={e(admin, :character, :username, nil)}
+                    class="mt-0.5 block text-xs text-muted wrap-anywhere"
+                  >{"@" <> e(admin, :character, :username, "")}</small>
+                </span>
+                <#Icon iconify="ph:caret-right" class="ml-auto size-4 shrink-0 text-primary" aria-hidden="true" />
+              </LinkLive>
+            </li>
+          {/for}
+        </ul>
+      </section>
+
+      <section
+        :if={@is_guest?}
+        class="border-b border-base-content/14 px-5 py-6 last:border-b-0 sm:px-6 "
+        id="participate"
+        aria-labelledby="participate-title"
+      >
+        <div class="mb-4.5 flex flex-col gap-1">
+          <h2 id="participate-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold">{l("Taking part")}</h2>
+        </div>
+        <p class="max-w-2xl text-sm leading-relaxed text-base-content/80">{l("You can read public conversations without an account.")}</p>
+
+        <ul
+          :if={Bonfire.UI.Common.GuestBoardLive.community_links() != []}
+          class="mt-2.5 flex flex-wrap gap-x-5"
+        >
+          {#for {name, url} <- Bonfire.UI.Common.GuestBoardLive.community_links()}
+            <li><a
+                href={url}
+                target="_blank"
+                rel="noopener"
+                class="inline-flex min-h-11 items-center gap-1 text-sm text-primary underline-offset-3 hover:underline"
+              >{name}
+                <#Icon iconify="ph:arrow-up-right" class="size-3" aria-hidden="true" /></a></li>
+          {/for}
+        </ul>
+
+        <div class="mt-4.5 flex flex-wrap items-center gap-x-5 gap-y-2.5">
+          {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
+            <LinkLive
+              to={path(:signup)}
+              class="btn btn-primary min-h-11 gap-3 text-sm font-semibold"
+              opts={[id: "about-signup"]}
+            >
+              {l("Create an account")}
+              <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
+            </LinkLive>
+          {#else}
+            <p data-role="signup-closed-note" class="w-full text-sm text-base-content/80">{l("New accounts on this community are by invitation only.")}</p>
+            <LinkLive
+              :if={Config.get([:ui, :theme, :instance_welcome, :invite_contact_email], nil) not in [nil, ""]}
+              to={path(:signup)}
+              class="btn btn-primary min-h-11 gap-3 text-sm font-semibold"
+              opts={[id: "about-request-invite"]}
+            >
+              {l("Request an invite")}
+              <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
+            </LinkLive>
+          {/if}
+          <LinkLive to={path(:login, :index)} class="inline-flex min-h-11 items-center gap-2.5 text-sm font-medium text-primary underline-offset-3 hover:underline">{l("Already a member? Sign in")}</LinkLive>
+        </div>
+      </section>
+
+      <section
+        :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
+        class="border-b border-base-content/14 last:border-b-0"
+        id="community-defaults"
+      >
+        <StatelessComponent
+          selected_tab={@selected_tab}
+          module={maybe_component(Bonfire.UI.Me.SettingsViewsLive.InstanceSummaryLive, @__context__)}
+        />
+      </section>
+    </article>
