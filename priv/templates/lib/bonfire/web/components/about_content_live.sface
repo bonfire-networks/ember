@@ -26,7 +26,7 @@
 
       <section
         :if={@has_rules?}
-        class="border-b border-base-content/14 px-5 py-6 last:border-b-0 sm:px-6 "
+        class="border-b border-base-content/10 px-5 py-6 last:border-b-0 sm:px-6 "
         id="community-rules"
         aria-labelledby="community-rules-title"
       >
@@ -40,7 +40,7 @@
           show_header={false}
           classes={%{
             list: "mb-2",
-            item: "flex items-baseline gap-4 border-t border-base-content/14 py-4",
+            item: "flex items-baseline gap-4 border-t border-base-content/10 py-4",
             index: "min-w-6 shrink-0 text-sm font-medium tabular-nums text-primary",
             name: "text-sm font-semibold leading-relaxed text-base-content"
           }}
@@ -53,25 +53,25 @@
 
       <section
         :if={@admins != []}
-        class="border-b border-base-content/14 px-5 py-6 last:border-b-0 sm:px-6 "
+        class="border-b border-base-content/10 px-5 py-6 last:border-b-0 sm:px-6 "
         id="community-admins"
         aria-labelledby="community-admins-title"
       >
         <div class="mb-4.5 flex flex-col gap-1">
-          <h2 id="community-admins-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold">{l("Administrators")}</h2>
+          <h2 id="community-admins-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold">{l("Admins")}</h2>
           <span class="text-xs text-muted">{l("People who help care for this space")}</span>
         </div>
-        <ul class="border-t border-base-content/14">
+        <ul class="border-t border-base-content/10">
           {#for admin <- @admins}
-            <li class="border-b border-base-content/14">
+            <li class="border-b border-base-content/10">
               <LinkLive
                 to={path(admin)}
                 class="group flex min-w-0 items-center gap-3 py-4"
                 opts={["data-role": "admin-link"]}
               >
                 <Bonfire.UI.Common.AvatarLive
-                  wrapper_class="avatar size-11 shrink-0"
-                  class="size-11 rounded-full"
+                  wrapper_class="avatar w-9 h-9 shrink-0"
+                  class="w-9 h-9 rounded-full"
                   is_remote={false}
                   bg_class="rounded-full"
                   src={Media.avatar_url(admin)}
@@ -94,7 +94,7 @@
 
       <section
         :if={@is_guest?}
-        class="border-b border-base-content/14 px-5 py-6 last:border-b-0 sm:px-6 "
+        class="border-b border-base-content/10 px-5 py-6 last:border-b-0 sm:px-6 "
         id="participate"
         aria-labelledby="participate-title"
       >
@@ -146,7 +146,7 @@
 
       <section
         :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
-        class="border-b border-base-content/14 last:border-b-0"
+        class="border-b border-base-content/10 last:border-b-0"
         id="community-defaults"
       >
         <StatelessComponent
