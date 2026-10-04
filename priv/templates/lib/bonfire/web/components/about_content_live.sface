@@ -9,6 +9,21 @@
               "Welcome to #{Bonfire.Application.name_and_flavour()}"
             )
           )}</h1>
+        <div :if={@is_guest?} id="about-guest-info" class="mt-4 flex flex-col items-start gap-3 text-sm leading-relaxed text-base-content/80">
+          <p>{l("You can read public conversations without an account.")}</p>
+          {#if Bonfire.Me.Accounts.instance_is_invite_only?()}
+            <p data-role="signup-closed-note">{l("New accounts on this community are by invitation only.")}</p>
+            <LinkLive
+              :if={Config.get([:ui, :theme, :instance_welcome, :invite_contact_email], nil) not in [nil, ""]}
+              to={path(:signup)}
+              class="btn btn-primary min-h-11 gap-3 text-sm font-semibold"
+              opts={[id: "about-request-invite"]}
+            >
+              {l("Request an invite")}
+              <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
+            </LinkLive>
+          {/if}
+        </div>
       </header>
 
       {#case Config.get([:ui, :theme, :instance_welcome, :description], "")}
@@ -57,13 +72,13 @@
           <h2 id="community-admins-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold">{l("Admins")}</h2>
           <span class="text-xs text-muted">{l("People who help care for this space")}</span>
         </div>
-        <ul class="border-t border-base-content/10">
+        <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {#for admin <- @admins}
-            <li class="border-b border-base-content/10">
+            <li class="min-w-0">
               <LinkLive
                 to={path(admin)}
-                class="group flex min-w-0 items-center gap-3 py-4"
-                opts={["data-role": "admin-link"]}
+                class="group flex h-full min-w-0 items-center gap-3 rounded-box bg-(--stream-surface) p-4 hover:bg-base-content/5 focus-visible:outline-2 focus-visible:outline-offset-2"
+                opts={[id: "about-admin-#{id(admin)}", "data-role": "admin-link"]}
               >
                 <Bonfire.UI.Common.AvatarLive
                   wrapper_class="avatar w-9 h-9 shrink-0"
@@ -89,55 +104,34 @@
       </section>
 
       <section
-        :if={@is_guest?}
-        class="border-b border-base-content/10 px-5 py-6 last:border-b-0 sm:px-6 "
-        id="participate"
-        aria-labelledby="participate-title"
+        :if={@is_guest? and Bonfire.UI.Common.GuestBoardLive.community_links() != []}
+        id="community-links"
+        aria-labelledby="community-links-title"
+        class="border-b border-base-content/10 px-5 py-6 last:border-b-0 sm:px-6"
       >
         <div class="mb-4.5 flex flex-col gap-1">
-          <h2 id="participate-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold">{l("Taking part")}</h2>
+          <h2 id="community-links-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold">{l("Useful links")}</h2>
+          <p class="text-xs text-muted">{l("Explore resources from this community")}</p>
         </div>
-        <p class="max-w-2xl text-sm leading-relaxed text-base-content/80">{l("You can read public conversations without an account.")}</p>
-
-        <ul
-          :if={Bonfire.UI.Common.GuestBoardLive.community_links() != []}
-          class="mt-2.5 flex flex-wrap gap-x-5"
-        >
-          {#for {name, url} <- Bonfire.UI.Common.GuestBoardLive.community_links()}
-            <li><a
+        <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {#for {{name, url}, index} <- Enum.with_index(Bonfire.UI.Common.GuestBoardLive.community_links())}
+            <li class="min-w-0">
+              <a
+                id={"community-link-#{index}"}
                 href={url}
                 target="_blank"
                 rel="noopener"
-                class="inline-flex min-h-11 items-center gap-1 text-sm text-primary underline-offset-3 hover:underline"
-              >{name}
-                <#Icon iconify="ph:arrow-up-right" class="size-3" aria-hidden="true" /></a></li>
+                class="group flex h-full min-h-11 items-center gap-3 rounded-box bg-(--stream-surface) p-4 hover:bg-base-content/5 focus-visible:outline-2 focus-visible:outline-offset-2"
+              >
+                <span class="min-w-0">
+                  <strong class="block text-sm font-semibold text-primary wrap-anywhere underline-offset-3 group-hover:underline">{name}</strong>
+                  <span class="mt-1 block text-xs text-muted wrap-anywhere">{describe_community_link(url)}</span>
+                </span>
+                <#Icon iconify="ph:arrow-up-right" class="ml-auto size-4 shrink-0 text-primary" aria-hidden="true" />
+              </a>
+            </li>
           {/for}
         </ul>
-
-        <div class="mt-4.5 flex flex-wrap items-center gap-x-5 gap-y-2.5">
-          {#if !Bonfire.Me.Accounts.instance_is_invite_only?()}
-            <LinkLive
-              to={path(:signup)}
-              class="btn btn-primary min-h-11 gap-3 text-sm font-semibold"
-              opts={[id: "about-signup"]}
-            >
-              {l("Create an account")}
-              <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
-            </LinkLive>
-          {#else}
-            <p data-role="signup-closed-note" class="w-full text-sm text-base-content/80">{l("New accounts on this community are by invitation only.")}</p>
-            <LinkLive
-              :if={Config.get([:ui, :theme, :instance_welcome, :invite_contact_email], nil) not in [nil, ""]}
-              to={path(:signup)}
-              class="btn btn-primary min-h-11 gap-3 text-sm font-semibold"
-              opts={[id: "about-request-invite"]}
-            >
-              {l("Request an invite")}
-              <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
-            </LinkLive>
-          {/if}
-          <LinkLive to={path(:login, :index)} class="inline-flex min-h-11 items-center gap-2.5 text-sm font-medium text-primary underline-offset-3 hover:underline">{l("Already a member? Sign in")}</LinkLive>
-        </div>
       </section>
 
       <section
