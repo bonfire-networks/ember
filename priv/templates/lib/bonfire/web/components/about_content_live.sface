@@ -1,12 +1,8 @@
     <article aria-labelledby="about-tagline">
       <header class="pb-5 pt-7 px-5 sm:px-6">
-        <span
-          data-role="about-eyebrow"
-          class="text-xs font-bold uppercase tracking-wider text-primary"
-        >{l("About %{name}", name: Bonfire.UI.Common.GuestBoardLive.instance_name())}</span>
         <h1
           id="about-tagline"
-          class="mt-3 max-w-xl text-balance text-2xl font-medium leading-snug tracking-tight text-primary wrap-anywhere sm:text-3xl *:m-0 theme-light:font-semibold theme-light:text-base-content"
+          class="max-w-xl text-balance text-2xl font-medium leading-snug tracking-tight text-base-content wrap-anywhere sm:text-3xl *:m-0 theme-light:font-semibold theme-light:text-base-content"
         >{rich(
             Config.get(
               [:ui, :theme, :instance_tagline],
