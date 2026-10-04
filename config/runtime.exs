@@ -201,6 +201,9 @@ ssrf_allow_hosts =
      |> Enum.map(&String.trim/1))
 
 config :faviconic, ssrf_allow_hosts: ssrf_allow_hosts
+config :unfurl, ssrf_allow_hosts: ssrf_allow_hosts
+config :bonfire_common, ssrf_allow_hosts: ssrf_allow_hosts
+config :activity_pub, ssrf_allow_hosts: ssrf_allow_hosts
 
 # HTTP client(s) configuration
 

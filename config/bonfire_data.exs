@@ -78,6 +78,7 @@ alias Bonfire.Data.Social.Created
 alias Bonfire.Data.Social.Feed
 alias Bonfire.Data.Social.FeedPublish
 alias Bonfire.Data.Social.Flag
+alias Bonfire.Data.Social.Moderation
 alias Bonfire.Data.Social.Follow
 alias Bonfire.Data.Social.Like
 alias Bonfire.Data.Social.Mention
@@ -514,6 +515,9 @@ config :needle, Pointer,
   code:
     (quote do
        field(:dummy, :any, virtual: true)
+
+       # a thread-deduped feed's sort key (the thread's latest activity id), selected so the pagination cursor can read it
+       field(:thread_last_activity_id, :string, virtual: true)
        # pointables
        has_one(:circle, unquote(Circle), foreign_key: :id)
 
@@ -1010,6 +1014,13 @@ config :bonfire_data_social, Flag,
            #  :named
          ])
        )
+     end)
+
+# a moderation record: the same mixins as a flag (its `Activity`, `named` reason, boundary, feed publishes, and `replied` for an undo), with no `Edge`
+config :bonfire_data_social, Moderation,
+  code:
+    (quote do
+       (unquote_splicing(edges))
      end)
 
 config :bonfire_data_social, Request,
