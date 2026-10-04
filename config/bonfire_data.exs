@@ -14,7 +14,6 @@ config :bonfire_data_access_control,
     # :bonfire,
   ]
 
-
 # # FIXME on older elixir versions
 # known_deps =
 #   if Code.ensure_loaded?(Bonfire.Common.Extend),
