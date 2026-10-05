@@ -39,7 +39,18 @@ defmodule Bonfire.Application do
         # NOTE: behaviour modules are loaded prepared as part of `Config.LoadExtensionsConfig` in `runtime.exs` so no need to duplicate
         # Bonfire.Common.ExtensionBehaviour,
         # load instance Settings from DB into Config
-        if(@repo_module, do: EctoSparkles.AutoMigrator),
+        # a migration that fails at boot is logged as an error and sent to Sentry where configured, and boot carries on, rather than leaving the instance down
+        if(@repo_module,
+          do:
+            {EctoSparkles.AutoMigrator,
+             migration_error_callback_fn: fn version, desc, error, stacktrace ->
+               Bonfire.Common.Errors.debug_exception(
+                 "Migration #{version} (#{desc}) failed",
+                 error,
+                 stacktrace
+               )
+             end}
+        ),
         Needle.Tables,
         # Bonfire.Common.ConfigSettingsRegistry, # ConfigSettingsRegistry can just be cached on first run instead
         Bonfire.Common.Settings.LoadInstanceConfig,
