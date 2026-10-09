@@ -9,7 +9,7 @@
               "Welcome to #{Bonfire.Application.name_and_flavour()}"
             )
           )}</h1>
-        <div :if={@is_guest?} id="about-guest-info" class="mt-4 flex flex-col items-start gap-3 text-sm leading-relaxed text-base-content/80">
+        <div :if={@is_guest?} id="about-guest-info" class="mt-4 flex flex-col items-start gap-3 text-sm leading-relaxed text-muted">
           <p>{l("You can read public conversations without an account.")}</p>
           {#if Bonfire.Me.Accounts.instance_is_invite_only?()}
             <p data-role="signup-closed-note">{l("New accounts on this community are by invitation only.")}</p>
@@ -31,13 +31,13 @@
         {#match description}
           <div
             id="about-description"
-            class="pb-6 prose max-w-none px-5 text-sm leading-relaxed text-base-content/92 wrap-anywhere sm:px-6 sm:text-base prose-headings:text-base-content prose-h2:text-xl prose-h2:font-medium prose-a:text-primary *:max-w-2xl *:first:mt-0"
+            class="pb-6 prose max-w-none px-5 text-sm leading-relaxed text-base-content wrap-anywhere sm:px-6 sm:text-base prose-headings:text-base-content prose-h2:text-xl prose-h2:font-medium prose-a:text-primary *:max-w-2xl *:first:mt-0"
           >{templated_or_remote_markdown(description)}</div>
       {/case}
 
       <section
         :if={@has_rules?}
-        class="border-b border-base-content/10 px-5 py-6 last:border-b-0 sm:px-6 "
+        class="border-b border-divider px-5 py-6 last:border-b-0 sm:px-6 "
         id="community-rules"
         aria-labelledby="community-rules-title"
       >
@@ -51,7 +51,7 @@
           show_header={false}
           classes={%{
             list: "mb-2",
-            item: "flex items-baseline gap-4 border-t border-base-content/10 py-4",
+            item: "flex items-baseline gap-4 border-t border-divider py-4",
             index: "min-w-6 shrink-0 text-sm font-medium tabular-nums text-primary",
             name: "text-sm font-semibold leading-relaxed text-base-content"
           }}
@@ -64,7 +64,7 @@
 
       <section
         :if={@admins != []}
-        class="border-b border-base-content/10 px-5 py-6 last:border-b-0 sm:px-6 "
+        class="border-b border-divider px-5 py-6 last:border-b-0 sm:px-6 "
         id="community-admins"
         aria-labelledby="community-admins-title"
       >
@@ -77,7 +77,7 @@
             <li class="min-w-0">
               <LinkLive
                 to={path(admin)}
-                class="group flex h-full min-w-0 items-center gap-3 rounded-box bg-(--stream-surface) p-4 hover:bg-base-content/5 focus-visible:outline-2 focus-visible:outline-offset-2"
+                class="group flex h-full min-w-0 items-center gap-3 rounded-box bg-surface p-4 hover:bg-fill focus-visible:outline-2 focus-visible:outline-offset-2"
                 opts={[id: "about-admin-#{id(admin)}", "data-role": "admin-link"]}
               >
                 <Bonfire.UI.Common.AvatarLive
@@ -107,7 +107,7 @@
         :if={@is_guest? and Bonfire.UI.Common.GuestBoardLive.community_links() != []}
         id="community-links"
         aria-labelledby="community-links-title"
-        class="border-b border-base-content/10 px-5 py-6 last:border-b-0 sm:px-6"
+        class="border-b border-divider px-5 py-6 last:border-b-0 sm:px-6"
       >
         <div class="mb-4.5 flex flex-col gap-1">
           <h2 id="community-links-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold">{l("Useful links")}</h2>
@@ -121,7 +121,7 @@
                 href={url}
                 target="_blank"
                 rel="noopener"
-                class="group flex h-full min-h-11 items-center gap-3 rounded-box bg-(--stream-surface) p-4 hover:bg-base-content/5 focus-visible:outline-2 focus-visible:outline-offset-2"
+                class="group flex h-full min-h-11 items-center gap-3 rounded-box bg-surface p-4 hover:bg-fill focus-visible:outline-2 focus-visible:outline-offset-2"
               >
                 <span class="min-w-0">
                   <strong class="block text-sm font-semibold text-primary wrap-anywhere underline-offset-3 group-hover:underline">{name}</strong>
@@ -136,7 +136,7 @@
 
       <section
         :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
-        class="border-b border-base-content/10 last:border-b-0"
+        class="border-b border-divider last:border-b-0"
         id="community-defaults"
       >
         <StatelessComponent

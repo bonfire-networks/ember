@@ -1,12 +1,5 @@
 /* Ember flavor custom themes */
 
-/* Theme metadata for hook-based detection */
-:root {
-  --theme-names: "light,dark,ember,ember-dark";
-  --theme-dark-names: "dark,ember-dark";
-  --theme-light-names: "light,ember";
-}
-
 /* Define custom themes first */
 @plugin "daisyui/theme" {
   name: "ember";

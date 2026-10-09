@@ -12,7 +12,7 @@
   <div id="member-about" class="min-w-0 bg-base-100 font-(family-name:--font-inter) text-sm leading-relaxed text-base-content">
     <div
       data-role="about-banner"
-      class="h-35 bg-base-content/4 bg-cover bg-center"
+      class="h-35 bg-fill bg-cover bg-center"
       aria-hidden="true"
       style={Bonfire.UI.Common.NextGenImageLive.background_image_set(Bonfire.UI.Common.GuestBoardLive.banner_image())}
     />

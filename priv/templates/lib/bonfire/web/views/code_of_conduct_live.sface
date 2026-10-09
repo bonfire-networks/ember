@@ -3,7 +3,7 @@
     <header class="pb-4 pt-7 px-5 sm:px-6">
       <h1 data-role="page-title" class="text-2xl font-medium leading-tight tracking-tight wrap-anywhere sm:text-3xl theme-light:font-semibold">{l("Code of conduct")}</h1>
     </header>
-    <div id="conduct-body" class="pb-8 prose max-w-none px-5 text-sm leading-relaxed text-base-content/92 wrap-anywhere sm:px-6 sm:text-base prose-headings:text-base-content prose-h2:text-xl prose-h2:font-medium prose-a:text-primary *:max-w-2xl *:first:mt-0">
+    <div id="conduct-body" class="pb-8 prose max-w-none px-5 text-sm leading-relaxed text-base-content wrap-anywhere sm:px-6 sm:text-base prose-headings:text-base-content prose-h2:text-xl prose-h2:font-medium prose-a:text-primary *:max-w-2xl *:first:mt-0">
       {templated_or_remote_markdown(@terms, nil)}
     </div>
   </Bonfire.UI.Common.GuestBoardLive>
