@@ -11,7 +11,7 @@
       subtitle={l("Pinned by the community")}
       wrapper_class="w-full px-5 pb-5.5 pt-4.5 sm:px-6 [--stream-content-padding:1.25rem] sm:[--stream-content-padding:1.5rem]"
       title_class="gap-3 px-0 pb-3.5"
-      heading_class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-semibold"
+      heading_class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-bold"
       subtitle_class="mt-0.5 text-xs text-muted theme-light:text-xs"
       button_class="size-11 border-divider bg-transparent text-primary"
       carousel_class="scroll-px-0"
