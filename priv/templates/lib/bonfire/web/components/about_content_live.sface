@@ -81,8 +81,8 @@
                 opts={[id: "about-admin-#{id(admin)}", "data-role": "admin-link"]}
               >
                 <Bonfire.UI.Common.AvatarLive
-                  wrapper_class="avatar w-9 h-9 shrink-0"
-                  class="w-9 h-9 rounded-full"
+                  wrapper_class="avatar size-9 shrink-0"
+                  class="size-9 rounded-full"
                   is_remote={false}
                   bg_class="rounded-full"
                   src={Media.avatar_url(admin)}
