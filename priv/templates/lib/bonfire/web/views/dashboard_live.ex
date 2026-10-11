@@ -31,6 +31,16 @@ defmodule Bonfire.Web.Views.DashboardLive do
                 current_user: current_user
               ) && {Bonfire.Tag.Web.WidgetTagsLive, []},
               {Bonfire.UI.Social.WidgetTrendingLinksLive, []},
+              Settings.get(
+                [Bonfire.Web.Views.DashboardLive, :include, :community_rules],
+                true,
+                current_user: current_user
+              ) &&
+                Bonfire.Common.Extend.module_enabled?(
+                  Bonfire.CommunityRules.Web.WidgetRulesLive,
+                  current_user
+                ) &&
+                {Bonfire.CommunityRules.Web.WidgetRulesLive, []},
               Settings.get([Bonfire.Web.Views.DashboardLive, :include, :admins], true,
                 current_user: current_user
               ) &&
@@ -46,16 +56,11 @@ defmodule Bonfire.Web.Views.DashboardLive do
       ]
     ]
 
-    default_feed =
-      Settings.get([Bonfire.Web.Views.DashboardLive, :default_feed], :popular,
-        current_user: current_user
-      )
+    main_widgets = Bonfire.UI.Me.Dashboard.main_widgets(main_widget_choices(), current_user)
 
-    page_title =
-      case default_feed do
-        :my -> l("My Following")
-        _ -> l("Active discussions")
-      end
+    {dashboard_feed, dashboard_feed_id} = Bonfire.UI.Me.Dashboard.feed_assigns(socket)
+
+    page_title = l("Active discussions")
 
     {:ok,
      socket
@@ -64,7 +69,9 @@ defmodule Bonfire.Web.Views.DashboardLive do
        selected_tab: :about,
        
        page_header: false,
-       default_feed: default_feed,
+       main_widgets: main_widgets,
+       dashboard_feed: dashboard_feed,
+       dashboard_feed_id: dashboard_feed_id,
        is_guest?: is_guest?,
        without_sidebar: is_guest?,
        no_header: is_guest?,
@@ -80,6 +87,11 @@ defmodule Bonfire.Web.Views.DashboardLive do
      )
      # TODO: only assign for native?
      |> assign(tab_assigns("home"))}
+  end
+
+  @doc "Main-area widgets this flavour offers, in default order (keys of `Bonfire.UI.Me.Dashboard.catalogue/0`)."
+  def main_widget_choices do
+    [:popular_discussions]
   end
 
   # @decorate time()
