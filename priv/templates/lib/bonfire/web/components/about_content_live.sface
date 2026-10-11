@@ -1,39 +1,5 @@
     <article aria-labelledby="about-tagline">
-      <header class="pb-5 pt-7 px-5 sm:px-6">
-        <h1
-          id="about-tagline"
-          class="max-w-xl text-balance text-2xl font-medium leading-snug tracking-tight text-base-content wrap-anywhere sm:text-3xl *:m-0 theme-light:font-bold theme-light:text-base-content"
-        >{rich(
-            Config.get(
-              [:ui, :theme, :instance_tagline],
-              "Welcome to #{Bonfire.Application.name_and_flavour()}"
-            )
-          )}</h1>
-        <div :if={@is_guest?} id="about-guest-info" class="mt-4 flex flex-col items-start gap-3 text-sm leading-relaxed text-muted">
-          <p>{l("You can read public conversations without an account.")}</p>
-          {#if Bonfire.Me.Accounts.instance_is_invite_only?()}
-            <p data-role="signup-closed-note">{l("New accounts on this community are by invitation only.")}</p>
-            <LinkLive
-              :if={Config.get([:ui, :theme, :instance_welcome, :invite_contact_email], nil) not in [nil, ""]}
-              to={path(:signup)}
-              class="btn btn-primary min-h-11 gap-3 text-sm font-bold"
-              opts={[id: "about-request-invite"]}
-            >
-              {l("Request an invite")}
-              <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
-            </LinkLive>
-          {/if}
-        </div>
-      </header>
-
-      {#case Config.get([:ui, :theme, :instance_welcome, :description], "")}
-        {#match description when description in [nil, ""]}
-        {#match description}
-          <div
-            id="about-description"
-            class="pb-6 prose max-w-none px-5 text-sm leading-relaxed text-base-content wrap-anywhere sm:px-6 sm:text-base prose-headings:text-base-content prose-h2:text-xl prose-h2:font-medium prose-a:text-primary *:max-w-2xl *:first:mt-0"
-          >{templated_or_remote_markdown(description)}</div>
-      {/case}
+      <Bonfire.Web.Components.AboutIntroLive is_guest?={@is_guest?} />
 
       <section
         :if={@has_rules?}

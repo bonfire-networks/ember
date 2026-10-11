@@ -1,6 +1,8 @@
-<Bonfire.UI.Common.GuestBoardLive page={:home}>
-  {!-- the instance name is shown in the board header; this gives the page its one top-level heading --}
-  <h1 class="sr-only">{Bonfire.UI.Common.GuestBoardLive.instance_name()}</h1>
+<Bonfire.UI.Common.GuestBoardLive page={:home} bare={true}>
+  {!-- the community introduction below the banner; its tagline is the page's one top-level heading --}
+  <:hero>
+    <Bonfire.Web.Components.AboutIntroLive is_guest?={true} />
+  </:hero>
 
   <section :if={@show_spotlight?} id="guest-spotlight">
     {!-- The wrapper owns the gutter so both the header and carousel stay inside the board edges. --}
@@ -9,7 +11,7 @@
       id="instance_pinned_widget"
       title={l("Spotlight")}
       subtitle={l("Pinned by the community")}
-      wrapper_class="w-full px-5 pb-5.5 pt-4.5 sm:px-6 [--stream-content-padding:1.25rem] sm:[--stream-content-padding:1.5rem]"
+      wrapper_class="board-card w-full px-5 pb-5.5 pt-4.5 sm:px-6 [--stream-content-padding:1.25rem] sm:[--stream-content-padding:1.5rem]"
       title_class="gap-3 px-0 pb-3.5"
       heading_class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-bold"
       subtitle_class="mt-0.5 text-xs text-muted theme-light:text-xs"
@@ -22,7 +24,9 @@
     />
   </section>
 
-  <section :if={@show_groups?} id="guest-groups">
+  {!-- the widget (from bonfire_ui_groups, not a local extension) renders nothing without groups and draws its own top border:
+  so the card only applies when it renders, and the border goes (cards are separated by the gap) --}
+  <section :if={@show_groups?} id="guest-groups" class="has-[aside]:board-card [&_aside]:border-t-0">
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Groups.WidgetGroupsCarouselLive, @__context__)}
       id="guest_groups_widget"
@@ -33,11 +37,16 @@
 
   {!-- activities carry the board gutter as their own padding, so no wrapper adds a second one --}
   <section
-    class="[--activity-padding:22px_20px] sm:[--activity-padding:22px_24px]"
+    class="board-card [--activity-padding:22px_20px] sm:[--activity-padding:22px_24px]"
     aria-labelledby="guest-feed-title"
   >
-    <div class="border-y border-divider bg-fill px-5 py-3 sm:px-6 theme-light:bg-base-200">
-      <h2 id="guest-feed-title" class="text-sm font-medium leading-snug">{l("Recent activity")}</h2>
+    {!-- same header rhythm as the Spotlight and Groups widgets above --}
+    <div class="border-b border-divider px-5 pb-3.5 pt-4.5 sm:px-6">
+      <h2
+        id="guest-feed-title"
+        class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-bold"
+      >{l("Recent activity")}</h2>
+      <p class="mt-0.5 text-xs text-muted">{l("Public posts from this community")}</p>
     </div>
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
