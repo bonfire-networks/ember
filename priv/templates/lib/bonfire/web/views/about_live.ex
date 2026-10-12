@@ -56,8 +56,8 @@ defmodule Bonfire.Web.Views.AboutLive do
      |> assign_guest_board(is_guest?)}
   end
 
-  @doc "Loads shared About content once so empty rules and administrator sections can be hidden."
-  def assign_guest_board(socket, _is_guest?) do
+  @doc "Loads shared About content once so empty rules and administrator sections can be hidden. Guests get the admins on the Home board instead, so they're only loaded for members."
+  def assign_guest_board(socket, is_guest?) do
     rules_sections =
       maybe_apply(Bonfire.CommunityRules, :get_instance_rules_sections, [], fallback_return: [])
 
@@ -65,7 +65,7 @@ defmodule Bonfire.Web.Views.AboutLive do
       rules_sections: rules_sections,
       has_rules?:
         maybe_apply(Bonfire.CommunityRules, :any_rules?, [rules_sections], fallback_return: false),
-      admins: Bonfire.UI.Me.WidgetAdminsLive.list_visible(assigns(socket))
+      admins: if(is_guest?, do: [], else: Bonfire.UI.Me.WidgetAdminsLive.list_visible(assigns(socket)))
     )
   end
 

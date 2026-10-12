@@ -53,6 +53,8 @@ defmodule Bonfire.Web.Views.HomeLive do
        show_spotlight?:
          include?(:instance_pinned, Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive, socket),
        show_groups?: include?(:groups, Bonfire.UI.Groups.WidgetGroupsCarouselLive, socket),
+       # cached, and empty when admins are hidden from guests
+       admins: Bonfire.UI.Me.WidgetAdminsLive.list_visible(assigns(socket)),
        selected_tab: :home,
        page_title: app,
        sidebar_widgets: [
