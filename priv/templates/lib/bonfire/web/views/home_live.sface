@@ -10,7 +10,7 @@
       module={maybe_component(Bonfire.UI.Reactions.WidgetInstancePinnedCarouselLive, @__context__)}
       id="instance_pinned_widget"
       title={l("Spotlight")}
-      wrapper_class="board-card w-full py-5 sm:py-6 [--stream-content-padding:1.25rem] sm:[--stream-content-padding:1.5rem]"
+      wrapper_class="board-card w-full py-5 sm:py-6"
       title_class="gap-3 px-5 pb-4 sm:px-6"
       heading_class="text-lg font-semibold leading-snug tracking-[-0.01em] theme-light:text-lg theme-light:font-semibold"
       button_class="border-transparent bg-transparent text-muted hover:text-base-content"
