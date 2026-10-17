@@ -3,7 +3,6 @@ defmodule Ember.Views.DocTest do
 
   doctest Bonfire.Web.Components.HomeHeroLive
 
-
   setup do
     # both loaders are cached for hours: start every test from the current DB state
     Bonfire.UI.Me.WidgetUsersLive.list_admins(cache: :reset)
@@ -11,5 +10,4 @@ defmodule Ember.Views.DocTest do
     Bonfire.UI.Groups.WidgetGroupsCarouselLive.list_guest_groups(cache: :reset)
     :ok
   end
-
 end
