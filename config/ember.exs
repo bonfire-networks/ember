@@ -17,7 +17,6 @@ config :bonfire_label, Bonfire.Label.Web.ContentLabelLive, modularity: :disabled
 # enable preview resulting boundaries in composer's boundary selector?
 config :bonfire_ui_boundaries, Bonfire.UI.Boundaries.PreviewBoundariesLive, modularity: :disabled
 
-# thread locking: enabled 16 October 2026, as what kept it out of 1.0 (https://github.com/bonfire-networks/bonfire-app/issues/1140), replies to replies within a locked thread (https://github.com/bonfire-networks/bonfire-app/issues/1084), was fixed on 18 November 2025
 # config :bonfire_ui_boundaries, Bonfire.Boundaries.Locking.LiveHandler, modularity: :disabled
 
 # config :bonfire_ui_reactions, Bonfire.UI.Reactions.BookmarksLive, modularity: :disabled
