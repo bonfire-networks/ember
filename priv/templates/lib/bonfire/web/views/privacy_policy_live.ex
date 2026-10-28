@@ -1,6 +1,6 @@
 defmodule Bonfire.Web.Views.PrivacyPolicyLive do
   @moduledoc """
-  The main instance home page, mainly for guests visiting the instance
+  The instance's privacy policy: a text page in the guest board for guests (reached from its footer), a plain text widget for members.
   """
   use Bonfire.UI.Common.Web, :surface_live_view
 
@@ -8,18 +8,21 @@ defmodule Bonfire.Web.Views.PrivacyPolicyLive do
 
   def mount(_params, _session, socket) do
     is_guest? = is_nil(current_user_id(socket))
-    # debug("is_guest? #{is_guest?}")
 
     {:ok,
      socket
      |> assign(
-      #  is_guest?: is_guest?,
-      #  without_sidebar: is_guest?,
-      #  without_secondary_widgets: is_guest?,
        page: "privacy",
-       
        page_title: l("Privacy policy"),
-       terms: Config.get([:terms, :privacy])
-     )}
+       is_guest?: is_guest?,
+       terms:
+         Bonfire.Web.Components.GuestTextPageLive.terms(
+           :privacy,
+           l(
+             "The instance operator(s) have not yet added a privacy policy. You can consult the [privacy policy of the Bonfire project](https://bonfirenetworks.org/privacy) as a reference."
+           )
+         )
+     )
+     |> assign(Bonfire.UI.Common.GuestBoardLive.layout_assigns(is_guest?))}
   end
 end

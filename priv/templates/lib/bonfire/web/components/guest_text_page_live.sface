@@ -1,0 +1,11 @@
+<div class="px-4 pb-10 pt-6 sm:px-10 sm:pb-12">
+  <h1
+    data-role="page-title"
+    class="type-page-title"
+  >{@title}</h1>
+  <div
+    id={@body_id}
+    class="mt-5 prose max-w-none text-prose leading-[1.6] text-base-content wrap-anywhere prose-p:my-[1.1em] prose-headings:text-base-content prose-h2:text-xl prose-h2:font-bold prose-h3:text-lg prose-h3:font-bold prose-a:text-base-content prose-a:decoration-1 prose-a:underline-offset-3 prose-strong:text-base-content *:first:mt-0 *:last:mb-0"
+  >{templated_or_remote_markdown(@text, nil)}</div>
+  <#slot />
+</div>

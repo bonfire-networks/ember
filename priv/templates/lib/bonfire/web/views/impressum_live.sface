@@ -1,20 +1,29 @@
-<div class="w-full bg-base-100">
-  <Bonfire.UI.Common.WidgetTextLive text={e(
-    @terms,
-    l("The instance operator(s) have not yet added an impressum.")
-  )} />
+{#if @is_guest?}
+  <Bonfire.UI.Common.GuestBoardLive page={:impressum}>
+    <Bonfire.Web.Components.GuestTextPageLive
+      title={l("Impressum")}
+      text={@terms}
+      body_id="impressum-body"
+    >
+      <Bonfire.Web.Components.CommunityLinksLive class="mt-8" />
+    </Bonfire.Web.Components.GuestTextPageLive>
+  </Bonfire.UI.Common.GuestBoardLive>
+{#else}
+  <div class="w-full bg-base-100">
+    <Bonfire.UI.Common.WidgetTextLive text={@terms} />
 
-  <ul :if={e(assigns, :links, []) != []} class="p-2 menu">
-    <li :for={{name, link} <- e(assigns, :links, [])}>
-      <a href={link} target="_blank">
-        {#case Bonfire.Files.FaviconStore.favicon_url(link)}
-          {#match nil}
-            <#Icon solid="Link" class="size-4" />
-          {#match image}
-            <img src={image} class="size-4">
-        {/case}
-        <span class="text-sm truncate ellipsis">{name}</span>
-      </a>
-    </li>
-  </ul>
-</div>
+    <ul :if={e(assigns, :links, []) != []} class="p-2 menu">
+      <li :for={{name, link} <- e(assigns, :links, [])}>
+        <a href={link} target="_blank">
+          {#case Bonfire.Files.FaviconStore.favicon_url(link)}
+            {#match nil}
+              <#Icon solid="Link" class="size-4" />
+            {#match image}
+              <img src={image} class="size-4">
+          {/case}
+          <span class="text-sm truncate ellipsis">{name}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+{/if}

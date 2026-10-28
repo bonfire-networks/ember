@@ -1,44 +1,43 @@
-    <article aria-labelledby="about-tagline">
-      <Bonfire.Web.Components.AboutIntroLive is_guest?={@is_guest?} />
+<article
+  id="about-page"
+  aria-labelledby="about-title"
+  class={
+    "w-full",
+    "board-sheet max-w-180 max-md:-mx-3 max-md:w-auto md:mx-auto": @sheet,
+    "mx-auto max-w-172 px-5 pb-14 pt-6 sm:px-6": !@sheet
+  }
+>
+  {#case Bonfire.UI.Common.GuestBoardLive.banner_image()}
+    {#match nil}
+    {#match banner}
+      <div
+        data-role="about-banner"
+        class={"aspect-[3/1] bg-fill bg-cover bg-center sm:aspect-[4/1]", "rounded-box": !@sheet}
+        aria-hidden="true"
+        style={Bonfire.UI.Common.NextGenImageLive.background_image_set(banner)}
+      />
+  {/case}
 
-      <section
-        :if={@has_rules?}
-        class="border-b border-divider px-5 py-6 last:border-b-0 sm:px-6 "
-        id="community-rules"
-        aria-labelledby="community-rules-title"
-      >
-        <div class="mb-4.5 flex flex-col gap-1">
-          <h2 id="community-rules-title" class="text-xl font-medium leading-snug theme-light:text-2xl theme-light:font-bold">{l("Community rules")}</h2>
-          <span class="text-xs text-muted">{l("How we look after this space")}</span>
-        </div>
-        <StatelessComponent
-          module={maybe_component(Bonfire.CommunityRules.Web.InstanceRulesDisplayLive, @__context__)}
-          sections={@rules_sections}
-          show_header={false}
-          classes={%{
-            list: "mb-2",
-            item: "flex items-baseline gap-4 border-t border-divider py-4",
-            index: "min-w-6 shrink-0 text-sm font-medium tabular-nums text-primary",
-            name: "text-sm font-bold leading-relaxed text-base-content"
-          }}
-        />
-        <LinkLive to="/conduct" class="inline-flex min-h-11 items-center gap-2.5 text-sm font-medium text-primary underline-offset-3 hover:underline">
-          {l("Read the full code of conduct")}
-          <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
-        </LinkLive>
-      </section>
+  <div class={"pt-6", "px-4 pb-10 sm:px-10 sm:pb-12": @sheet}>
+  <Bonfire.Web.Components.AboutIntroLive is_guest?={@is_guest?} />
 
-      {!-- guests find the admins (and useful links) on the Home board instead; members never see that page --}
-      <Bonfire.Web.Components.CommunityAdminsLive :if={!@is_guest?} admins={@admins} />
+  <Bonfire.Web.Components.CommunityGlanceLive admins={@admins} is_guest?={@is_guest?} />
 
-      <section
-        :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
-        class="border-b border-divider last:border-b-0"
-        id="community-defaults"
-      >
-        <StatelessComponent
-          selected_tab={@selected_tab}
-          module={maybe_component(Bonfire.UI.Me.SettingsViewsLive.InstanceSummaryLive, @__context__)}
-        />
-      </section>
-    </article>
+  <StatelessComponent
+    :if={@has_rules?}
+    module={maybe_component(Bonfire.CommunityRules.Web.InstanceRulesSummaryLive, @__context__)}
+    sections={@rules_sections}
+    class="mt-10 border-t border-base-content/15 pt-6"
+  />
+
+  <section
+    :if={Config.get([Bonfire.Web.Views.AboutLive, :include, :preferences], true)}
+    class="mt-10 border-t border-base-content/15 pt-6"
+    id="community-defaults"
+  >
+    <StatelessComponent
+      module={maybe_component(Bonfire.UI.Me.SettingsViewsLive.InstanceSummaryLive, @__context__)}
+    />
+  </section>
+  </div>
+</article>

@@ -1,44 +1,52 @@
-<Bonfire.UI.Common.GuestBoardLive page={:home} bare={true}>
-  {!-- profile-style introduction below the banner: who this is, who runs it, where to go; the instance name is the page's one top-level heading --}
-  <:hero>
-    <Bonfire.Web.Components.HomeHeroLive admins={@admins} />
-  </:hero>
+<Bonfire.UI.Common.GuestBoardLive page={:home} sheet_id="guest-home" labelledby="about-title">
+  <div class="px-4 pb-8 pt-6 sm:px-10 sm:pb-10">
+    <Bonfire.Web.Components.AboutIntroLive is_guest?={true}>
+      <Bonfire.Web.Components.HomeHeroLive />
+    </Bonfire.Web.Components.AboutIntroLive>
+    <Bonfire.Web.Components.CommunityGlanceLive
+      admins={@admins}
+      is_guest?={true}
+      class={if Bonfire.UI.Common.GuestBoardLive.community_links() == [], do: "mt-6", else: "mt-2"}
+    />
+  </div>
 
-  <section :if={@show_spotlight?} id="guest-spotlight">
-    {!-- same layout as the Groups widget: the header carries the gutter, the carousel carries it as scroll padding so cards scroll out to the card edge --}
+  <section :if={@show_spotlight?} id="guest-spotlight" class="has-[aside]:border-t has-[aside]:border-base-content/15">
+    {!-- the carousel takes the gutter as scroll padding, so cards scroll out to the sheet's edge --}
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Reactions.PinnedCarouselLive, @__context__)}
       id="instance_pinned_widget"
       title={l("Spotlight")}
-      wrapper_class="board-card w-full py-5 sm:py-6"
-      title_class="gap-3 px-5 pb-4 sm:px-6"
-      heading_class="text-lg font-semibold leading-snug tracking-[-0.01em] theme-light:text-lg theme-light:font-semibold"
-      carousel_class="px-5 scroll-px-5 sm:px-6 sm:scroll-px-6"
+      wrapper_class="w-full py-6 sm:py-8"
+      title_class="gap-3 px-4 pb-4 sm:px-10"
+      heading_class="text-lg font-bold leading-snug tracking-[-0.01em]"
+      carousel_class="px-4 scroll-px-4 sm:px-10 sm:scroll-px-10"
       hide_empty
     />
   </section>
 
-  {!-- the widget (from bonfire_ui_groups, not a local extension) renders nothing without groups and draws its own top border:
-  so the card only applies when it renders, and the border goes (cards are separated by the gap) --}
-  <section :if={@show_groups?} id="guest-groups" class="has-[aside]:board-card [&_aside]:border-t-0">
+  {!-- the widget renders nothing without groups, so the hairline goes on it rather than a wrapper --}
+  <section
+    :if={@show_groups?}
+    id="guest-groups"
+    class="has-[aside]:border-t has-[aside]:border-base-content/15 [&_aside]:border-t-0"
+  >
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Groups.WidgetGroupsCarouselLive, @__context__)}
       id="guest_groups_widget"
       title={l("Groups")}
+      wrapper_class="w-full py-6 sm:py-8"
+      title_class="gap-3 px-4 pb-4 sm:px-10"
+      carousel_class="px-4 scroll-px-4 sm:px-10 sm:scroll-px-10"
+      footer_class="px-4 pt-3 sm:px-10"
     />
   </section>
 
-  {!-- activities carry the board gutter as their own padding, so no wrapper adds a second one --}
   <section
-    class="board-card [--activity-padding:22px_20px] sm:[--activity-padding:22px_24px]"
+    class="border-t border-base-content/15 [--activity-padding:22px_16px] sm:[--activity-padding:22px_40px]"
     aria-labelledby="guest-feed-title"
   >
-    {!-- same header rhythm as the Spotlight and Groups widgets above --}
-    <div class="border-b border-divider px-5 pb-4 pt-5 sm:px-6 sm:pt-6">
-      <h2
-        id="guest-feed-title"
-        class="text-lg font-semibold leading-snug tracking-[-0.01em] theme-light:text-lg theme-light:font-semibold"
-      >{l("Recent activity")}</h2>
+    <div class="border-b border-base-content/10 px-4 pb-4 pt-6 sm:px-10 sm:pt-8">
+      <h2 id="guest-feed-title" class="text-lg font-bold leading-snug tracking-[-0.01em]">{l("Recent activity")}</h2>
     </div>
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}

@@ -1,8 +1,9 @@
-<div class="w-full bg-base-100">
-  <Bonfire.UI.Common.WidgetTextLive text={e(
-    @terms,
-    l(
-      "The instance operator(s) have not yet added a privacy policy. You can consult the [privacy policy of the Bonfire project](https://bonfirenetworks.org/privacy) as a reference."
-    )
-  )} />
-</div>
+{#if @is_guest?}
+  <Bonfire.UI.Common.GuestBoardLive page={:privacy}>
+    <Bonfire.Web.Components.GuestTextPageLive title={l("Privacy policy")} text={@terms} body_id="privacy-body" />
+  </Bonfire.UI.Common.GuestBoardLive>
+{#else}
+  <div class="w-full bg-base-100">
+    <Bonfire.UI.Common.WidgetTextLive text={@terms} />
+  </div>
+{/if}
