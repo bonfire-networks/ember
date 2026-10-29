@@ -3,7 +3,7 @@
   class={
     @class,
     "grid grid-cols-1 rounded-box border border-base-content/15",
-    "sm:grid-cols-2 sm:divide-x sm:divide-y-0": @admins != []
+    "sm:grid-cols-2 sm:divide-x sm:divide-y-0 sm:divide-base-content/15": @admins != []
   }
   aria-label={l("At a glance")}
 >
