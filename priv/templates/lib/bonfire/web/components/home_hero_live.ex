@@ -1,6 +1,6 @@
 defmodule Bonfire.Web.Components.HomeHeroLive do
   @moduledoc """
-  The guest Home's actions, shown under the shared introduction (`AboutIntroLive`): join or log in (or request an invite on invite-only instances), then the community's links (`CommunityLinksLive`). Who runs the place now sits in `CommunityGlanceLive`.
+  The guest Home's actions, shown under the shared introduction (`AboutIntroLive`): join or log in (or request an invite on invite-only instances), then the community's links (`CommunityLinksLive`). Who runs the place sits in `CommunityAdminsLive`.
   """
   use Bonfire.UI.Common.Web, :stateless_component
 

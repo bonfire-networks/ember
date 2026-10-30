@@ -3,11 +3,10 @@
     <Bonfire.Web.Components.AboutIntroLive is_guest?={true}>
       <Bonfire.Web.Components.HomeHeroLive />
     </Bonfire.Web.Components.AboutIntroLive>
-    <Bonfire.Web.Components.CommunityGlanceLive
-      admins={@admins}
-      is_guest?={true}
-      class={if Bonfire.UI.Common.GuestBoardLive.community_links() == [], do: "mt-6", else: "mt-2"}
-    />
+    <div class={"space-y-5", if(Bonfire.UI.Common.GuestBoardLive.community_links() == [], do: "mt-6", else: "mt-2")}>
+      <Bonfire.Web.Components.CommunityAdminsLive admins={@admins} class="" />
+      <Bonfire.Web.Components.CommunityGlanceLive is_guest?={true} class="" />
+    </div>
   </div>
 
   <section :if={@show_spotlight?} id="guest-spotlight" class="has-[aside]:border-t has-[aside]:border-base-content/15">

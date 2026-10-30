@@ -21,7 +21,10 @@
   <div class={"pt-6", "px-4 pb-10 sm:px-10 sm:pb-12": @sheet}>
   <Bonfire.Web.Components.AboutIntroLive is_guest?={@is_guest?} />
 
-  <Bonfire.Web.Components.CommunityGlanceLive admins={@admins} is_guest?={@is_guest?} />
+  <div class="mt-8 space-y-5">
+    <Bonfire.Web.Components.CommunityAdminsLive admins={@admins} class="" />
+    <Bonfire.Web.Components.CommunityGlanceLive is_guest?={@is_guest?} class="" />
+  </div>
 
   <StatelessComponent
     :if={@has_rules?}
