@@ -5,6 +5,6 @@ defmodule Bonfire.Web.Components.CommunityGlanceLive do
   @doc "Adds the notes for guests (reading without an account, invite-only signups)."
   prop is_guest?, :boolean, default: true
 
-  @doc "Spacing from what comes before."
-  prop class, :css_class, default: "mt-8"
+  @doc "Classes of the row, such as the negative margins that take its hairline to the sheet's edges."
+  prop class, :css_class, default: nil
 end

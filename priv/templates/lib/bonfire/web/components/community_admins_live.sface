@@ -1,10 +1,10 @@
 <section
   :if={@admins != []}
-  class={@class}
+  class={@class, "border-t border-base-content/15 py-6"}
   id="community-admins"
   aria-labelledby="community-admins-title"
 >
-  <h2 id="community-admins-title" class="mb-4 text-lg font-semibold leading-snug tracking-[-0.01em] theme-light:text-lg theme-light:font-semibold">{l("Admins")}</h2>
+  <h2 id="community-admins-title" class="mb-4 text-lg font-bold leading-snug tracking-[-0.01em]">{l("Moderators")}</h2>
   <ul class="grid grid-cols-1 gap-3 sm:grid-cols-2">
     {#for admin <- @admins}
       <li class="min-w-0">
@@ -38,4 +38,5 @@
       </li>
     {/for}
   </ul>
+  <Bonfire.UI.Me.MessageModeratorsLive class="btn btn-outline border-divider mt-3 w-full normal-case gap-2" />
 </section>
