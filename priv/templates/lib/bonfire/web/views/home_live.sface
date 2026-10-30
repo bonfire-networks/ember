@@ -1,9 +1,10 @@
 <Bonfire.UI.Common.GuestBoardLive page={:home} sheet_id="guest-home" labelledby="about-title">
-  <div class="px-4 pb-8 pt-6 sm:px-10 sm:pb-10">
+  {!-- no bottom padding: the last row's own padding sits above the spotlight's hairline --}
+  <div class="px-4 pt-6 sm:px-10">
     <Bonfire.Web.Components.AboutIntroLive is_guest?={true}>
       <Bonfire.Web.Components.HomeHeroLive />
     </Bonfire.Web.Components.AboutIntroLive>
-    <div class={if Bonfire.UI.Common.GuestBoardLive.community_links() == [], do: "mt-6", else: "mt-2"}>
+    <div class="mt-8">
       <Bonfire.Web.Components.CommunityAdminsLive admins={@admins} class="-mx-4 px-4 sm:-mx-10 sm:px-10" />
       <Bonfire.Web.Components.CommunityGlanceLive is_guest?={true} class="-mx-4 px-4 sm:-mx-10 sm:px-10" />
     </div>
