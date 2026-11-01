@@ -1,11 +1,8 @@
 <header>
-  <h1
-    id="about-title"
-    class="type-page-title"
-  >{Bonfire.UI.Common.GuestBoardLive.instance_name()}</h1>
+  <h1 id="about-title" class="sr-only">{Bonfire.UI.Common.GuestBoardLive.instance_name()}</h1>
   <div
     id="about-tagline"
-    class="mt-1.5 text-balance text-lg leading-snug text-muted wrap-anywhere *:m-0"
+    class="type-page-title text-balance wrap-anywhere *:m-0"
   >{rich(
       Config.get(
         [:ui, :theme, :instance_tagline],
