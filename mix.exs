@@ -55,7 +55,7 @@ defmodule Ember.MixProject do
               {:mneme, ">= 0.0.0", only: [:dev, :test]},
 
               # error reporting
-              {:sentry, "~> 10.0", optional: true},
+              {:sentry, "~> 14.0", optional: true},
               {:orion, "~> 1.0.5"},
               {:oban_web, "~> 2.11"},
 
@@ -86,7 +86,7 @@ defmodule Ember.MixProject do
               ) ++
               if(System.get_env("WITH_API_GRAPHQL") not in @no?,
                 do: [
-                  {:absinthe, "~> 1.10.1"},
+                  {:absinthe, "~> 1.12"},
                   {:bonfire_api_graphql,
                    git: "https://github.com/bonfire-networks/bonfire_api_graphql"},
                   {:absinthe_client, git: "https://github.com/bonfire-networks/absinthe_client"}
