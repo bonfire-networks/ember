@@ -2,7 +2,7 @@ import Config
 
 config :activity_pub,
   sign_object_fetches: true,
-  # refuse to serve our objects to a fetch that is not signed (Mastodon's "authorized fetch"); also an instance setting in the admin UI ("Require authentication from federated servers"), which wins
+  # refuse to serve our objects to a fetch that is not signed (Mastodon's "authorized fetch"): `false`, `true` (all but the documents of public actors, so servers that don't sign their fetches can still find them) or `:all` (see `ActivityPub.Config.signed_fetch_required/0`); also an instance setting in the admin UI ("Require authentication from federated servers"), which wins
   reject_unsigned: false,
   env: config_env(),
   adapter: Bonfire.Federate.ActivityPub.Adapter,
