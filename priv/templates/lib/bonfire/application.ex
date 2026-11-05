@@ -160,6 +160,32 @@ defmodule Bonfire.Application do
   def name, do: Application.get_env(:bonfire, :app_name) || config()[:name] || "Bonfire"
   def flavour, do: Application.get_env(:bonfire, :flavour) || config()[:flavour] || ""
 
+  @doc """
+  The name of the distribution running on Bonfire: `APP_NAME` when the instance sets one, else the flavour's own name. Bonfire itself is always "Bonfire" where the software is identified (nodeinfo `software.name`), so a renamed instance still counts as Bonfire.
+  """
+  def flavour_name do
+    configured_name = name()
+
+    # the software's own name (from mix.exs) means APP_NAME was left at its default, so the flavour names itself
+    if configured_name in [nil, "", :bonfire, "bonfire", "Bonfire", project()[:name]],
+      do: flavour() |> String.replace("_", " ") |> String.trim(),
+      else: configured_name
+  end
+
+  @doc """
+  The version of the flavour's own dependency (from its `mix.exs`), for a distribution that versions its flavour separately from Bonfire and sets `config :bonfire, :flavour_overrides, version: true`. Otherwise nil, also when the flavour is not a loaded app.
+  """
+  def flavour_version do
+    if Config.get([:flavour_overrides, :version], false) do
+      with app when is_atom(app) <- Bonfire.Common.Types.maybe_to_atom(flavour()),
+           vsn when not is_nil(vsn) <- Application.spec(app, :vsn) do
+        to_string(vsn)
+      else
+        _ -> nil
+      end
+    end
+  end
+
   def name_and_flavour,
     do:
       "#{name()} #{String.trim_leading(flavour(), "Bonfire")}"
@@ -167,7 +193,8 @@ defmodule Bonfire.Application do
       |> String.trim()
 
   def name_and_version, do: "#{name_and_flavour()} #{version()}"
-  def version, do: config()[:version]
+  # the app env wins over the compiled version, so an image that is only re-tagged (not rebuilt) can still report the version it is released as
+  def version, do: Application.get_env(:bonfire, :app_version) || config()[:version]
   def repository, do: project()[:sources_url] || project()[:source_url]
 
   # NOTE: bellow was moved to `Bonfire`
