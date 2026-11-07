@@ -3,7 +3,9 @@ import Config
 config :activity_pub,
   sign_object_fetches: true,
   # refuse to serve our objects to a fetch that is not signed (Mastodon's "authorized fetch"): `false`, `true` (all but the documents of public actors, so servers that don't sign their fetches can still find them) or `:all` (see `ActivityPub.Config.signed_fetch_required/0`); also an instance setting in the admin UI ("Require authentication from federated servers"), which wins
-  reject_unsigned: false,
+  # reject_unsigned: false,
+  # `true` by default: other servers' fetches must be signed, except to look up public profiles (as the changelog says); `false` let unsigned fetches read everything
+  reject_unsigned: true,
   env: config_env(),
   adapter: Bonfire.Federate.ActivityPub.Adapter,
   repo: Bonfire.Common.Repo,
@@ -31,7 +33,7 @@ config :activity_pub,
     # an activity relayed to us (FEP-1b12): `relayed: :trust` the relayed copy, or `:verify` it by refetching from its origin. Left unset here so an older `relayed_activity_trust` setting still counts; `:trust` when neither is set
   ],
   # Known software that validates RFC 9421 signatures, with minimum version (:any = all versions).
-  # Used by nodeinfo-based format inference in Instances.maybe_infer_format_from_nodeinfo/2.
+  # Used by nodeinfo-based format inference in Instances.maybe_infer_format_from_software/2.
   rfc9421_software: %{
     "mastodon" => "4.5.0",
     "hollo" => :any,
