@@ -13,7 +13,7 @@
         <li>{text}</li>
       {/for}
       <li :if={@is_guest?} id="about-guest-info">{l("Public posts readable without an account")}</li>
-      <li :if={@is_guest? and Bonfire.Me.Accounts.instance_is_invite_only?()} data-role="signup-closed-note">{l("New accounts by invitation only")}</li>
+      <li :if={@is_guest? and Bonfire.Me.Accounts.instance_is_invite_only?()} data-role="signup-closed-note"><Bonfire.Web.Components.SignupNoteLive /></li>
     </ul>
   </div>
 </section>

@@ -316,6 +316,7 @@ locales =
       # Zulu
       "zu"
     ],
-    else: ["en", "fr", "es", "it"]
+    # es_ES: a regional locale with its base also compiled, so tests can cover falling back from one to the other
+    else: ["en", "fr", "es", "es_ES", "it"]
 
 config :bonfire_common, Bonfire.Common.Localise.Cldr, locales: locales

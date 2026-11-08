@@ -1,5 +1,5 @@
 defmodule Bonfire.Web.Components.InviteRequestLive do
-  @moduledoc "How a guest gets in touch with an invite-only instance: a button that writes to the instance's contact address (nothing when it has set none), and beside it the button to message the moderators, for someone on another server who has no account here. `class` shapes both buttons and `wrapper_class` the row they sit in."
+  @moduledoc "How a guest gets in touch with an instance that has closed open sign-ups: a button that sends them to the external sign-up page if there is one (such as a Ghost site, where accounts come from), or else writes to the instance's contact address (nothing when it has set neither), and beside it the button to message the moderators, for someone on another server who has no account here. `class` shapes both buttons and `wrapper_class` the row they sit in."
   use Bonfire.UI.Common.Web, :stateless_component
 
   prop id, :string, default: "about-request-invite"
@@ -9,9 +9,18 @@ defmodule Bonfire.Web.Components.InviteRequestLive do
   @doc "The address set for invite requests, if any."
   def email, do: Config.get([:ui, :theme, :instance_welcome, :invite_contact_email], nil)
 
-  @doc "Whether the instance has set an address for invite requests."
-  def contact?, do: email() not in [nil, ""]
+  @doc "Whether the instance has a way to get an account: an external sign-up page, or an address for invite requests."
+  def contact?, do: not is_nil(action())
 
   @doc "The mail link that writes to `email`."
   def href(email), do: "mailto:#{email}?subject=#{URI.encode(l("Invite request"))}"
+
+  @doc "The button's `{link, label}`, or nil when the instance has set neither an external sign-up page nor a contact address."
+  def action do
+    cond do
+      url = Bonfire.UI.Me.LoginLive.external_signup_url() -> {url, l("Sign up")}
+      email() not in [nil, ""] -> {href(email()), l("Request an invite")}
+      true -> nil
+    end
+  end
 end
