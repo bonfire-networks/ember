@@ -24,15 +24,10 @@
   {#if slot_assigned?(:default)}
     <#slot />
   {#else}
-    <LinkLive
-      :if={@is_guest? and Bonfire.Me.Accounts.instance_is_invite_only?() and
-        Bonfire.Web.Components.HomeHeroLive.invite_contact?()}
-      to={path(:signup)}
-      class="btn btn-primary mt-5 gap-2 rounded-full px-5 text-sm font-medium"
-      opts={[id: "about-request-invite"]}
-    >
-      {l("Request an invite")}
-      <#Icon iconify="ph:arrow-right" class="size-4" aria-hidden="true" />
-    </LinkLive>
+    <Bonfire.Web.Components.InviteRequestLive
+      :if={@is_guest? and Bonfire.Me.Accounts.instance_is_invite_only?()}
+      wrapper_class="mt-5 flex flex-wrap items-center gap-x-4 gap-y-2"
+      class="rounded-full px-5 text-sm font-medium"
+    />
   {/if}
 </header>

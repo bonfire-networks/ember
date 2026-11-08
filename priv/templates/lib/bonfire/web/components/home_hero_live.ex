@@ -4,7 +4,5 @@ defmodule Bonfire.Web.Components.HomeHeroLive do
   """
   use Bonfire.UI.Common.Web, :stateless_component
 
-  def invite_contact?,
-    do: Config.get([:ui, :theme, :instance_welcome, :invite_contact_email], nil) not in [nil, ""]
-
+  def invite_contact?, do: Bonfire.Web.Components.InviteRequestLive.contact?()
 end
