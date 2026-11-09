@@ -11,11 +11,12 @@
   </div>
 
   <section :if={@show_spotlight?} id="guest-spotlight" class="has-[aside]:border-t has-[aside]:border-base-content/15">
+    {!-- "Spotlight" and "Groups" take the domain of an extension that already translates them: strings written in the app itself land in the `bonfire` domain, which extraction never reaches --}
     {!-- the carousel takes the gutter as scroll padding, so cards scroll out to the sheet's edge --}
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Reactions.PinnedCarouselLive, @__context__)}
       id="instance_pinned_widget"
-      title={l("Spotlight")}
+      title={l("Spotlight", [], nil, :bonfire_ui_me)}
       wrapper_class="w-full py-6 sm:py-8"
       title_class="gap-3 px-4 pb-4 sm:px-10"
       heading_class="text-lg font-bold leading-snug tracking-[-0.01em]"
@@ -33,7 +34,7 @@
     <StatefulComponent
       module={maybe_component(Bonfire.UI.Groups.WidgetGroupsCarouselLive, @__context__)}
       id="guest_groups_widget"
-      title={l("Groups")}
+      title={l("Groups", [], nil, :bonfire_ui_common)}
       wrapper_class="w-full py-6 sm:py-8"
       title_class="gap-3 px-4 pb-4 sm:px-10"
       carousel_class="px-4 scroll-px-4 sm:px-10 sm:scroll-px-10"

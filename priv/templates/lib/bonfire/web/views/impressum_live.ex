@@ -11,7 +11,7 @@ defmodule Bonfire.Web.Views.ImpressumLive do
 
     links =
       Config.get([:ui, :theme, :instance_welcome, :links], [])
-      |> Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links()
+      |> Bonfire.UI.Common.WidgetCommunityLinksLive.localised_links()
 
     {:ok,
      socket
