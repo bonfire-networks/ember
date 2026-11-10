@@ -316,6 +316,6 @@ locales =
       # Zulu
       "zu"
     ],
-    else: ["en", "fr", "fr_FR", "es", "it"]
+    else: ["en", "fr", "fr_FR", "es", "it", "af"]
 
 config :bonfire_common, Bonfire.Common.Localise.Cldr, locales: locales
