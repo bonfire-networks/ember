@@ -29,6 +29,8 @@ config :bonfire_ui_boundaries, Bonfire.UI.Boundaries.PreviewBoundariesLive, modu
 # disable emoji reactions
 config :bonfire_ui_reactions, Bonfire.UI.Reactions.EmojiReactionsLive, modularity: :disabled
 
+# the grouping of the FEP-8a8e event categories is in `bonfire_gatherings.exs`
+
 config :bonfire, :ui,
   default_nav_extensions: [
     :bonfire,
