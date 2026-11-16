@@ -24,6 +24,20 @@ defmodule Bonfire.Web.Views.CodeOfConductLive do
            )
          )
      )
-     |> assign(Bonfire.UI.Common.GuestBoardLive.layout_assigns(is_guest?))}
+     |> assign(Bonfire.UI.Common.GuestBoardLive.layout_assigns(is_guest?))
+     # the community rules beside the code of conduct, for guests too, who otherwise get no sidebar widgets
+     |> assign(
+       without_secondary_widgets: false,
+       sidebar_widgets: sidebar_widgets()
+     )}
+  end
+
+  defp sidebar_widgets do
+    widgets =
+      if Bonfire.Common.Extend.module_enabled?(Bonfire.CommunityRules.Web.WidgetRulesLive),
+        do: [{Bonfire.CommunityRules.Web.WidgetRulesLive, [show_link: false]}],
+        else: []
+
+    [users: [secondary: widgets], guests: [secondary: widgets]]
   end
 end
