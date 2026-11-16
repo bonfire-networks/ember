@@ -129,37 +129,45 @@ defmodule Bonfire.Web.Router.Routes do
           #   Surface.Catalogue.Router.surface_catalogue "/ui/"
           # end
 
-          if Bonfire.Common.Config.env() != :test do
-            pipe_through(:admin_required)
+          # the admin tools, in every environment so their guards can be tested: the pipeline checks the admin when a page is first loaded, and `on_mount` checks again whenever its live connection opens
+          pipe_through(:admin_required)
 
-            if module_enabled?(Wobserver.Web.Router) do
-              forward "/admin/system/wobserver", Wobserver.Web.Router
-            end
+          if Bonfire.Common.Config.env() != :test and module_enabled?(Wobserver.Web.Router) do
+            forward "/admin/system/wobserver", Wobserver.Web.Router
+          end
 
-            pipe_through(:browser)
+          pipe_through(:browser)
 
-            if module_enabled?(OrionWeb.Router) do
-              OrionWeb.Router.live_orion("/admin/system/orion",
-                on_mount: [
-                  Bonfire.UI.Me.LivePlugs.LoadCurrentUser,
-                  Bonfire.UI.Me.LivePlugs.AdminRequired
-                ]
-              )
-            end
+          if Bonfire.Common.Config.env() != :test and module_enabled?(OrionWeb.Router) do
+            OrionWeb.Router.live_orion("/admin/system/orion",
+              on_mount: [
+                Bonfire.UI.Me.LivePlugs.LoadCurrentUser,
+                Bonfire.UI.Me.LivePlugs.AdminRequired
+              ]
+            )
+          end
 
-            if module_enabled?(LiveAdmin.Router) do
-              LiveAdmin.Router.live_admin("/admin/system/data",
-                resources: Needle.Tables.schema_modules(),
-                ecto_repo: Bonfire.Common.Repo,
-                title: "Bonfire Data Admin",
-                immutable_fields: [:id, :inserted_at, :updated_at],
-                label_with: :name
-              )
-            end
+          if module_enabled?(LiveAdmin.Router) do
+            LiveAdmin.Router.live_admin("/admin/system/data",
+              resources: Needle.Tables.schema_modules(),
+              ecto_repo: Bonfire.Common.Repo,
+              title: "Bonfire Data Admin",
+              immutable_fields: [:id, :inserted_at, :updated_at],
+              label_with: :name,
+              on_mount: [
+                Bonfire.UI.Me.LivePlugs.LoadCurrentUser,
+                Bonfire.UI.Me.LivePlugs.AdminRequired
+              ]
+            )
+          end
 
-            if module_enabled?(Oban.Web.Router) do
-              Oban.Web.Router.oban_dashboard("/admin/system/oban")
-            end
+          if module_enabled?(Oban.Web.Router) do
+            Oban.Web.Router.oban_dashboard("/admin/system/oban",
+              on_mount: [
+                Bonfire.UI.Me.LivePlugs.LoadCurrentUser,
+                Bonfire.UI.Me.LivePlugs.AdminRequired
+              ]
+            )
           end
 
           # do
