@@ -4,12 +4,12 @@
     <LinkLive to={path(:signup)} class="btn btn-primary px-5" opts={[id: "hero-signup"]}>{l("Join the community")}</LinkLive>
     <LinkLive to={path(:login, :index)} class="btn btn-ghost px-4" opts={[id: "hero-login"]}>{l("Sign in", [], nil, :bonfire_ui_common)}</LinkLive>
   {#else}
-    <Bonfire.Web.Components.InviteRequestLive />
     <LinkLive
       to={path(:login, :index)}
       class={if invite_contact?(), do: "btn btn-ghost px-4", else: "btn btn-primary px-5"}
       opts={[id: "hero-login"]}
     >{l("Sign in", [], nil, :bonfire_ui_common)}</LinkLive>
+    <Bonfire.Web.Components.InviteRequestLive />
   {/if}
 </div>
 
