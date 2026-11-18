@@ -25,19 +25,30 @@ defmodule Bonfire.Web.Views.CodeOfConductLive do
          )
      )
      |> assign(Bonfire.UI.Common.GuestBoardLive.layout_assigns(is_guest?))
-     # the community rules beside the code of conduct, for guests too, who otherwise get no sidebar widgets
-     |> assign(
-       without_secondary_widgets: false,
-       sidebar_widgets: sidebar_widgets()
-     )}
+     |> assign_rules(is_guest?)}
   end
 
-  defp sidebar_widgets do
+  # guests get the community rules above the text, as on About; members get them in the sidebar
+  defp assign_rules(socket, true) do
+    rules_sections =
+      maybe_apply(Bonfire.CommunityRules, :get_instance_rules_sections, [], fallback_return: [])
+
+    assign(socket,
+      rules_sections: rules_sections,
+      has_rules?:
+        maybe_apply(Bonfire.CommunityRules, :any_rules?, [rules_sections], fallback_return: false)
+    )
+  end
+
+  defp assign_rules(socket, _) do
     widgets =
       if Bonfire.Common.Extend.module_enabled?(Bonfire.CommunityRules.Web.WidgetRulesLive),
         do: [{Bonfire.CommunityRules.Web.WidgetRulesLive, [show_link: false]}],
         else: []
 
-    [users: [secondary: widgets], guests: [secondary: widgets]]
+    assign(socket,
+      without_secondary_widgets: false,
+      sidebar_widgets: [users: [secondary: widgets]]
+    )
   end
 end

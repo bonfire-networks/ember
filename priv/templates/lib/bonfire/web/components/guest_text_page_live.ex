@@ -10,6 +10,9 @@ defmodule Bonfire.Web.Components.GuestTextPageLive do
   @doc "DOM id of the text body."
   prop body_id, :string, default: nil
 
+  @doc "Anything shown between the title and the text, eg. the community rules on the Code of conduct."
+  slot before_text
+
   @doc "Anything shown after the text, eg. Impressum's links."
   slot default
 

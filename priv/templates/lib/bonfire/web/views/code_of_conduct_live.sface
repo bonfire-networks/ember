@@ -1,6 +1,21 @@
 {#if @is_guest?}
   <Bonfire.UI.Common.GuestBoardLive page={:conduct}>
-    <Bonfire.Web.Components.GuestTextPageLive title={l("Code of conduct")} text={@terms} body_id="conduct-body" />
+    <Bonfire.Web.Components.GuestTextPageLive
+      title={l("Code of conduct")}
+      text={@terms}
+      body_id="conduct-body"
+    >
+      <:before_text>
+        <StatelessComponent
+          :if={@has_rules?}
+          module={maybe_component(Bonfire.CommunityRules.Web.InstanceRulesSummaryLive, @__context__)}
+          id="conduct-rules"
+          class="mt-5 border-b border-base-content/15 pb-6"
+          sections={@rules_sections}
+          show_link={false}
+        />
+      </:before_text>
+    </Bonfire.Web.Components.GuestTextPageLive>
   </Bonfire.UI.Common.GuestBoardLive>
 {#else}
   <div class="w-full bg-base-100">
