@@ -55,7 +55,8 @@ defmodule Bonfire.Application do
         # Bonfire.Common.ConfigSettingsRegistry, # ConfigSettingsRegistry can just be cached on first run instead
         Bonfire.Common.Settings.LoadInstanceConfig,
         # one-shot startup tasks registered by any extension (e.g. recording per-instance ID cutoffs, one-off data rollouts), runs after LoadInstanceConfig so instance Settings are in Config, and off the boot-blocking path (see `Bonfire.Common.StartupTasks`)
-        Bonfire.Common.StartupTasks,
+        # moved to the end of `apps_after/1`: run here, they found the cache not started yet
+        # Bonfire.Common.StartupTasks,
         # PubSub
         {Phoenix.PubSub, [name: Bonfire.Common.PubSub, adapter: Phoenix.PubSub.PG2]},
         Bonfire.UI.Common.Presence,
@@ -120,7 +121,9 @@ defmodule Bonfire.Application do
     do:
       maybe_oban(test_instance?) ++
         maybe_telemetry_storage() ++
-        maybe_desktop_webapp()
+        maybe_desktop_webapp() ++
+        # one-shot startup tasks (see `Bonfire.Common.StartupTasks`), last, so what they use is running: the cache, the instance Settings in Config (`LoadInstanceConfig`), Oban
+        [Bonfire.Common.StartupTasks]
 
   # ++ [
   #   {Tz.UpdatePeriodically, [interval_in_days: 10]}
