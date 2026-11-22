@@ -1,6 +1,10 @@
 import Config
 
 config :bonfire_gatherings, Bonfire.Gatherings.Events,
+  # the most hits a search of the events page takes from each search index
+  search_limit: 100,
+  # how long after an event ends it leaves the search index (`Bonfire.Gatherings.Workers.UnindexEnded`, daily)
+  unindex_ended_after: to_timeout(day: 30),
   categories_nesting: %{
     "ARTS" => [
       "THEATRE",
