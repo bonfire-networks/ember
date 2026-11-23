@@ -534,6 +534,9 @@ config :needle, Pointer,
        has_one(:category, unquote(Category), foreign_key: :id)
        has_one(:geolocation, unquote(Geolocation), foreign_key: :id)
 
+       # when things happen (eg. events), so a feed sorted by it loads the start date with the object, for its pagination cursor
+       has_one(:time_span, Bonfire.Data.Time.TimeSpan, foreign_key: :id)
+
        # optional shared-user mixin (User-only), declared here too so heterogeneous preloads that include `:shared_user` (e.g. formatting a batch of actors for outgoing federation) don't raise an ArgumentError on non-User pointers and get silently dropped
        has_one(:shared_user, Bonfire.Data.SharedUser, foreign_key: :id)
        # mixins
