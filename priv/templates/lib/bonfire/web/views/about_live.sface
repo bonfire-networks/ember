@@ -6,7 +6,6 @@
       selected_tab={@selected_tab}
       has_rules?={@has_rules?}
       rules_sections={@rules_sections}
-      admins={@admins}
       sheet={true}
     />
   </Bonfire.UI.Common.GuestBoardLive>
@@ -17,7 +16,6 @@
       selected_tab={@selected_tab}
       has_rules?={@has_rules?}
       rules_sections={@rules_sections}
-      admins={@admins}
     />
   </div>
 {/if}

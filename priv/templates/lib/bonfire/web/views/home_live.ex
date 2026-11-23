@@ -50,11 +50,8 @@ defmodule Bonfire.Web.Views.HomeLive do
      |> assign(
        page: "home",
        is_guest?: true,
-       show_spotlight?:
-         include?(:instance_pinned, Bonfire.UI.Reactions.PinnedCarouselLive, socket),
-       show_groups?: include?(:groups, Bonfire.UI.Groups.WidgetGroupsCarouselLive, socket),
-       # cached, and empty when admins are hidden from guests
-       admins: Bonfire.UI.Me.WidgetAdminsLive.list_visible(assigns(socket)),
+       # the homepage's widgets, as the instance chose them (Widgets › Homepage in instance settings), starting from the flavour's (`config :bonfire, Bonfire.Web.Views.HomeLive, widgets: [main: [...]]`)
+       home_widgets: Bonfire.UI.Common.Widgets.for_place({__MODULE__, :main}, nil),
        selected_tab: :home,
        page_title: app,
        sidebar_widgets: [
@@ -65,14 +62,7 @@ defmodule Bonfire.Web.Views.HomeLive do
          ]
        ],
        #  changelog: @changelog,
-       error: nil,
-       loading: true,
-       feed: nil,
-       feed_id: nil,
-       feed_ids: nil,
-       feed_component_id: nil,
-       page_info: nil
-       #
+       error: nil
      )
      |> assign(Bonfire.UI.Common.GuestBoardLive.layout_assigns(true))}
   end
@@ -80,43 +70,6 @@ defmodule Bonfire.Web.Views.HomeLive do
   # def handle_params(%{"tab" => _tab} = params, url, socket) do
   #   Bonfire.UI.Social.FeedsLive.handle_params(params, url, socket)
   # end
-
-  @decorate time()
-  def handle_params(params, _url, socket) do
-    # debug(params, "param")
-
-    feed_name =
-      if module_enabled?(Bonfire.Social.Pins, socket) and
-           Bonfire.Common.Settings.get(
-             [Bonfire.UI.Social.FeedsLive, :curated],
-             false,
-             assigns(socket)
-           ) do
-        :curated
-      else
-        :local
-      end
-
-    {
-      :noreply,
-      socket
-      |> assign(
-        Bonfire.Social.Feeds.LiveHandler.feed_default_assigns(
-          {
-            feed_name,
-            params
-          },
-          socket
-        )
-      )
-    }
-  end
-
-  @doc "Whether the guest home includes an optional section: its component's extension is enabled and the instance's `[HomeLive, :include, key]` setting (default on) isn't turned off."
-  def include?(key, component, socket) do
-    module_enabled?(component, socket) and
-      Settings.get([__MODULE__, :include, key], true, assigns(socket)) != false
-  end
 
   # # render_sface_or_native()
 end

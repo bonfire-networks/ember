@@ -5,7 +5,7 @@
       text={@terms}
       body_id="impressum-body"
     >
-      <Bonfire.Web.Components.CommunityLinksLive class="mt-8" />
+      <Bonfire.UI.Common.WidgetCommunityLinksLive showing_within={:main} class="mt-8" />
     </Bonfire.Web.Components.GuestTextPageLive>
   </Bonfire.UI.Common.GuestBoardLive>
 {#else}

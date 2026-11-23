@@ -15,52 +15,13 @@ defmodule Bonfire.Web.Views.DashboardLive do
     current_user = current_user(socket)
     is_guest? = is_nil(current_user)
 
-    community_links =
-      Config.get([:ui, :theme, :instance_welcome, :links], [])
-      |> Bonfire.UI.Common.WidgetCommunityLinksLive.normalize_links()
-
+    # the sidebar's widgets, the same way as the main area's
     sidebar_widgets = [
-      users: [
-        secondary:
-          Enum.filter(
-            [
-              {Bonfire.UI.Common.WidgetCommunityLinksLive, [links: community_links]},
-              Settings.get(
-                [Bonfire.Web.Views.DashboardLive, :include, :popular_topics],
-                true,
-                current_user: current_user
-              ) && {Bonfire.Tag.Web.WidgetTagsLive, []},
-              {Bonfire.UI.Social.WidgetTrendingLinksLive, []},
-              Settings.get(
-                [Bonfire.Web.Views.DashboardLive, :include, :community_rules],
-                true,
-                current_user: current_user
-              ) &&
-                Bonfire.Common.Extend.module_enabled?(
-                  Bonfire.CommunityRules.Web.WidgetRulesLive,
-                  current_user
-                ) &&
-                {Bonfire.CommunityRules.Web.WidgetRulesLive, []},
-              Settings.get([Bonfire.Web.Views.DashboardLive, :include, :admins], true,
-                current_user: current_user
-              ) &&
-                {Bonfire.UI.Me.WidgetAdminsLive, []},
-              Settings.get(
-                [Bonfire.Web.Views.DashboardLive, :include, :recent_users],
-                true,
-                current_user: current_user
-              ) && {Bonfire.UI.Me.WidgetHighlightUsersLive, []}
-            ],
-            & &1
-          )
-      ]
+      users: [secondary: Bonfire.UI.Common.Widgets.for_place({__MODULE__, :sidebar}, current_user)]
     ]
 
-    main_widgets = Bonfire.UI.Me.Dashboard.main_widgets(main_widget_choices(), current_user)
-
-    # feed tabs link to `?feed=<slug>`
-    {dashboard_feed, dashboard_feed_id} =
-      Bonfire.UI.Me.Dashboard.feed_assigns(socket, e(params, "feed", nil))
+    # the flavour's defaults (`config :bonfire, Bonfire.Web.Views.DashboardLive, widgets: [main: [...]]`), then the instance's and this person's choices
+    main_widgets = Bonfire.UI.Common.Widgets.for_place({__MODULE__, :main}, current_user)
 
     page_title = l("Active discussions")
 
@@ -72,8 +33,8 @@ defmodule Bonfire.Web.Views.DashboardLive do
        
        page_header: false,
        main_widgets: main_widgets,
-       dashboard_feed: dashboard_feed,
-       dashboard_feed_id: dashboard_feed_id,
+       # the feed widget's tabs link to `?feed=<slug>`
+       requested_feed: e(params, "feed", nil),
        is_guest?: is_guest?,
        without_sidebar: is_guest?,
        no_header: is_guest?,
@@ -89,11 +50,6 @@ defmodule Bonfire.Web.Views.DashboardLive do
      )
      # TODO: only assign for native?
      |> assign(tab_assigns("home"))}
-  end
-
-  @doc "Main-area widgets this flavour offers, in default order (keys of `Bonfire.UI.Me.Dashboard.catalogue/0`)."
-  def main_widget_choices do
-    [:popular_discussions]
   end
 
   # @decorate time()

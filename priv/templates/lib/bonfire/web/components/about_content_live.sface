@@ -19,12 +19,18 @@
   {/case}
 
   <div class={"pt-6", "px-4 pb-10 sm:px-10 sm:pb-12": @sheet}>
-  <Bonfire.Web.Components.AboutIntroLive is_guest?={@is_guest?} />
+  <Bonfire.UI.Me.AboutIntroLive is_guest?={@is_guest?} />
 
   {!-- negative margins matching the padding, so each row's hairline reaches the sheet's edges --}
   <div class="mt-8">
-    <Bonfire.Web.Components.CommunityAdminsLive admins={@admins} class={if(@sheet, do: "-mx-4 px-4 sm:-mx-10 sm:px-10", else: "-mx-5 px-5 sm:-mx-6 sm:px-6")} />
-    <Bonfire.Web.Components.CommunityGlanceLive is_guest?={@is_guest?} class={if(@sheet, do: "-mx-4 px-4 sm:-mx-10 sm:px-10", else: "-mx-5 px-5 sm:-mx-6 sm:px-6")} />
+    <Bonfire.UI.Me.WidgetModsLive
+      showing_within={:main}
+      class={"border-t border-base-content/15 py-6", if(@sheet, do: "-mx-4 px-4 sm:-mx-10 sm:px-10", else: "-mx-5 px-5 sm:-mx-6 sm:px-6")}
+    />
+    <Bonfire.UI.Me.WidgetInstanceFactsLive
+      is_guest?={@is_guest?}
+      class={"border-t border-base-content/15 py-6", if(@sheet, do: "-mx-4 px-4 sm:-mx-10 sm:px-10", else: "-mx-5 px-5 sm:-mx-6 sm:px-6")}
+    />
   </div>
 
   <div

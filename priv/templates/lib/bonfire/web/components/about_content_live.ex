@@ -7,8 +7,6 @@ defmodule Bonfire.Web.Components.AboutContentLive do
   prop has_rules?, :boolean, default: false
   prop rules_sections, :list, default: []
 
-  prop admins, :list, default: []
-
   @doc "Render as a sheet on the guest board (guests) rather than a column in the signed-in layout."
   prop sheet, :boolean, default: false
 end

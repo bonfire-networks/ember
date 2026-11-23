@@ -1,8 +1,7 @@
 <section data-id="user_dashboard" class="">
   <Bonfire.UI.Me.DashboardMainLive
     widgets={@main_widgets}
-    feed={@dashboard_feed}
-    feed_id={@dashboard_feed_id}
+    requested_feed={@requested_feed}
     page={@page}
     selected_tab={@selected_tab}
   />

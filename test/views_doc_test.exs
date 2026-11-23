@@ -1,7 +1,7 @@
 defmodule Ember.Views.DocTest do
   use Bonfire.UI.Me.ConnCase, async: false
 
-  doctest Bonfire.Web.Components.HomeHeroLive
+  doctest Bonfire.UI.Me.HomeHeroLive
 
   setup do
     # both loaders are cached for hours: start every test from the current DB state

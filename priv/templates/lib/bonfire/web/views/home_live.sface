@@ -1,69 +1,19 @@
 <Bonfire.UI.Common.GuestBoardLive page={:home} sheet_id="guest-home" labelledby="about-title">
-  {!-- no bottom padding: the last row's own padding sits above the spotlight's hairline --}
-  <div class="px-4 pt-6 sm:px-10">
-    <Bonfire.Web.Components.AboutIntroLive is_guest?={true}>
-      <Bonfire.Web.Components.HomeHeroLive />
-    </Bonfire.Web.Components.AboutIntroLive>
-    <div class="mt-8">
-      <Bonfire.Web.Components.CommunityAdminsLive admins={@admins} class="-mx-4 px-4 sm:-mx-10 sm:px-10" />
-      <Bonfire.Web.Components.CommunityGlanceLive is_guest?={true} class="-mx-4 px-4 sm:-mx-10 sm:px-10" />
-    </div>
-  </div>
-
-  <section :if={@show_spotlight?} id="guest-spotlight" class="has-[aside]:border-t has-[aside]:border-base-content/15">
-    {!-- "Spotlight" and "Groups" take the domain of an extension that already translates them: strings written in the app itself land in the `bonfire` domain, which extraction never reaches --}
-    {!-- the carousel takes the gutter as scroll padding, so cards scroll out to the sheet's edge --}
-    <StatefulComponent
-      module={maybe_component(Bonfire.UI.Reactions.PinnedCarouselLive, @__context__)}
-      id="instance_pinned_widget"
-      title={l("Spotlight", [], nil, :bonfire_ui_me)}
-      wrapper_class="w-full py-6 sm:py-8"
-      title_class="gap-3 px-4 pb-4 sm:px-10"
-      heading_class="text-lg font-bold leading-snug tracking-[-0.01em]"
-      carousel_class="px-4 scroll-px-4 sm:px-10 sm:scroll-px-10"
-      hide_empty
-    />
-  </section>
-
-  {!-- the widget renders nothing without groups, so the hairline goes on it rather than a wrapper --}
+  {!-- the whole homepage: its widgets (Widgets › Homepage in instance settings), the introduction first by default. They're laid out like the dashboard's (`[data-widget-place]` in interface.css: spacing, dividers, headings, and its gutter, which plain bodies take too) --}
   <section
-    :if={@show_groups?}
-    id="guest-groups"
-    class="has-[aside]:border-t has-[aside]:border-base-content/15 [&_aside]:border-t-0"
+    :if={@home_widgets != []}
+    id="home_main"
+    data-widget-place
+    class="**:data-[role=widget-body]:px-(--stream-content-padding)"
   >
-    <StatefulComponent
-      module={maybe_component(Bonfire.UI.Groups.WidgetGroupsCarouselLive, @__context__)}
-      id="guest_groups_widget"
-      title={l("Groups", [], nil, :bonfire_ui_common)}
-      wrapper_class="w-full py-6 sm:py-8"
-      title_class="gap-3 px-4 pb-4 sm:px-10"
-      carousel_class="px-4 scroll-px-4 sm:px-10 sm:scroll-px-10"
-      footer_class="px-4 pt-3 sm:px-10"
+    <Bonfire.UI.Common.WidgetsLive
+      id="home_main_widgets"
+      widgets={@home_widgets}
+      showing_within={:main}
+      reorderable={false}
+      use_saved_order={false}
+      container_class="flex flex-col"
     />
   </section>
 
-  <section
-    class="border-t border-base-content/15 [--activity-padding:22px_16px] sm:[--activity-padding:22px_40px]"
-    aria-labelledby="guest-feed-title"
-  >
-    <div class="px-4 pb-4 pt-6 sm:px-10 sm:pt-8">
-      <h2 id="guest-feed-title" class="text-lg font-bold leading-snug tracking-[-0.01em]">{l("Recent activity")}</h2>
-    </div>
-    <StatefulComponent
-      module={maybe_component(Bonfire.UI.Social.FeedLive, @__context__)}
-      :if={@feed_component_id}
-      id={@feed_component_id}
-      hide_filters
-      feed_id={@feed_id}
-      feed_name={@feed_name}
-      feed_ids={@feed_ids}
-      top_page="Explore"
-      page_title={@page_title}
-      feed={@feed}
-      page_info={@page_info}
-      loading={@loading}
-      time_limit={30}
-      current_url="/feed/"
-    />
-  </section>
 </Bonfire.UI.Common.GuestBoardLive>

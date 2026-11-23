@@ -39,13 +39,13 @@ defmodule Bonfire.Web.Views.AboutLive do
          guests: [
            secondary: [
              #  {Bonfire.Tag.Web.WidgetTagsLive, []},
-             #  {Bonfire.UI.Me.WidgetAdminsLive, []}
+             #  {Bonfire.UI.Me.WidgetModsLive, []}
            ]
          ],
          users: [
            secondary: [
              {Bonfire.Tag.Web.WidgetTagsLive, []},
-             {Bonfire.UI.Me.WidgetAdminsLive, []}
+             {Bonfire.UI.Me.WidgetModsLive, []}
            ]
          ]
        ]
@@ -64,8 +64,7 @@ defmodule Bonfire.Web.Views.AboutLive do
     assign(socket,
       rules_sections: rules_sections,
       has_rules?:
-        maybe_apply(Bonfire.CommunityRules, :any_rules?, [rules_sections], fallback_return: false),
-      admins: Bonfire.UI.Me.WidgetAdminsLive.list_visible(assigns(socket))
+        maybe_apply(Bonfire.CommunityRules, :any_rules?, [rules_sections], fallback_return: false)
     )
   end
 
