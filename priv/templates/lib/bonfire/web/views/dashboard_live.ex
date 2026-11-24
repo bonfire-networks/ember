@@ -15,9 +15,10 @@ defmodule Bonfire.Web.Views.DashboardLive do
     current_user = current_user(socket)
     is_guest? = is_nil(current_user)
 
-    # the sidebar's widgets, the same way as the main area's
+    # the sidebar's widgets, the same way as the main area's; dragging them on the page saves the order settings shows
     sidebar_widgets = [
-      users: [secondary: Bonfire.UI.Common.Widgets.for_place({__MODULE__, :sidebar}, current_user)]
+      users: [secondary: Bonfire.UI.Common.Widgets.for_place({__MODULE__, :sidebar}, current_user)],
+      order_key: Bonfire.UI.Common.Widgets.order_key({__MODULE__, :sidebar})
     ]
 
     # the flavour's defaults (`config :bonfire, Bonfire.Web.Views.DashboardLive, widgets: [main: [...]]`), then the instance's and this person's choices
