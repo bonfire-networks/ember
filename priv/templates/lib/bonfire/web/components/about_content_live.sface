@@ -12,7 +12,7 @@
     {#match banner}
       <div
         data-role="about-banner"
-        class={"aspect-[3/1] bg-fill bg-cover bg-center sm:aspect-[4/1]", "rounded-box": !@sheet}
+        class={"aspect-[3/1] bg-fill bg-cover bg-center", "rounded-box": !@sheet}
         aria-hidden="true"
         style={Bonfire.UI.Common.NextGenImageLive.background_image_set(banner)}
       />
