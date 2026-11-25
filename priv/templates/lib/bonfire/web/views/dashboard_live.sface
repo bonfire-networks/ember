@@ -1,8 +1,11 @@
-<section data-id="user_dashboard" class="">
+<section data-id="user_dashboard" data-widgets-editable={@editable_widgets && "true"}>
   <Bonfire.UI.Me.DashboardMainLive
     widgets={@main_widgets}
     requested_feed={@requested_feed}
     page={@page}
     selected_tab={@selected_tab}
+    editable={@editable_widgets}
+    addable={e(@widgets_addable, :main, [])}
   />
+  <Bonfire.UI.Common.EditWidgetsBarLive :if={@editable_widgets} removed={@widgets_removed} />
 </section>

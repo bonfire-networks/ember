@@ -15,14 +15,8 @@ defmodule Bonfire.Web.Views.DashboardLive do
     current_user = current_user(socket)
     is_guest? = is_nil(current_user)
 
-    # the sidebar's widgets, the same way as the main area's; dragging them on the page saves the order settings shows
-    sidebar_widgets = [
-      users: [secondary: Bonfire.UI.Common.Widgets.for_place({__MODULE__, :sidebar}, current_user)],
-      order_key: Bonfire.UI.Common.Widgets.order_key({__MODULE__, :sidebar})
-    ]
-
-    # the flavour's defaults (`config :bonfire, Bonfire.Web.Views.DashboardLive, widgets: [main: [...]]`), then the instance's and this person's choices
-    main_widgets = Bonfire.UI.Common.Widgets.for_place({__MODULE__, :main}, current_user)
+    # the flavour's defaults, then the instance's and this person's choices; a member changes them in edit mode
+    widget_assigns = Bonfire.UI.Common.Widgets.place_assigns(__MODULE__, current_user)
 
     page_title = l("Active discussions")
 
@@ -33,14 +27,12 @@ defmodule Bonfire.Web.Views.DashboardLive do
        selected_tab: :about,
        
        page_header: false,
-       main_widgets: main_widgets,
        # the feed widget's tabs link to `?feed=<slug>`
        requested_feed: e(params, "feed", nil),
        is_guest?: is_guest?,
        without_sidebar: is_guest?,
        no_header: is_guest?,
        page_title: page_title,
-       sidebar_widgets: sidebar_widgets,
        loading: true,
        feed: nil,
        feed_id: nil,
@@ -49,6 +41,7 @@ defmodule Bonfire.Web.Views.DashboardLive do
        page_info: nil,
        show_search_filters: false
      )
+     |> assign(widget_assigns)
      # TODO: only assign for native?
      |> assign(tab_assigns("home"))}
   end
