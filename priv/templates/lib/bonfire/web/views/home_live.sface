@@ -4,7 +4,6 @@
     :if={@home_widgets != []}
     id="home_main"
     data-widget-place
-    class="**:data-[role=widget-body]:px-(--stream-content-padding)"
   >
     <Bonfire.UI.Common.WidgetsLive
       id="home_main_widgets"
