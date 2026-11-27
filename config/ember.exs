@@ -327,10 +327,12 @@ config :bonfire_common, Bonfire.Common.Localise.Cldr, locales: locales
 # The dashboard's main-area and sidebar widgets, in default order: ids of widgets in `Bonfire.UI.Common.Widgets.registry/0`. Instances set their own defaults and people their own choice in dashboard settings. Each flavour sets its own lists, as this one is every flavour's base.
 # Widgets disabled for now: they repeat what others show. Remove a line to turn one back on.
 config :bonfire_ui_common, Bonfire.UI.Common.WidgetInstanceInfoLive, modularity: :disabled
-config :bonfire_ui_me, Bonfire.UI.Me.WidgetInstanceStatusLive, modularity: :disabled
 config :bonfire_ui_me, Bonfire.UI.Me.WidgetUserStatusLive, modularity: :disabled
 # Top discussions (`trending_discussions`) is kept instead
 config :bonfire_ui_social, Bonfire.UI.Social.WidgetDiscussionsLive, modularity: :disabled
+
+# The Porch ("Around <instance> today") is parked until its design is picked up again. To turn it on, delete this line and add `:porch` to a dashboard widget list.
+config :bonfire_ui_social, Bonfire.UI.Social.WidgetPorchLive, modularity: :disabled
 
 config :bonfire, Bonfire.Web.Views.DashboardLive,
   widgets: [
@@ -351,7 +353,6 @@ config :bonfire, Bonfire.Web.Views.HomeLive,
     main: [
       :intro,
       :mods,
-      :instance_facts,
       :community_links,
       :community_rules,
       :instance_pinned,
